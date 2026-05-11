@@ -28,10 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="images\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="images\hcmute.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>

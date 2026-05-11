@@ -110,6 +110,7 @@
             FirstButton.TabIndex = 4;
             FirstButton.Text = "Set No 1";
             FirstButton.UseVisualStyleBackColor = true;
+            FirstButton.Click += FirstButton_Click;
             // 
             // SecondButton
             // 
@@ -119,6 +120,7 @@
             SecondButton.TabIndex = 5;
             SecondButton.Text = "Set No 2";
             SecondButton.UseVisualStyleBackColor = true;
+            SecondButton.Click += SecondButton_Click;
             // 
             // AddButtion
             // 
@@ -128,6 +130,7 @@
             AddButtion.TabIndex = 6;
             AddButtion.Text = "Add";
             AddButtion.UseVisualStyleBackColor = true;
+            AddButtion.Click += AddButton_Click;
             // 
             // SubstractButton
             // 
@@ -137,6 +140,7 @@
             SubstractButton.TabIndex = 7;
             SubstractButton.Text = "Substract";
             SubstractButton.UseVisualStyleBackColor = true;
+            SubstractButton.Click += SubstractButton_Click;
             // 
             // MultifyButton
             // 
@@ -146,6 +150,7 @@
             MultifyButton.TabIndex = 8;
             MultifyButton.Text = "Multify";
             MultifyButton.UseVisualStyleBackColor = true;
+            MultifyButton.Click += MultifyButton_Click;
             // 
             // StatusLabel
             // 
@@ -161,6 +166,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.ActiveCaption;
             ClientSize = new Size(800, 450);
             Controls.Add(StatusLabel);
             Controls.Add(MultifyButton);
@@ -205,7 +211,6 @@
         private Button MultifyButton;
 
         private Label StatusLabel;
-
     }
 
 }

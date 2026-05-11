@@ -70,7 +70,6 @@ namespace Day01
             StatusLabel.Text = "Notice: " + x.ToString() + " * " + y.ToString() + " = " + (x * y).ToString();
         }
     }
-
     // =========================================================
     // PHẦN 2: LỚP SỐ PHỨC (ĐÃ CHUYỂN XUỐNG DƯỚI)
     // =========================================================

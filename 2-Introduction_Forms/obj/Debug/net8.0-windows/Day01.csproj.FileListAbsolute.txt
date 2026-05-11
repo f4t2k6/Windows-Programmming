@@ -105,7 +105,6 @@ E:\Windows-Programmming\2-Introduction_Forms\bin\Debug\net8.0-windows\runtimes\w
 E:\Windows-Programmming\2-Introduction_Forms\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.dll
 E:\Windows-Programmming\2-Introduction_Forms\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
 E:\Windows-Programmming\2-Introduction_Forms\obj\Debug\net8.0-windows\Day01.csproj.AssemblyReference.cache
-E:\Windows-Programmming\2-Introduction_Forms\obj\Debug\net8.0-windows\Day01.Form1.resources
 E:\Windows-Programmming\2-Introduction_Forms\obj\Debug\net8.0-windows\Day01.Properties.Resources.resources
 E:\Windows-Programmming\2-Introduction_Forms\obj\Debug\net8.0-windows\Day01.csproj.GenerateResource.cache
 E:\Windows-Programmming\2-Introduction_Forms\obj\Debug\net8.0-windows\Day01.GeneratedMSBuildEditorConfig.editorconfig
@@ -119,3 +118,5 @@ E:\Windows-Programmming\2-Introduction_Forms\obj\Debug\net8.0-windows\refint\Day
 E:\Windows-Programmming\2-Introduction_Forms\obj\Debug\net8.0-windows\Day01.pdb
 E:\Windows-Programmming\2-Introduction_Forms\obj\Debug\net8.0-windows\Day01.genruntimeconfig.cache
 E:\Windows-Programmming\2-Introduction_Forms\obj\Debug\net8.0-windows\ref\Day01.dll
+E:\Windows-Programmming\2-Introduction_Forms\obj\Debug\net8.0-windows\Day01.complex_number.resources
+E:\Windows-Programmming\2-Introduction_Forms\obj\Debug\net8.0-windows\Day01.Login.resources
