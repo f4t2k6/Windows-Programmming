@@ -37,7 +37,7 @@ namespace Day01
 
             SqlCommand command = new SqlCommand(
                 "SELECT * FROM login WHERE username = @User AND password = @Pass",
-                db.getConnection
+                db.conn
             );
             command.Parameters.Add("@User", SqlDbType.VarChar).Value = tb_username.Text;
             command.Parameters.Add("@Pass", SqlDbType.VarChar).Value = tb_password.Text;

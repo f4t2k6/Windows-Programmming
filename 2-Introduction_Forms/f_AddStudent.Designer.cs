@@ -51,6 +51,7 @@
             txtMSSV.Size = new Size(178, 27);
             txtMSSV.TabIndex = 1;
             txtMSSV.Text = "Nhập MSSV";
+            txtMSSV.KeyPress += txtMSSV_KeyPress;
             // 
             // txtFname
             // 
@@ -60,6 +61,7 @@
             txtFname.TabIndex = 3;
             txtFname.Text = "Nhập họ và tên đệm";
             txtFname.TextChanged += textBox2_TextChanged;
+            txtFname.KeyPress += txtFname_KeyPress;
             // 
             // txtLname
             // 
@@ -68,6 +70,7 @@
             txtLname.Size = new Size(178, 27);
             txtLname.TabIndex = 5;
             txtLname.Text = "Nhập tên";
+            txtLname.KeyPress += txtLname_KeyPress;
             // 
             // txtHometown
             // 
@@ -92,19 +95,25 @@
             txtPhone.Size = new Size(178, 27);
             txtPhone.TabIndex = 9;
             txtPhone.Text = "Nhập số điện thoại";
+            txtPhone.KeyPress += txtMSSV_KeyPress;
             // 
             // picStudent
             // 
             picStudent.AccessibleName = "picStudent";
+            picStudent.BackColor = SystemColors.HighlightText;
+            picStudent.BackgroundImageLayout = ImageLayout.Center;
+            picStudent.BorderStyle = BorderStyle.FixedSingle;
             picStudent.Location = new Point(126, 33);
             picStudent.Name = "picStudent";
             picStudent.Size = new Size(90, 90);
+            picStudent.SizeMode = PictureBoxSizeMode.Zoom;
             picStudent.TabIndex = 18;
             picStudent.TabStop = false;
             // 
             // dtpDob
             // 
-            dtpDob.Format = DateTimePickerFormat.Short;
+            dtpDob.CustomFormat = "dd/MM/yyyy";
+            dtpDob.Format = DateTimePickerFormat.Custom;
             dtpDob.Location = new Point(461, 48);
             dtpDob.MaxDate = new DateTime(2008, 12, 31, 0, 0, 0, 0);
             dtpDob.MinDate = new DateTime(1900, 1, 1, 0, 0, 0, 0);
@@ -124,6 +133,7 @@
             // cboGender
             // 
             cboGender.FormattingEnabled = true;
+            cboGender.Items.AddRange(new object[] { "Nam", "Nữ", "Khác" });
             cboGender.Location = new Point(461, 95);
             cboGender.Name = "cboGender";
             cboGender.Size = new Size(178, 28);
@@ -133,17 +143,18 @@
             // 
             // btnChooseImage
             // 
+            btnChooseImage.BackColor = SystemColors.ScrollBar;
             btnChooseImage.Location = new Point(88, 144);
             btnChooseImage.Name = "btnChooseImage";
             btnChooseImage.Size = new Size(178, 29);
             btnChooseImage.TabIndex = 23;
             btnChooseImage.Text = "Chọn ảnh từ máy tính";
-            btnChooseImage.UseVisualStyleBackColor = true;
+            btnChooseImage.UseVisualStyleBackColor = false;
             btnChooseImage.Click += btnChooseImage_Click;
             // 
             // btnAdd
             // 
-            btnAdd.BackColor = Color.Transparent;
+            btnAdd.BackColor = SystemColors.ScrollBar;
             btnAdd.Location = new Point(427, 346);
             btnAdd.Name = "btnAdd";
             btnAdd.Size = new Size(101, 72);
@@ -154,12 +165,13 @@
             // 
             // btnClear
             // 
+            btnClear.BackColor = SystemColors.ControlLight;
             btnClear.Location = new Point(574, 346);
             btnClear.Name = "btnClear";
             btnClear.Size = new Size(101, 72);
             btnClear.TabIndex = 25;
             btnClear.Text = "Xóa trắng form";
-            btnClear.UseVisualStyleBackColor = true;
+            btnClear.UseVisualStyleBackColor = false;
             // 
             // f_AddStudent
             // 

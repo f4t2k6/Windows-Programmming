@@ -120,3 +120,4 @@ E:\Windows-Programmming\2-Introduction_Forms\obj\Debug\net8.0-windows\Day01.genr
 E:\Windows-Programmming\2-Introduction_Forms\obj\Debug\net8.0-windows\ref\Day01.dll
 E:\Windows-Programmming\2-Introduction_Forms\obj\Debug\net8.0-windows\Day01.complex_number.resources
 E:\Windows-Programmming\2-Introduction_Forms\obj\Debug\net8.0-windows\Day01.Login.resources
+E:\Windows-Programmming\2-Introduction_Forms\obj\Debug\net8.0-windows\Day01.f_AddStudent.resources
