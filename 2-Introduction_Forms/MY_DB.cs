@@ -8,7 +8,7 @@ class MY_DB
     );
 
     // Lấy connection
-    public SqlConnection getConnection
+    public SqlConnection conn
     {
         get { return con; }
     }
