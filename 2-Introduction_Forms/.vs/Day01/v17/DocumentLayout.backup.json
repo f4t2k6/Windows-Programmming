@@ -1,7 +1,37 @@
 {
   "Version": 1,
+<<<<<<< Updated upstream
   "WorkspaceRootPath": "E:\\Windows-Programmming\\2-Introduction_Forms\\",
   "Documents": [],
+=======
+  "WorkspaceRootPath": "C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|c:\\users\\lefat\\onedrive\\desktop\\2-introduction_forms\\2-introduction_forms\\my_db.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|solutionrelative:my_db.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|c:\\users\\lefat\\onedrive\\desktop\\2-introduction_forms\\2-introduction_forms\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|c:\\users\\lefat\\onedrive\\desktop\\2-introduction_forms\\2-introduction_forms\\student.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|solutionrelative:student.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|c:\\users\\lefat\\onedrive\\desktop\\2-introduction_forms\\2-introduction_forms\\f_addstudent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|solutionrelative:f_addstudent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|c:\\users\\lefat\\onedrive\\desktop\\2-introduction_forms\\2-introduction_forms\\f_addstudent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|solutionrelative:f_addstudent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\f_liststudent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|solutionrelative:f_liststudent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    }
+  ],
+>>>>>>> Stashed changes
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,9 +39,41 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
+<<<<<<< Updated upstream
           "SelectedChildIndex": -1,
           "Children": [
             {
+=======
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MY_DB.cs",
+              "DocumentMoniker": "C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\MY_DB.cs",
+              "RelativeDocumentMoniker": "MY_DB.cs",
+              "ToolTip": "C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\MY_DB.cs",
+              "RelativeToolTip": "MY_DB.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-12T00:45:58.601Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Student.cs",
+              "DocumentMoniker": "C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\Student.cs",
+              "RelativeDocumentMoniker": "Student.cs",
+              "ToolTip": "C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\Student.cs",
+              "RelativeToolTip": "Student.cs",
+              "ViewState": "AgIAAFYAAAAAAAAAAAAmwEgAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-12T00:45:21.758Z",
+              "EditorCaption": ""
+            },
+            {
+>>>>>>> Stashed changes
               "$type": "Bookmark",
               "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
             },
@@ -28,8 +90,59 @@
               "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
             },
             {
+<<<<<<< Updated upstream
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+=======
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "f_AddStudent.cs",
+              "DocumentMoniker": "C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\f_AddStudent.cs",
+              "RelativeDocumentMoniker": "f_AddStudent.cs",
+              "ToolTip": "C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\f_AddStudent.cs",
+              "RelativeToolTip": "f_AddStudent.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAKgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-12T00:45:05.854Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-12T00:44:27.966Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "f_ListStudent.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\f_ListStudent.cs",
+              "RelativeDocumentMoniker": "f_ListStudent.cs",
+              "ToolTip": "C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\f_ListStudent.cs [Design]",
+              "RelativeToolTip": "f_ListStudent.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-11T15:50:51.541Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "f_AddStudent.cs [Design]",
+              "DocumentMoniker": "C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\f_AddStudent.cs",
+              "RelativeDocumentMoniker": "f_AddStudent.cs",
+              "ToolTip": "C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\f_AddStudent.cs [Design]",
+              "RelativeToolTip": "f_AddStudent.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-12T00:44:13.051Z",
+              "EditorCaption": " [Design]"
+>>>>>>> Stashed changes
             }
           ]
         }

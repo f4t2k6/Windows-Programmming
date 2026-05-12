@@ -4,8 +4,16 @@ class MY_DB
 {
     // Khai báo kết nối
     SqlConnection con = new SqlConnection(
+<<<<<<< Updated upstream
         @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=myDB;Integrated Security=True"
     );
+=======
+    @"Data Source=(localdb)\MSSQLLocalDB;
+      Initial Catalog=myDB;
+      Integrated Security=True;
+      TrustServerCertificate=True"
+);
+>>>>>>> Stashed changes
 
     // Lấy connection
     public SqlConnection getConnection
