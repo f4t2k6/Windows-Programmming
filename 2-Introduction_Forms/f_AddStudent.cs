@@ -61,7 +61,10 @@ namespace Day01
                 studentImage = ms.ToArray();
             }
         }
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
         private void btnAdd_Click(object sender, EventArgs e)
         {
             // 1. Kiểm tra các ô chữ (Code cũ đã có)
@@ -107,6 +110,30 @@ namespace Day01
             if (!char.IsControl(e.KeyChar) && !char.IsLetter(e.KeyChar) && !char.IsWhiteSpace(e.KeyChar))
             {
                 // Chặn các phím còn lại (số, ký tự đặc biệt...)
+                e.Handled = true;
+            }
+        }
+
+        private void txtFname_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Cho phép phím điều khiển (Backspace), chữ cái, và dấu cách (khoảng trắng)
+            if (!char.IsControl(e.KeyChar) && !char.IsLetter(e.KeyChar) && !char.IsWhiteSpace(e.KeyChar))
+            {
+                // Chặn các phím còn lại (số, ký tự đặc biệt...)
+                e.Handled = true;
+            }
+        }
+
+        private void dtpDob_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtMSSV_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                // Thì hủy bỏ, không cho phím đó in ra màn hình
                 e.Handled = true;
             }
         }

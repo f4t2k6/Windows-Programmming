@@ -51,6 +51,10 @@
             txtMSSV.Size = new Size(178, 27);
             txtMSSV.TabIndex = 1;
             txtMSSV.Text = "Nhập MSSV";
+<<<<<<< Updated upstream
+=======
+            txtMSSV.Click += txtMSSV_Click;
+>>>>>>> Stashed changes
             txtMSSV.KeyPress += txtMSSV_KeyPress;
             // 
             // txtFname
@@ -60,17 +64,30 @@
             txtFname.Size = new Size(178, 27);
             txtFname.TabIndex = 3;
             txtFname.Text = "Nhập họ và tên đệm";
+<<<<<<< Updated upstream
             txtFname.TextChanged += textBox2_TextChanged;
+=======
+            txtFname.Click += txtFname_Click;
+>>>>>>> Stashed changes
             txtFname.KeyPress += txtFname_KeyPress;
             // 
             // txtLname
             // 
+<<<<<<< Updated upstream
             txtLname.Location = new Point(88, 286);
+=======
+            txtLname.Location = new Point(88, 285);
+>>>>>>> Stashed changes
             txtLname.Name = "txtLname";
             txtLname.Size = new Size(178, 27);
             txtLname.TabIndex = 5;
             txtLname.Text = "Nhập tên";
+<<<<<<< Updated upstream
             txtLname.KeyPress += txtLname_KeyPress;
+=======
+            txtLname.Click += txtLname_Click;
+            txtLname.KeyPress += txtFname_KeyPress;
+>>>>>>> Stashed changes
             // 
             // txtHometown
             // 
@@ -95,25 +112,40 @@
             txtPhone.Size = new Size(178, 27);
             txtPhone.TabIndex = 9;
             txtPhone.Text = "Nhập số điện thoại";
+<<<<<<< Updated upstream
+=======
+            txtPhone.Click += txtPhone_Click;
+>>>>>>> Stashed changes
             txtPhone.KeyPress += txtMSSV_KeyPress;
             // 
             // picStudent
             // 
             picStudent.AccessibleName = "picStudent";
+<<<<<<< Updated upstream
             picStudent.BackColor = SystemColors.HighlightText;
             picStudent.BackgroundImageLayout = ImageLayout.Center;
             picStudent.BorderStyle = BorderStyle.FixedSingle;
             picStudent.Location = new Point(126, 33);
             picStudent.Name = "picStudent";
             picStudent.Size = new Size(90, 90);
+=======
+            picStudent.BorderStyle = BorderStyle.FixedSingle;
+            picStudent.Location = new Point(126, 33);
+            picStudent.Name = "picStudent";
+            picStudent.Size = new Size(90, 91);
+>>>>>>> Stashed changes
             picStudent.SizeMode = PictureBoxSizeMode.Zoom;
             picStudent.TabIndex = 18;
             picStudent.TabStop = false;
             // 
             // dtpDob
             // 
+<<<<<<< Updated upstream
             dtpDob.CustomFormat = "dd/MM/yyyy";
             dtpDob.Format = DateTimePickerFormat.Custom;
+=======
+            dtpDob.Format = DateTimePickerFormat.Short;
+>>>>>>> Stashed changes
             dtpDob.Location = new Point(461, 48);
             dtpDob.MaxDate = new DateTime(2008, 12, 31, 0, 0, 0, 0);
             dtpDob.MinDate = new DateTime(1900, 1, 1, 0, 0, 0, 0);
@@ -121,10 +153,15 @@
             dtpDob.Size = new Size(178, 27);
             dtpDob.TabIndex = 20;
             dtpDob.Value = new DateTime(2008, 1, 1, 0, 0, 0, 0);
+            dtpDob.ValueChanged += dtpDob_ValueChanged;
             // 
             // txtEmail
             // 
+<<<<<<< Updated upstream
             txtEmail.Location = new Point(461, 286);
+=======
+            txtEmail.Location = new Point(461, 285);
+>>>>>>> Stashed changes
             txtEmail.Name = "txtEmail";
             txtEmail.Size = new Size(178, 27);
             txtEmail.TabIndex = 21;
@@ -133,7 +170,10 @@
             // cboGender
             // 
             cboGender.FormattingEnabled = true;
+<<<<<<< Updated upstream
             cboGender.Items.AddRange(new object[] { "Nam", "Nữ", "Khác" });
+=======
+>>>>>>> Stashed changes
             cboGender.Location = new Point(461, 95);
             cboGender.Name = "cboGender";
             cboGender.Size = new Size(178, 28);
@@ -143,7 +183,10 @@
             // 
             // btnChooseImage
             // 
+<<<<<<< Updated upstream
             btnChooseImage.BackColor = SystemColors.ScrollBar;
+=======
+>>>>>>> Stashed changes
             btnChooseImage.Location = new Point(88, 144);
             btnChooseImage.Name = "btnChooseImage";
             btnChooseImage.Size = new Size(178, 29);
@@ -154,8 +197,13 @@
             // 
             // btnAdd
             // 
+<<<<<<< Updated upstream
             btnAdd.BackColor = SystemColors.ScrollBar;
             btnAdd.Location = new Point(427, 346);
+=======
+            btnAdd.BackColor = Color.Transparent;
+            btnAdd.Location = new Point(427, 347);
+>>>>>>> Stashed changes
             btnAdd.Name = "btnAdd";
             btnAdd.Size = new Size(101, 72);
             btnAdd.TabIndex = 24;
@@ -165,8 +213,12 @@
             // 
             // btnClear
             // 
+<<<<<<< Updated upstream
             btnClear.BackColor = SystemColors.ControlLight;
             btnClear.Location = new Point(574, 346);
+=======
+            btnClear.Location = new Point(574, 347);
+>>>>>>> Stashed changes
             btnClear.Name = "btnClear";
             btnClear.Size = new Size(101, 72);
             btnClear.TabIndex = 25;
@@ -180,7 +232,11 @@
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaption;
+<<<<<<< Updated upstream
             ClientSize = new Size(800, 450);
+=======
+            ClientSize = new Size(743, 427);
+>>>>>>> Stashed changes
             Controls.Add(btnClear);
             Controls.Add(btnAdd);
             Controls.Add(btnChooseImage);
