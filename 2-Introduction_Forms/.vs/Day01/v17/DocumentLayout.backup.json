@@ -2,7 +2,18 @@
   "Version": 1,
 <<<<<<< Updated upstream
   "WorkspaceRootPath": "E:\\Windows-Programmming\\2-Introduction_Forms\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|e:\\windows-programmming\\2-introduction_forms\\complex_number.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|solutionrelative:complex_number.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|e:\\windows-programmming\\2-introduction_forms\\complex_number.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|solutionrelative:complex_number.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|e:\\windows-programmming\\2-introduction_forms\\complex_number.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|solutionrelative:complex_number.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
 =======
   "WorkspaceRootPath": "C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\",
   "Documents": [
@@ -29,9 +40,9 @@
     {
       "AbsoluteMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\f_liststudent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|solutionrelative:f_liststudent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+>>>>>>> Stashed changes
     }
   ],
->>>>>>> Stashed changes
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -40,40 +51,22 @@
         {
           "DockedWidth": 200,
 <<<<<<< Updated upstream
-          "SelectedChildIndex": -1,
-          "Children": [
-            {
-=======
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "MY_DB.cs",
-              "DocumentMoniker": "C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\MY_DB.cs",
-              "RelativeDocumentMoniker": "MY_DB.cs",
-              "ToolTip": "C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\MY_DB.cs",
-              "RelativeToolTip": "MY_DB.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAApAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "complex_number.Designer.cs",
+              "DocumentMoniker": "E:\\Windows-Programmming\\2-Introduction_Forms\\complex_number.Designer.cs",
+              "RelativeDocumentMoniker": "complex_number.Designer.cs",
+              "ToolTip": "E:\\Windows-Programmming\\2-Introduction_Forms\\complex_number.Designer.cs",
+              "RelativeToolTip": "complex_number.Designer.cs",
+              "ViewState": "AgIAAMUAAAAAAAAAAAAuwNQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-12T00:45:58.601Z",
+              "WhenOpened": "2026-05-09T07:20:03.43Z",
               "EditorCaption": ""
             },
             {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Student.cs",
-              "DocumentMoniker": "C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\Student.cs",
-              "RelativeDocumentMoniker": "Student.cs",
-              "ToolTip": "C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\Student.cs",
-              "RelativeToolTip": "Student.cs",
-              "ViewState": "AgIAAFYAAAAAAAAAAAAmwEgAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-12T00:45:21.758Z",
-              "EditorCaption": ""
-            },
-            {
->>>>>>> Stashed changes
               "$type": "Bookmark",
               "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
             },
@@ -90,10 +83,77 @@
               "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
             },
             {
-<<<<<<< Updated upstream
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
 =======
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MY_DB.cs",
+              "DocumentMoniker": "C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\MY_DB.cs",
+              "RelativeDocumentMoniker": "MY_DB.cs",
+              "ToolTip": "C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\MY_DB.cs",
+              "RelativeToolTip": "MY_DB.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-12T00:45:58.601Z",
+              "EditorCaption": ""
+>>>>>>> Stashed changes
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+<<<<<<< Updated upstream
+              "Title": "complex_number.cs",
+              "DocumentMoniker": "E:\\Windows-Programmming\\2-Introduction_Forms\\complex_number.cs",
+              "RelativeDocumentMoniker": "complex_number.cs",
+              "ToolTip": "E:\\Windows-Programmming\\2-Introduction_Forms\\complex_number.cs",
+              "RelativeToolTip": "complex_number.cs",
+              "ViewState": "AgIAAGEAAAAAAAAAAAA+wHAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T07:19:31.281Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "complex_number.cs [Design]",
+              "DocumentMoniker": "E:\\Windows-Programmming\\2-Introduction_Forms\\complex_number.cs",
+              "RelativeDocumentMoniker": "complex_number.cs",
+              "ToolTip": "E:\\Windows-Programmming\\2-Introduction_Forms\\complex_number.cs [Design]",
+              "RelativeToolTip": "complex_number.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T07:18:45.05Z",
+=======
+              "Title": "Student.cs",
+              "DocumentMoniker": "C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\Student.cs",
+              "RelativeDocumentMoniker": "Student.cs",
+              "ToolTip": "C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\Student.cs",
+              "RelativeToolTip": "Student.cs",
+              "ViewState": "AgIAAFYAAAAAAAAAAAAmwEgAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-12T00:45:21.758Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
               "$type": "Document",
               "DocumentIndex": 3,
               "Title": "f_AddStudent.cs",
@@ -141,8 +201,8 @@
               "RelativeToolTip": "f_AddStudent.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-05-12T00:44:13.051Z",
-              "EditorCaption": " [Design]"
 >>>>>>> Stashed changes
+              "EditorCaption": " [Design]"
             }
           ]
         }
