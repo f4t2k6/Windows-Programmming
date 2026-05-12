@@ -1,42 +1,38 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "E:\\Windows-Programmming\\2-Introduction_Forms\\",
+  "WorkspaceRootPath": "C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|e:\\windows-programmming\\2-introduction_forms\\my_db.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|solutionrelative:my_db.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|c:\\users\\lefat\\onedrive\\desktop\\2-introduction_forms\\2-introduction_forms\\f_addstudent.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|solutionrelative:f_addstudent.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|e:\\windows-programmming\\2-introduction_forms\\dbo.student.sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}",
-      "RelativeMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|solutionrelative:dbo.student.sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|e:\\windows-programmming\\2-introduction_forms\\dbo.login.sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}",
-      "RelativeMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|solutionrelative:dbo.login.sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|e:\\windows-programmming\\2-introduction_forms\\f_addstudent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|solutionrelative:f_addstudent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|e:\\windows-programmming\\2-introduction_forms\\f_addstudent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|c:\\users\\lefat\\onedrive\\desktop\\2-introduction_forms\\2-introduction_forms\\f_addstudent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|solutionrelative:f_addstudent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|e:\\windows-programmming\\2-introduction_forms\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|c:\\users\\lefat\\onedrive\\desktop\\2-introduction_forms\\2-introduction_forms\\my_db.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|solutionrelative:my_db.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|c:\\users\\lefat\\onedrive\\desktop\\2-introduction_forms\\2-introduction_forms\\dbo.student.sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}",
+      "RelativeMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|solutionrelative:dbo.student.sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|c:\\users\\lefat\\onedrive\\desktop\\2-introduction_forms\\2-introduction_forms\\dbo.login.sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}",
+      "RelativeMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|solutionrelative:dbo.login.sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\f_addstudent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|solutionrelative:f_addstudent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|c:\\users\\lefat\\onedrive\\desktop\\2-introduction_forms\\2-introduction_forms\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|e:\\windows-programmming\\2-introduction_forms\\login.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|c:\\users\\lefat\\onedrive\\desktop\\2-introduction_forms\\2-introduction_forms\\login.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|solutionrelative:login.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|e:\\windows-programmming\\2-introduction_forms\\dbo.student.sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}|CodeFrame",
-      "RelativeMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|solutionrelative:dbo.student.sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}|CodeFrame"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|e:\\windows-programmming\\2-introduction_forms\\dbo.login.sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}|CodeFrame",
-      "RelativeMoniker": "D:0:0:{A6EDE20F-C284-4F52-9A5E-E343DD72FE8A}|Day01.csproj|solutionrelative:dbo.login.sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}|CodeFrame"
     }
   ],
   "DocumentGroupContainers": [
@@ -46,33 +42,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 4,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "MY_DB.cs",
-              "DocumentMoniker": "E:\\Windows-Programmming\\2-Introduction_Forms\\MY_DB.cs",
-              "RelativeDocumentMoniker": "MY_DB.cs",
-              "ToolTip": "E:\\Windows-Programmming\\2-Introduction_Forms\\MY_DB.cs",
-              "RelativeToolTip": "MY_DB.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-11T08:51:28.889Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "dbo.login.sql ",
-              "DocumentMoniker": "E:\\Windows-Programmming\\2-Introduction_Forms\\dbo.login.sql",
-              "RelativeDocumentMoniker": "dbo.login.sql",
-              "ToolTip": "E:\\Windows-Programmming\\2-Introduction_Forms\\dbo.login.sql",
-              "RelativeToolTip": "dbo.login.sql",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
-              "WhenOpened": "2026-05-11T08:24:02.038Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
@@ -90,71 +61,98 @@
               "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
             },
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
-            },
-            {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Login.cs",
-              "DocumentMoniker": "E:\\Windows-Programmming\\2-Introduction_Forms\\Login.cs",
-              "RelativeDocumentMoniker": "Login.cs",
-              "ToolTip": "E:\\Windows-Programmming\\2-Introduction_Forms\\Login.cs",
-              "RelativeToolTip": "Login.cs",
-              "ViewState": "AgIAACMAAAAAAAAAAAAswCQAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "f_AddStudent.Designer.cs",
+              "DocumentMoniker": "C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\f_AddStudent.Designer.cs",
+              "RelativeDocumentMoniker": "f_AddStudent.Designer.cs",
+              "ToolTip": "C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\f_AddStudent.Designer.cs",
+              "RelativeToolTip": "f_AddStudent.Designer.cs",
+              "ViewState": "AgIAALcAAAAAAAAAAADwv8EAAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-11T08:17:46.488Z",
+              "WhenOpened": "2026-05-12T02:15:30.701Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "dbo.Student.sql ",
-              "DocumentMoniker": "E:\\Windows-Programmming\\2-Introduction_Forms\\dbo.Student.sql",
-              "RelativeDocumentMoniker": "dbo.Student.sql",
-              "ToolTip": "E:\\Windows-Programmming\\2-Introduction_Forms\\dbo.Student.sql",
-              "RelativeToolTip": "dbo.Student.sql",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
-              "WhenOpened": "2026-05-11T08:15:29.824Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Program.cs",
-              "DocumentMoniker": "E:\\Windows-Programmming\\2-Introduction_Forms\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "E:\\Windows-Programmming\\2-Introduction_Forms\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAFAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "MY_DB.cs",
+              "DocumentMoniker": "C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\MY_DB.cs",
+              "RelativeDocumentMoniker": "MY_DB.cs",
+              "ToolTip": "C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\MY_DB.cs",
+              "RelativeToolTip": "MY_DB.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-11T08:13:49.588Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-05-11T08:51:28.889Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
+              "Title": "dbo.login.sql",
+              "DocumentMoniker": "C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\dbo.login.sql",
+              "RelativeDocumentMoniker": "dbo.login.sql",
+              "ToolTip": "C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\dbo.login.sql",
+              "RelativeToolTip": "dbo.login.sql",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
+              "WhenOpened": "2026-05-11T08:24:02.038Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Login.cs",
+              "DocumentMoniker": "C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\Login.cs",
+              "RelativeDocumentMoniker": "Login.cs",
+              "ToolTip": "C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\Login.cs",
+              "RelativeToolTip": "Login.cs",
+              "ViewState": "AgIAACMAAAAAAAAAAAAswCQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-11T08:17:46.488Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "dbo.Student.sql",
+              "DocumentMoniker": "C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\dbo.Student.sql",
+              "RelativeDocumentMoniker": "dbo.Student.sql",
+              "ToolTip": "C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\dbo.Student.sql",
+              "RelativeToolTip": "dbo.Student.sql",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
+              "WhenOpened": "2026-05-11T08:15:29.824Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-11T08:13:49.588Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "f_AddStudent.cs",
-              "DocumentMoniker": "E:\\Windows-Programmming\\2-Introduction_Forms\\f_AddStudent.cs",
+              "DocumentMoniker": "C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\f_AddStudent.cs",
               "RelativeDocumentMoniker": "f_AddStudent.cs",
-              "ToolTip": "E:\\Windows-Programmming\\2-Introduction_Forms\\f_AddStudent.cs",
+              "ToolTip": "C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\f_AddStudent.cs",
               "RelativeToolTip": "f_AddStudent.cs",
-              "ViewState": "AgIAAE4AAAAAAAAAAAAWwEoAAAAlAAAAAAAAAA==",
+              "ViewState": "AgIAABMAAAAAAAAAAAAQwFgAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-05-11T07:20:11.863Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "f_AddStudent.cs [Design]",
-              "DocumentMoniker": "E:\\Windows-Programmming\\2-Introduction_Forms\\f_AddStudent.cs",
+              "DocumentMoniker": "C:\\Users\\LeFat\\OneDrive\\Desktop\\2-Introduction_Forms\\2-Introduction_Forms\\f_AddStudent.cs",
               "RelativeDocumentMoniker": "f_AddStudent.cs",
               "ToolTip": "E:\\Windows-Programmming\\2-Introduction_Forms\\f_AddStudent.cs [Design]",
-              "RelativeToolTip": "f_AddStudent.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-05-11T07:16:51.73Z",
-              "EditorCaption": " [Design]"
+              "WhenOpened": "2026-05-11T07:16:51.73Z"
             }
           ]
         }
