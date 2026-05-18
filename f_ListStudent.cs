@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Data.SqlClient;
 
-namespace Day01
+namespace ProjectMonHoc
 {
     public partial class f_ListStudent : Form
     {
@@ -20,6 +20,9 @@ namespace Day01
 
         private void f_ListStudent_Load(object sender, EventArgs e)
         {
+            // Hiển thị người đang đăng nhập
+            lblCurrentUser.Text = $"Đang đăng nhập: {Globals.GlobalUsername} ({Globals.GlobalRole})";
+
             // Thêm options sắp xếp
             cboSort.Items.Add("Mặc định");
             cboSort.Items.Add("Theo MSSV");
@@ -92,6 +95,21 @@ namespace Day01
         {
             string keyword = txtSearch.Text == "Tìm kiếm..." ? "" : txtSearch.Text;
             LoadStudents(keyword, cboSort.SelectedItem?.ToString());
+        }
+
+        private void btnAddStudent_Click(object sender, EventArgs e)
+        {
+            f_AddStudent addForm = new f_AddStudent();
+            addForm.FormClosed += (s, args) => LoadStudents(); // Reload sau khi thêm
+            addForm.ShowDialog();
+        }
+
+        private void btnLogout_Click(object sender, EventArgs e)
+        {
+            Globals.ClearSession();
+            Login loginForm = new Login();
+            loginForm.Show();
+            this.Close();
         }
     }
 }

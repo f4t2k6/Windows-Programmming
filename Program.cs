@@ -1,4 +1,4 @@
-namespace Day01
+namespace ProjectMonHoc
 {
     internal static class Program
     {
@@ -8,10 +8,13 @@ namespace Day01
         [STAThread]
         static void Main()
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new f_ListStudent());
+
+            f_Login loginForm = new f_Login();
+            if (loginForm.ShowDialog() == DialogResult.OK)
+            {
+                Application.Run(new f_ListStudent());
+            }
         }
     }
 }

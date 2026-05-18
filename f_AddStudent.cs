@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Day01
+namespace ProjectMonHoc
 {
     public partial class f_AddStudent : Form
     {
@@ -20,11 +20,17 @@ namespace Day01
         private void label1_Click(object sender, EventArgs e) { }
         private void label2_Click(object sender, EventArgs e) { }
         private void label10_Click(object sender, EventArgs e) { }
-
-        private void f_AddStudent_Load(object sender, EventArgs e) { }
-
         private void textBox2_TextChanged(object sender, EventArgs e) { }
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) { }
+        private void dtpDob_ValueChanged(object sender, EventArgs e) { }
+
+        private void picStudent_Click(object sender, EventArgs e) { }
+
+        private void f_AddStudent_Load(object sender, EventArgs e)
+        {
+            // Hiển thị người đang thao tác trên thanh tiêu đề
+            this.Text = $"Thêm sinh viên — Thao tác bởi {Globals.GlobalUsername}";
+        }
 
         byte[]? studentImage = null;
 
@@ -66,6 +72,21 @@ namespace Day01
                 MessageBox.Show("Thêm thất bại! MSSV có thể đã tồn tại.", "Lỗi");
         }
 
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            txtMSSV.Text = "Nhập MSSV";
+            txtFname.Text = "Nhập họ và tên đệm";
+            txtLname.Text = "Nhập tên";
+            txtPhone.Text = "Nhập số điện thoại";
+            txtAddress.Text = "Nhập địa chỉ";
+            txtHometown.Text = "Nhập quê quán";
+            txtEmail.Text = "Nhập email";
+            cboGender.SelectedIndex = -1;
+            dtpDob.Value = new DateTime(2008, 1, 1);
+            picStudent.Image = null;
+            studentImage = null;
+        }
+
         private void txtMSSV_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
@@ -83,7 +104,5 @@ namespace Day01
             if (!char.IsControl(e.KeyChar) && !char.IsLetter(e.KeyChar) && !char.IsWhiteSpace(e.KeyChar))
                 e.Handled = true;
         }
-
-        private void dtpDob_ValueChanged(object sender, EventArgs e) { }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Day01
+﻿namespace ProjectMonHoc
 {
     partial class Login
     {

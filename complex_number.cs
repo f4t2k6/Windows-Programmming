@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Day01
+namespace ProjectMonHoc
 {
     // =========================================================
     // PHẦN 1: LỚP GIAO DIỆN FORM CỦA BẠN (PHẢI ĐỂ LÊN TRÊN CÙNG)

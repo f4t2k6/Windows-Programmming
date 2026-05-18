@@ -1,4 +1,4 @@
-﻿namespace Day01
+﻿namespace ProjectMonHoc
 {
     partial class f_AddStudent
     {
@@ -43,54 +43,61 @@
             btnClear = new Button();
             ((System.ComponentModel.ISupportInitialize)picStudent).BeginInit();
             SuspendLayout();
-
+            // 
             // txtMSSV
+            // 
             txtMSSV.Location = new Point(88, 192);
             txtMSSV.Name = "txtMSSV";
             txtMSSV.Size = new Size(178, 27);
             txtMSSV.TabIndex = 1;
             txtMSSV.Text = "Nhập MSSV";
             txtMSSV.KeyPress += txtMSSV_KeyPress;
-
+            // 
             // txtFname
+            // 
             txtFname.Location = new Point(88, 239);
             txtFname.Name = "txtFname";
             txtFname.Size = new Size(178, 27);
             txtFname.TabIndex = 3;
             txtFname.Text = "Nhập họ và tên đệm";
             txtFname.KeyPress += txtFname_KeyPress;
-
+            // 
             // txtLname
+            // 
             txtLname.Location = new Point(88, 286);
             txtLname.Name = "txtLname";
             txtLname.Size = new Size(178, 27);
             txtLname.TabIndex = 5;
             txtLname.Text = "Nhập tên";
             txtLname.KeyPress += txtLname_KeyPress;
-
+            // 
             // txtHometown
+            // 
             txtHometown.Location = new Point(461, 239);
             txtHometown.Name = "txtHometown";
             txtHometown.Size = new Size(178, 27);
             txtHometown.TabIndex = 13;
             txtHometown.Text = "Nhập quê quán";
-
+            // 
             // txtAddress
+            // 
             txtAddress.Location = new Point(461, 192);
             txtAddress.Name = "txtAddress";
             txtAddress.Size = new Size(178, 27);
             txtAddress.TabIndex = 11;
             txtAddress.Text = "Nhập địa chỉ";
-
+            // 
             // txtPhone
+            // 
             txtPhone.Location = new Point(461, 144);
             txtPhone.Name = "txtPhone";
             txtPhone.Size = new Size(178, 27);
             txtPhone.TabIndex = 9;
             txtPhone.Text = "Nhập số điện thoại";
             txtPhone.KeyPress += txtMSSV_KeyPress;
-
+            // 
             // picStudent
+            // 
             picStudent.AccessibleName = "picStudent";
             picStudent.BackColor = SystemColors.HighlightText;
             picStudent.BackgroundImageLayout = ImageLayout.Center;
@@ -101,8 +108,10 @@
             picStudent.SizeMode = PictureBoxSizeMode.Zoom;
             picStudent.TabIndex = 18;
             picStudent.TabStop = false;
-
+            picStudent.Click += picStudent_Click;
+            // 
             // dtpDob
+            // 
             dtpDob.CustomFormat = "dd/MM/yyyy";
             dtpDob.Format = DateTimePickerFormat.Custom;
             dtpDob.Location = new Point(461, 48);
@@ -113,15 +122,17 @@
             dtpDob.TabIndex = 20;
             dtpDob.Value = new DateTime(2008, 1, 1, 0, 0, 0, 0);
             dtpDob.ValueChanged += dtpDob_ValueChanged;
-
+            // 
             // txtEmail
+            // 
             txtEmail.Location = new Point(461, 286);
             txtEmail.Name = "txtEmail";
             txtEmail.Size = new Size(178, 27);
             txtEmail.TabIndex = 21;
             txtEmail.Text = "Nhập email";
-
+            // 
             // cboGender
+            // 
             cboGender.FormattingEnabled = true;
             cboGender.Items.AddRange(new object[] { "Nam", "Nữ", "Khác" });
             cboGender.Location = new Point(461, 95);
@@ -129,8 +140,9 @@
             cboGender.Size = new Size(178, 28);
             cboGender.TabIndex = 22;
             cboGender.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
-
+            // 
             // btnChooseImage
+            // 
             btnChooseImage.BackColor = SystemColors.ScrollBar;
             btnChooseImage.Location = new Point(88, 144);
             btnChooseImage.Name = "btnChooseImage";
@@ -139,8 +151,9 @@
             btnChooseImage.Text = "Chọn ảnh từ máy tính";
             btnChooseImage.UseVisualStyleBackColor = false;
             btnChooseImage.Click += btnChooseImage_Click;
-
+            // 
             // btnAdd
+            // 
             btnAdd.BackColor = SystemColors.ScrollBar;
             btnAdd.Location = new Point(427, 346);
             btnAdd.Name = "btnAdd";
@@ -149,8 +162,9 @@
             btnAdd.Text = "Thêm sinh viên";
             btnAdd.UseVisualStyleBackColor = false;
             btnAdd.Click += btnAdd_Click;
-
+            // 
             // btnClear
+            // 
             btnClear.BackColor = SystemColors.ControlLight;
             btnClear.Location = new Point(574, 346);
             btnClear.Name = "btnClear";
@@ -158,8 +172,10 @@
             btnClear.TabIndex = 25;
             btnClear.Text = "Xóa trắng form";
             btnClear.UseVisualStyleBackColor = false;
-
+            btnClear.Click += btnClear_Click;
+            // 
             // f_AddStudent
+            // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaption;
