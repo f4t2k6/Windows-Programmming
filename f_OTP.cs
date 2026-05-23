@@ -13,17 +13,36 @@ namespace ProjectMonHoc
         // Biến cục bộ lưu trữ mã định danh OTP được sinh ra ngẫu nhiên
         private string generatedOTP = "";
 
+        // [NÂNG CAO] Biến lưu trữ thời gian tạo mã OTP để kiểm tra hết hạn
+        private DateTime otpCreationTime;
+
         public f_OTP()
         {
             InitializeComponent();
         }
 
+        // [NÂNG CAO] Hàm che giấu phần tên của email bằng dấu *
+        private string MaskEmail(string email)
+        {
+            if (string.IsNullOrEmpty(email) || !email.Contains("@")) return email;
+
+            string[] parts = email.Split('@');
+            // Nếu tên email quá ngắn (<= 2 ký tự) thì giữ nguyên để tránh lỗi
+            if (parts[0].Length <= 2) return email;
+
+            string namePart = parts[0];
+            // Lấy 2 ký tự đầu, phần còn lại thay bằng chuỗi dấu *
+            string maskedName = namePart.Substring(0, 2) + new string('*', namePart.Length - 2);
+
+            return maskedName + "@" + parts[1];
+        }
+
         private void f_OTP_Load(object sender, EventArgs e)
         {
-            // Định dạng hiển thị chuỗi thông báo email đích cụ thể
+            // Định dạng hiển thị chuỗi thông báo email đích cụ thể (Đã áp dụng che giấu Email)
             if (!string.IsNullOrEmpty(to))
             {
-                lbl_Info.Text = $"Mã xác thực đã được gửi đến email:\n{to}";
+                lbl_Info.Text = $"Mã xác thực đã được gửi đến email:\n{MaskEmail(to)}";
             }
 
             // Tự động sinh mã và gửi email ngay khi form được mở lên
@@ -41,6 +60,9 @@ namespace ProjectMonHoc
                 Random rand = new Random();
                 generatedOTP = rand.Next(100000, 999999).ToString();
 
+                // [NÂNG CAO] Lưu lại thời gian bắt đầu sinh mã OTP
+                otpCreationTime = DateTime.Now;
+
                 // 2. Cấu hình nội dung thư điện tử gửi đi
                 string fromEmail = "huyphat06112006@gmail.com"; // Thay bằng Email Admin của bạn
                 string appPassword = "rqer rsck gmnp aksu\r\n"; // Thay bằng Mật khẩu ứng dụng (App Password)
@@ -50,7 +72,7 @@ namespace ProjectMonHoc
                 mail.To.Add(to);
                 mail.Subject = "[Xác thực OTP] - Đăng ký tài khoản mới";
                 mail.Body = $"Chào bạn,\n\nMã OTP xác thực đăng ký tài khoản của bạn là: {generatedOTP}\n" +
-                            "Mã này có hiệu lực trong vòng vài phút. Vui lòng không chia sẻ mã này cho bất kỳ ai.\n\n" +
+                            "Mã này có hiệu lực trong vòng 5 phút. Vui lòng không chia sẻ mã này cho bất kỳ ai.\n\n" +
                             "Trân trọng,\nBan Quản Trị Hệ Thống.";
 
                 // 3. Cấu hình Client SMTP kết nối Server (Ví dụ cấu hình của Gmail)
@@ -82,6 +104,16 @@ namespace ProjectMonHoc
                 return;
             }
 
+            // [NÂNG CAO] Kiểm tra thời gian hết hạn (5 phút = 300 giây)
+            TimeSpan diff = DateTime.Now - otpCreationTime;
+            if (diff.TotalMinutes > 5)
+            {
+                MessageBox.Show("Mã OTP của bạn đã hết hạn (quá 5 phút)!\nVui lòng nhấn 'Gửi lại mã OTP' để nhận mã mới.",
+                                "Hết Hạn Xác Thực", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txb_OTP.Clear();
+                return; // Dừng xử lý
+            }
+
             // Kiểm tra tính chính xác của mã nhập vào so với mã hệ thống sinh ra
             if (inputOTP == generatedOTP)
             {
@@ -106,11 +138,12 @@ namespace ProjectMonHoc
             btn_Resend.Enabled = false;
             Cursor = Cursors.WaitCursor;
 
+            // Gọi lại hàm này sẽ tự động reset mã mới và thời gian (otpCreationTime) mới
             GenerateAndSendOTP();
 
             Cursor = Cursors.Default;
             btn_Resend.Enabled = true;
-            MessageBox.Show("Một mã OTP mới đã được gửi lại vào email của bạn!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Một mã OTP mới đã được gửi lại vào email của bạn! Mã có hiệu lực trong 5 phút.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         // Chặn người dùng nhập chữ vào ô OTP (chỉ chấp nhận ký tự số và phím điều khiển)

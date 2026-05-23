@@ -17,6 +17,7 @@
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(f_Register));
             lbl_Header = new Label();
             lbl_MSGV = new Label();
             txb_MSGV = new TextBox();
@@ -34,14 +35,19 @@
             btn_UploadPic = new Button();
             btn_Register = new Button();
             panel_Line = new Panel();
+            txb_ConfirmPass = new TextBox();
+            lbl_ConfirmPass = new Label();
+            lbl_PassStatus = new Label();
+            ptb_ShowConfirmPass = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)ptb_Picture).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)ptb_ShowConfirmPass).BeginInit();
             SuspendLayout();
             // 
             // lbl_Header
             // 
             lbl_Header.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
             lbl_Header.ForeColor = Color.MediumBlue;
-            lbl_Header.Location = new Point(0, 15);
+            lbl_Header.Location = new Point(12, 15);
             lbl_Header.Name = "lbl_Header";
             lbl_Header.Size = new Size(540, 40);
             lbl_Header.TabIndex = 0;
@@ -62,10 +68,11 @@
             // txb_MSGV
             // 
             txb_MSGV.Font = new Font("Segoe UI", 10F);
-            txb_MSGV.Location = new Point(180, 83);
+            txb_MSGV.Location = new Point(202, 85);
             txb_MSGV.Name = "txb_MSGV";
             txb_MSGV.Size = new Size(160, 30);
             txb_MSGV.TabIndex = 2;
+            txb_MSGV.KeyPress += txb_MSGV_KeyPress;
             // 
             // lbl_Fname
             // 
@@ -81,10 +88,11 @@
             // txb_Fname
             // 
             txb_Fname.Font = new Font("Segoe UI", 10F);
-            txb_Fname.Location = new Point(180, 128);
+            txb_Fname.Location = new Point(202, 130);
             txb_Fname.Name = "txb_Fname";
             txb_Fname.Size = new Size(160, 30);
             txb_Fname.TabIndex = 4;
+            txb_Fname.KeyPress += txb_Fname_KeyPress;
             // 
             // lbl_Lname
             // 
@@ -100,10 +108,12 @@
             // txb_Lname
             // 
             txb_Lname.Font = new Font("Segoe UI", 10F);
-            txb_Lname.Location = new Point(180, 173);
+            txb_Lname.Location = new Point(202, 175);
             txb_Lname.Name = "txb_Lname";
             txb_Lname.Size = new Size(160, 30);
             txb_Lname.TabIndex = 6;
+            txb_Lname.TextChanged += txb_Lname_TextChanged;
+            txb_Lname.KeyPress += txb_Lname_KeyPress;
             // 
             // lbl_User
             // 
@@ -119,7 +129,7 @@
             // txb_User
             // 
             txb_User.Font = new Font("Segoe UI", 10F);
-            txb_User.Location = new Point(180, 218);
+            txb_User.Location = new Point(202, 220);
             txb_User.Name = "txb_User";
             txb_User.Size = new Size(160, 30);
             txb_User.TabIndex = 8;
@@ -138,17 +148,18 @@
             // txb_Pass
             // 
             txb_Pass.Font = new Font("Segoe UI", 10F);
-            txb_Pass.Location = new Point(180, 263);
+            txb_Pass.Location = new Point(202, 265);
             txb_Pass.Name = "txb_Pass";
             txb_Pass.PasswordChar = '●';
             txb_Pass.Size = new Size(160, 30);
             txb_Pass.TabIndex = 10;
+            txb_Pass.TextChanged += txb_Pass_TextChanged;
             // 
             // lbl_Email
             // 
             lbl_Email.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
             lbl_Email.ForeColor = Color.Black;
-            lbl_Email.Location = new Point(40, 310);
+            lbl_Email.Location = new Point(40, 351);
             lbl_Email.Name = "lbl_Email";
             lbl_Email.Size = new Size(130, 25);
             lbl_Email.TabIndex = 11;
@@ -158,7 +169,7 @@
             // txb_Email
             // 
             txb_Email.Font = new Font("Segoe UI", 10F);
-            txb_Email.Location = new Point(180, 308);
+            txb_Email.Location = new Point(202, 346);
             txb_Email.Name = "txb_Email";
             txb_Email.Size = new Size(320, 30);
             txb_Email.TabIndex = 12;
@@ -167,7 +178,7 @@
             // 
             ptb_Picture.BackColor = Color.FromArgb(240, 245, 255);
             ptb_Picture.BorderStyle = BorderStyle.FixedSingle;
-            ptb_Picture.Location = new Point(370, 83);
+            ptb_Picture.Location = new Point(410, 85);
             ptb_Picture.Name = "ptb_Picture";
             ptb_Picture.Size = new Size(130, 140);
             ptb_Picture.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -182,7 +193,7 @@
             btn_UploadPic.FlatStyle = FlatStyle.Flat;
             btn_UploadPic.Font = new Font("Segoe UI", 8.5F);
             btn_UploadPic.ForeColor = Color.MediumBlue;
-            btn_UploadPic.Location = new Point(370, 233);
+            btn_UploadPic.Location = new Point(410, 231);
             btn_UploadPic.Name = "btn_UploadPic";
             btn_UploadPic.Size = new Size(130, 30);
             btn_UploadPic.TabIndex = 14;
@@ -198,7 +209,7 @@
             btn_Register.FlatStyle = FlatStyle.Flat;
             btn_Register.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             btn_Register.ForeColor = Color.White;
-            btn_Register.Location = new Point(40, 365);
+            btn_Register.Location = new Point(57, 407);
             btn_Register.Name = "btn_Register";
             btn_Register.Size = new Size(460, 45);
             btn_Register.TabIndex = 15;
@@ -209,17 +220,65 @@
             // panel_Line
             // 
             panel_Line.BackColor = Color.LightGray;
-            panel_Line.Location = new Point(40, 65);
+            panel_Line.Location = new Point(62, 58);
             panel_Line.Name = "panel_Line";
             panel_Line.Size = new Size(460, 2);
             panel_Line.TabIndex = 16;
+            // 
+            // txb_ConfirmPass
+            // 
+            txb_ConfirmPass.Font = new Font("Segoe UI", 10F);
+            txb_ConfirmPass.ForeColor = SystemColors.WindowText;
+            txb_ConfirmPass.Location = new Point(202, 307);
+            txb_ConfirmPass.Name = "txb_ConfirmPass";
+            txb_ConfirmPass.PasswordChar = '●';
+            txb_ConfirmPass.Size = new Size(160, 30);
+            txb_ConfirmPass.TabIndex = 17;
+            txb_ConfirmPass.TextChanged += txb_ConfirmPass_TextChanged;
+            // 
+            // lbl_ConfirmPass
+            // 
+            lbl_ConfirmPass.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
+            lbl_ConfirmPass.ForeColor = Color.Black;
+            lbl_ConfirmPass.Location = new Point(40, 312);
+            lbl_ConfirmPass.Name = "lbl_ConfirmPass";
+            lbl_ConfirmPass.Size = new Size(156, 25);
+            lbl_ConfirmPass.TabIndex = 18;
+            lbl_ConfirmPass.Text = "Nhập lại mật khẩu:";
+            lbl_ConfirmPass.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // lbl_PassStatus
+            // 
+            lbl_PassStatus.AutoSize = true;
+            lbl_PassStatus.Font = new Font("Segoe UI", 10F);
+            lbl_PassStatus.Location = new Point(398, 312);
+            lbl_PassStatus.Name = "lbl_PassStatus";
+            lbl_PassStatus.Size = new Size(0, 23);
+            lbl_PassStatus.TabIndex = 19;
+            // 
+            // ptb_ShowConfirmPass
+            // 
+            ptb_ShowConfirmPass.BorderStyle = BorderStyle.FixedSingle;
+            ptb_ShowConfirmPass.Cursor = Cursors.Hand;
+            ptb_ShowConfirmPass.Image = (Image)resources.GetObject("ptb_ShowConfirmPass.Image");
+            ptb_ShowConfirmPass.Location = new Point(386, 307);
+            ptb_ShowConfirmPass.Name = "ptb_ShowConfirmPass";
+            ptb_ShowConfirmPass.Size = new Size(30, 30);
+            ptb_ShowConfirmPass.SizeMode = PictureBoxSizeMode.Zoom;
+            ptb_ShowConfirmPass.TabIndex = 20;
+            ptb_ShowConfirmPass.TabStop = false;
+            ptb_ShowConfirmPass.Click += ptb_ShowConfirmPass_Click;
             // 
             // f_Register
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(540, 445);
+            ClientSize = new Size(606, 483);
+            Controls.Add(ptb_ShowConfirmPass);
+            Controls.Add(lbl_PassStatus);
+            Controls.Add(lbl_ConfirmPass);
+            Controls.Add(txb_ConfirmPass);
             Controls.Add(panel_Line);
             Controls.Add(btn_Register);
             Controls.Add(btn_UploadPic);
@@ -244,6 +303,7 @@
             Text = "Đăng Ký Tài Khoản";
             Load += f_Register_Load;
             ((System.ComponentModel.ISupportInitialize)ptb_Picture).EndInit();
+            ((System.ComponentModel.ISupportInitialize)ptb_ShowConfirmPass).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -267,8 +327,9 @@
         private Button btn_UploadPic;
         private Button btn_Register;
         private Panel panel_Line;
-        private Label lbl_ConfirmPass;
         private TextBox txb_ConfirmPass;
-        private Label lbl_PassStatus; // Thêm label nhỏ này để hiển thị thông báo realtime (Mật khẩu trùng/không trùng)
+        private Label lbl_ConfirmPass;
+        private Label lbl_PassStatus;
+        private PictureBox ptb_ShowConfirmPass;
     }
 }

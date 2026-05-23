@@ -113,11 +113,42 @@ namespace ProjectMonHoc
                         }
                         Properties.Settings.Default.Save(); // Lưu lại thay đổi vào file cấu hình
 
-                        this.DialogResult = DialogResult.OK;
+                        // =========================================================
+                        // BƯỚC 4: LOGIC ĐIỀU HƯỚNG THEO ROLE (THAY THẾ DialogResult.OK)
+                        // =========================================================
+                        this.Hide(); // Ẩn form đăng nhập
+
+                        if (roleStr == "Student")
+                        {
+                            MessageBox.Show("Đăng nhập thành công với quyền Sinh viên!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            f_MainStudent formStudent = new f_MainStudent();
+                            formStudent.ShowDialog();
+                        }
+                        else if (roleStr == "HR")
+                        {
+                            // Kiểm tra tài khoản Admin mặc định (mật khẩu gốc nhập vào là 12345)
+                            if (username == "Admin" && txb_Pass.Text == "12345")
+                            {
+                                MessageBox.Show("Chào mừng Quản trị viên (Admin) hệ thống!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                f_MainAdmin formAdmin = new f_MainAdmin();
+                                formAdmin.ShowDialog();
+                            }
+                            else
+                            {
+                                // Tài khoản HR thường (Để trống chờ làm Form riêng)
+                                MessageBox.Show("Chào mừng HR!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                f_MainHR formHR = new f_MainHR();
+                                formHR.ShowDialog();
+                            }
+                        }
+
+                        // Sau khi đóng Form chính (hoặc Form HR/Student), hiển thị lại Form Login 
+                        // để người dùng có thể đăng nhập tài khoản khác (Tương đương tính năng Đăng xuất)
+                        // Nếu muốn thoát hẳn app khi đóng form chính, đổi this.Show() thành Application.Exit()
+                        this.Show();
                     }
                     else
                     {
-                        // Đăng nhập SAI -> Tăng biến đếm lỗi trong DB
                         string updateQuery = "UPDATE login SET LoginAttempts = LoginAttempts + 1 WHERE Id = @Id";
                         SqlCommand updateCmd = new SqlCommand(updateQuery, my_db.conn);
                         updateCmd.Parameters.AddWithValue("@Id", userId);
@@ -215,6 +246,24 @@ namespace ProjectMonHoc
 
             // Sau khi người dùng đóng form Đăng ký, hiển thị lại Form đăng nhập ban đầu
             this.Show();
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void llbl_ForgetPass_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            // Lấy Role hiện tại dựa trên RadioButton
+            int currentRole = rdb_HR.Checked ? 2 : 1;
+
+            // Khởi tạo f_ForgotPass và truyền Role vào
+            f_ForgetPass frmForgot = new f_ForgetPass(currentRole);
+
+            this.Hide();
+            frmForgot.ShowDialog();
+            this.Show(); // Hiện lại Login sau khi quá trình kết thúc
         }
     }
 }

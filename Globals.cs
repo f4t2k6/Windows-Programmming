@@ -3,7 +3,7 @@
     internal class Globals
     {
         public static int GlobalUserId { get; private set; }
-        public static string GlobalUsername { get; private set; } = "";
+        public static string GlobalUsername { get; set; } = "";
         public static string GlobalRole { get; private set; } = "";
         public static string GlobalEmail { get; private set; } = "";
 
