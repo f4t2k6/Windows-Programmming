@@ -19,6 +19,7 @@ CREATE TABLE [dbo].[register_HR] (
     [Lname]    NVARCHAR (50)  NOT NULL, -- Tên (Hỗ trợ tiếng Việt có dấu)
     [Email]    VARCHAR (100)  NOT NULL, -- Địa chỉ Email (Dùng để nhận mã OTP)
     [Picture]  IMAGE          NULL,     -- Ảnh đại diện cá nhân
+    [Status]   BIT            NOT NULL  DEFAULT (0), -- Trạng thái phê duyệt: 0 = Chờ duyệt, 1 = Đã duyệt
 
     -- Thiết lập Id làm Khóa chính (Primary Key) để đảm bảo tính toàn vẹn dữ liệu
     CONSTRAINT [PK_register_HR] PRIMARY KEY CLUSTERED ([Id] ASC)

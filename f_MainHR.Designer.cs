@@ -29,9 +29,10 @@
         private void InitializeComponent()
         {
             pnl_MainHR = new Panel();
+            btn_ListStudent = new Button();
             btn_Logout_MainHR = new Button();
             btn_AddStudent = new Button();
-            btn_FixStudentScore = new Button();
+            btn_StudentScore = new Button();
             pic_Logo_HCMUTE_MHR = new PictureBox();
             pnl_content_MainHR = new Panel();
             pnl_MainHR.SuspendLayout();
@@ -41,14 +42,28 @@
             // pnl_MainHR
             // 
             pnl_MainHR.BackColor = Color.RoyalBlue;
+            pnl_MainHR.Controls.Add(btn_ListStudent);
             pnl_MainHR.Controls.Add(btn_Logout_MainHR);
             pnl_MainHR.Controls.Add(btn_AddStudent);
-            pnl_MainHR.Controls.Add(btn_FixStudentScore);
+            pnl_MainHR.Controls.Add(btn_StudentScore);
             pnl_MainHR.Controls.Add(pic_Logo_HCMUTE_MHR);
             pnl_MainHR.Location = new Point(0, 0);
             pnl_MainHR.Name = "pnl_MainHR";
             pnl_MainHR.Size = new Size(182, 627);
             pnl_MainHR.TabIndex = 1;
+            // 
+            // btn_ListStudent
+            // 
+            btn_ListStudent.BackColor = Color.RoyalBlue;
+            btn_ListStudent.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btn_ListStudent.ForeColor = SystemColors.Menu;
+            btn_ListStudent.Location = new Point(0, 268);
+            btn_ListStudent.Name = "btn_ListStudent";
+            btn_ListStudent.Size = new Size(182, 56);
+            btn_ListStudent.TabIndex = 4;
+            btn_ListStudent.Text = "Danh sách sinh viên";
+            btn_ListStudent.UseVisualStyleBackColor = false;
+            btn_ListStudent.Click += btn_ListStudent_Click;
             // 
             // btn_Logout_MainHR
             // 
@@ -76,17 +91,18 @@
             btn_AddStudent.UseVisualStyleBackColor = false;
             btn_AddStudent.Click += btn_AddStudent_Click;
             // 
-            // btn_FixStudentScore
+            // btn_StudentScore
             // 
-            btn_FixStudentScore.BackColor = Color.RoyalBlue;
-            btn_FixStudentScore.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btn_FixStudentScore.ForeColor = SystemColors.Window;
-            btn_FixStudentScore.Location = new Point(0, 216);
-            btn_FixStudentScore.Name = "btn_FixStudentScore";
-            btn_FixStudentScore.Size = new Size(182, 46);
-            btn_FixStudentScore.TabIndex = 2;
-            btn_FixStudentScore.Text = "Điểm sinh viên  ";
-            btn_FixStudentScore.UseVisualStyleBackColor = false;
+            btn_StudentScore.BackColor = Color.RoyalBlue;
+            btn_StudentScore.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btn_StudentScore.ForeColor = SystemColors.Window;
+            btn_StudentScore.Location = new Point(0, 216);
+            btn_StudentScore.Name = "btn_StudentScore";
+            btn_StudentScore.Size = new Size(182, 46);
+            btn_StudentScore.TabIndex = 2;
+            btn_StudentScore.Text = "Điểm sinh viên  ";
+            btn_StudentScore.UseVisualStyleBackColor = false;
+            btn_StudentScore.Click += btn_StudentScore_Click;
             // 
             // pic_Logo_HCMUTE_MHR
             // 
@@ -124,9 +140,10 @@
 
         private Panel pnl_MainHR;
         private Button btn_AddStudent;
-        private Button btn_FixStudentScore;
+        private Button btn_StudentScore;
         private PictureBox pic_Logo_HCMUTE_MHR;
         private Button btn_Logout_MainHR;
         private Panel pnl_content_MainHR;
+        private Button btn_ListStudent;
     }
 }

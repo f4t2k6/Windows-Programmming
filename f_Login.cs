@@ -171,7 +171,25 @@ namespace ProjectMonHoc
                 }
                 else
                 {
-                    // Trường hợp không tìm thấy Username và Role khớp nhau
+                    // Trường hợp không tìm thấy trong bảng login
+                    // Kiểm tra thêm: nếu là HR thì có thể tài khoản đang chờ duyệt trong register_HR
+                    if (roleStr == "HR")
+                    {
+                        string pendingQuery = "SELECT COUNT(*) FROM register_HR WHERE Username = @User";
+                        SqlCommand pendingCmd = new SqlCommand(pendingQuery, my_db.conn);
+                        pendingCmd.Parameters.Add("@User", SqlDbType.VarChar).Value = username;
+                        int pendingCount = (int)pendingCmd.ExecuteScalar();
+
+                        if (pendingCount > 0)
+                        {
+                            // Tài khoản HR tồn tại nhưng chưa được Admin phê duyệt
+                            MessageBox.Show("Tài khoản của bạn chưa được duyệt!\nVui lòng chờ Admin xét duyệt trước khi đăng nhập.",
+                                "Tài Khoản Chờ Duyệt", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+                    }
+
+                    // Không tìm thấy ở bất kỳ đâu -> sai thông tin
                     errorProvider1.SetError(txb_Pass, "Sai tên đăng nhập hoặc mật khẩu!");
                     MessageBox.Show("Sai tên đăng nhập hoặc mật khẩu!", "Thông Báo",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -264,6 +282,11 @@ namespace ProjectMonHoc
             this.Hide();
             frmForgot.ShowDialog();
             this.Show(); // Hiện lại Login sau khi quá trình kết thúc
+        }
+
+        private void rdb_HR_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

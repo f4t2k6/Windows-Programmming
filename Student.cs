@@ -58,7 +58,7 @@ public class Student
         try
         {
             db.openConnection();
-            string query = "SELECT MSSV, Fname, Lname, Dob, Gder, Phone, Address, Htown, Email, Picture FROM Student WHERE 1=1";
+            string query = "SELECT MSSV, Fname, Lname, Dob, Gder, Phone, Address, Htown, Email, Pture FROM Student WHERE 1=1";
 
             if (!string.IsNullOrEmpty(search))
                 query += " AND (CAST(MSSV AS NVARCHAR) LIKE @search OR Fname LIKE @search OR Lname LIKE @search)";
@@ -93,7 +93,7 @@ public class Student
             // Cập nhật tất cả các thông tin dựa trên khóa chính MSSV
             string query = "UPDATE Student SET Fname = @fname, Lname = @lname, Dob = @dob, " +
                            "Gder = @gder, Phone = @phone, Address = @addr, Htown = @htown, " +
-                           "Email = @email, Picture = @pic WHERE MSSV = @mssv";
+                           "Email = @email, Pture = @pic WHERE MSSV = @mssv";
 
             SqlCommand cmd = new SqlCommand(query, db.conn);
             cmd.Parameters.AddWithValue("@mssv", MSSV);

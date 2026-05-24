@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace ProjectMonHoc
+﻿namespace ProjectMonHoc
 {
     public partial class f_MainHR : Form
     {
@@ -64,6 +54,18 @@ namespace ProjectMonHoc
 
             // 4. Giải phóng hoàn toàn form cũ sau khi form login đóng
             this.Close();
+        }
+
+        private void btn_ListStudent_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new f_ListStudent(), pnl_content_MainHR);
+        }
+
+        private void btn_StudentScore_Click(object sender, EventArgs e)
+        {
+            string studentName = Globals.GlobalUsername;
+            int studentMSSV = Globals.GlobalUserId;
+            OpenChildForm(new f_ListScore(studentMSSV, studentName), pnl_content_MainHR);
         }
     }
 }

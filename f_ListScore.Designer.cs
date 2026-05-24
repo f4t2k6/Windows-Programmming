@@ -1,15 +1,12 @@
-﻿namespace ProjectMonHoc
+namespace ProjectMonHoc
 {
-    partial class f_ListStudent
+    partial class f_ListScore
     {
         private System.ComponentModel.IContainer components = null;
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
+            if (disposing && (components != null)) components.Dispose();
             base.Dispose(disposing);
         }
 
@@ -17,30 +14,30 @@
 
         private void InitializeComponent()
         {
-            dgvStudents = new DataGridView();
+            dgvScores = new DataGridView();
             txtSearch = new TextBox();
             cboSort = new ComboBox();
             lblSort = new Label();
             lblTotal = new Label();
             lblCurrentUser = new Label();
-            btnAddStudent = new Button();
+            lblStudentInfo = new Label();
+            lblSelectStudent = new Label();
+            cboSelectStudent = new ComboBox();
             btnRefresh = new Button();
-            cboGenderFilter = new ComboBox();
-            lblGenderFilter = new Label();
             lb_Notification = new Label();
-            ((System.ComponentModel.ISupportInitialize)dgvStudents).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvScores).BeginInit();
             SuspendLayout();
             // 
-            // dgvStudents
+            // dgvScores
             // 
-            dgvStudents.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvStudents.Location = new Point(31, 211);
-            dgvStudents.Margin = new Padding(3, 4, 3, 4);
-            dgvStudents.Name = "dgvStudents";
-            dgvStudents.RowHeadersWidth = 51;
-            dgvStudents.Size = new Size(1027, 288);
-            dgvStudents.TabIndex = 0;
-            dgvStudents.CellContentClick += dgvStudents_CellContentClick;
+            dgvScores.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvScores.Location = new Point(31, 211);
+            dgvScores.Margin = new Padding(3, 4, 3, 4);
+            dgvScores.Name = "dgvScores";
+            dgvScores.RowHeadersWidth = 51;
+            dgvScores.Size = new Size(1027, 288);
+            dgvScores.TabIndex = 0;
+            dgvScores.CellContentClick += dgvScores_CellContentClick;
             // 
             // txtSearch
             // 
@@ -59,10 +56,10 @@
             // 
             cboSort.DropDownStyle = ComboBoxStyle.DropDownList;
             cboSort.Font = new Font("Segoe UI", 11F);
-            cboSort.Location = new Point(380, 142);
+            cboSort.Location = new Point(178, 166);
             cboSort.Margin = new Padding(3, 4, 3, 4);
             cboSort.Name = "cboSort";
-            cboSort.Size = new Size(205, 33);
+            cboSort.Size = new Size(250, 33);
             cboSort.TabIndex = 2;
             cboSort.SelectedIndexChanged += cboSort_SelectedIndexChanged;
             // 
@@ -70,11 +67,12 @@
             // 
             lblSort.AutoSize = true;
             lblSort.Font = new Font("Segoe UI", 11F);
-            lblSort.Location = new Point(292, 145);
+            lblSort.Location = new Point(31, 166);
             lblSort.Name = "lblSort";
             lblSort.Size = new Size(82, 25);
-            lblSort.TabIndex = 2;
+            lblSort.TabIndex = 3;
             lblSort.Text = "Sắp xếp:";
+            lblSort.Click += lblSort_Click;
             // 
             // lblTotal
             // 
@@ -82,9 +80,9 @@
             lblTotal.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             lblTotal.Location = new Point(31, 520);
             lblTotal.Name = "lblTotal";
-            lblTotal.Size = new Size(188, 25);
-            lblTotal.TabIndex = 5;
-            lblTotal.Text = "Tổng số sinh viên: 0";
+            lblTotal.Size = new Size(151, 25);
+            lblTotal.TabIndex = 4;
+            lblTotal.Text = "Tổng số môn: 0";
             lblTotal.Click += lblTotal_Click;
             // 
             // lblCurrentUser
@@ -95,22 +93,43 @@
             lblCurrentUser.Location = new Point(31, 24);
             lblCurrentUser.Name = "lblCurrentUser";
             lblCurrentUser.Size = new Size(155, 23);
-            lblCurrentUser.TabIndex = 0;
+            lblCurrentUser.TabIndex = 5;
             lblCurrentUser.Text = "Đang đăng nhập: ...";
             // 
-            // btnAddStudent
+            // lblStudentInfo
             // 
-            btnAddStudent.BackColor = Color.ForestGreen;
-            btnAddStudent.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            btnAddStudent.ForeColor = Color.White;
-            btnAddStudent.Location = new Point(734, 73);
-            btnAddStudent.Margin = new Padding(3, 4, 3, 4);
-            btnAddStudent.Name = "btnAddStudent";
-            btnAddStudent.Size = new Size(157, 47);
-            btnAddStudent.TabIndex = 3;
-            btnAddStudent.Text = "+ Thêm sinh viên";
-            btnAddStudent.UseVisualStyleBackColor = false;
-            btnAddStudent.Click += btnAddStudent_Click;
+            lblStudentInfo.AutoSize = true;
+            lblStudentInfo.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
+            lblStudentInfo.ForeColor = Color.DarkSlateBlue;
+            lblStudentInfo.Location = new Point(468, 169);
+            lblStudentInfo.Name = "lblStudentInfo";
+            lblStudentInfo.Size = new Size(196, 30);
+            lblStudentInfo.TabIndex = 6;
+            lblStudentInfo.Text = "Bảng điểm của: ...";
+            lblStudentInfo.Visible = false;
+            lblStudentInfo.Click += lblStudentInfo_Click;
+            // 
+            // lblSelectStudent
+            // 
+            lblSelectStudent.AutoSize = true;
+            lblSelectStudent.Font = new Font("Segoe UI", 11F);
+            lblSelectStudent.Location = new Point(31, 126);
+            lblSelectStudent.Name = "lblSelectStudent";
+            lblSelectStudent.Size = new Size(141, 25);
+            lblSelectStudent.TabIndex = 7;
+            lblSelectStudent.Text = "Chọn sinh viên:";
+            lblSelectStudent.Visible = false;
+            // 
+            // cboSelectStudent
+            // 
+            cboSelectStudent.DropDownStyle = ComboBoxStyle.DropDownList;
+            cboSelectStudent.Font = new Font("Segoe UI", 11F);
+            cboSelectStudent.Location = new Point(178, 118);
+            cboSelectStudent.Name = "cboSelectStudent";
+            cboSelectStudent.Size = new Size(250, 33);
+            cboSelectStudent.TabIndex = 8;
+            cboSelectStudent.Visible = false;
+            cboSelectStudent.SelectedIndexChanged += cboSelectStudent_SelectedIndexChanged;
             // 
             // btnRefresh
             // 
@@ -120,80 +139,60 @@
             btnRefresh.Location = new Point(909, 73);
             btnRefresh.Name = "btnRefresh";
             btnRefresh.Size = new Size(149, 47);
-            btnRefresh.TabIndex = 6;
+            btnRefresh.TabIndex = 9;
             btnRefresh.Text = "Làm mới ↻";
             btnRefresh.UseVisualStyleBackColor = false;
             btnRefresh.Click += btnRefresh_Click;
-            // 
-            // cboGenderFilter
-            // 
-            cboGenderFilter.DropDownStyle = ComboBoxStyle.DropDownList;
-            cboGenderFilter.Font = new Font("Segoe UI", 11F);
-            cboGenderFilter.Location = new Point(125, 142);
-            cboGenderFilter.Name = "cboGenderFilter";
-            cboGenderFilter.Size = new Size(150, 33);
-            cboGenderFilter.TabIndex = 8;
-            cboGenderFilter.SelectedIndexChanged += cboGenderFilter_SelectedIndexChanged;
-            // 
-            // lblGenderFilter
-            // 
-            lblGenderFilter.AutoSize = true;
-            lblGenderFilter.Font = new Font("Segoe UI", 11F);
-            lblGenderFilter.Location = new Point(31, 145);
-            lblGenderFilter.Name = "lblGenderFilter";
-            lblGenderFilter.Size = new Size(88, 25);
-            lblGenderFilter.TabIndex = 7;
-            lblGenderFilter.Text = "Giới tính:";
             // 
             // lb_Notification
             // 
             lb_Notification.AutoSize = true;
             lb_Notification.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
-            lb_Notification.Location = new Point(682, 520);
+            lb_Notification.Location = new Point(580, 520);
             lb_Notification.Name = "lb_Notification";
-            lb_Notification.Size = new Size(376, 25);
-            lb_Notification.TabIndex = 9;
-            lb_Notification.Text = "Nhấn đúp để thay đổi thông tin sinh viên";
+            lb_Notification.Size = new Size(337, 25);
+            lb_Notification.TabIndex = 10;
+            lb_Notification.Text = "Nhấn đúp để thay đổi điểm môn học";
             lb_Notification.Click += lb_Notification_Click;
             // 
-            // f_ListStudent
+            // f_ListScore
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaption;
             ClientSize = new Size(1097, 573);
             Controls.Add(lb_Notification);
+            Controls.Add(lblStudentInfo);
+            Controls.Add(lblSelectStudent);
+            Controls.Add(cboSelectStudent);
             Controls.Add(lblCurrentUser);
             Controls.Add(txtSearch);
             Controls.Add(lblSort);
             Controls.Add(cboSort);
-            Controls.Add(btnAddStudent);
-            Controls.Add(dgvStudents);
+            Controls.Add(dgvScores);
             Controls.Add(lblTotal);
             Controls.Add(btnRefresh);
-            Controls.Add(lblGenderFilter);
-            Controls.Add(cboGenderFilter);
             Margin = new Padding(3, 4, 3, 4);
-            Name = "f_ListStudent";
-            Text = "Danh sách sinh viên";
-            Load += f_ListStudent_Load;
-            ((System.ComponentModel.ISupportInitialize)dgvStudents).EndInit();
+            Name = "f_ListScore";
+            Text = "Bảng điểm môn học";
+            Load += f_ListScore_Load;
+            ((System.ComponentModel.ISupportInitialize)dgvScores).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private DataGridView dgvStudents;
-        private TextBox txtSearch;
-        private ComboBox cboSort;
-        private Label lblSort;
-        private Label lblTotal;
-        private Label lblCurrentUser;
-        private Button btnAddStudent;
-        private System.Windows.Forms.ComboBox cboGenderFilter;
-        private System.Windows.Forms.Label lblGenderFilter;
+        private System.Windows.Forms.DataGridView dgvScores;
+        private System.Windows.Forms.TextBox txtSearch;
+        private System.Windows.Forms.ComboBox cboSort;
+        private System.Windows.Forms.Label lblSort;
+        private System.Windows.Forms.Label lblTotal;
+        private System.Windows.Forms.Label lblCurrentUser;
+        private System.Windows.Forms.Label lblStudentInfo;
+        private System.Windows.Forms.Label lblSelectStudent;
+        private System.Windows.Forms.ComboBox cboSelectStudent;
         private System.Windows.Forms.Button btnRefresh;
-        private Label lb_Notification;
+        private System.Windows.Forms.Label lb_Notification;
     }
 }

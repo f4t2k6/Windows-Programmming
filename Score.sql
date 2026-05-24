@@ -1,4 +1,6 @@
-﻿-- 1. Tạo bảng Score (Bảng Điểm)
+﻿USE [myDB]
+
+-- 1. Tạo bảng Score (Bảng Điểm)
 CREATE TABLE Score (
     student_id INT NOT NULL,            -- Mã số sinh viên (Khóa ngoại)
     course_id NVARCHAR(50) NOT NULL,    -- Mã môn học

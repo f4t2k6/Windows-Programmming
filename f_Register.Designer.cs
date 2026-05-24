@@ -92,6 +92,7 @@
             txb_Fname.Name = "txb_Fname";
             txb_Fname.Size = new Size(160, 30);
             txb_Fname.TabIndex = 4;
+            txb_Fname.TextChanged += txb_Fname_TextChanged;
             txb_Fname.KeyPress += txb_Fname_KeyPress;
             // 
             // lbl_Lname

@@ -85,6 +85,7 @@ namespace ProjectMonHoc
             }
             else { this.Show(); }
         }
+
         // =========================================================
         // LỆNH LƯU TÀI KHOẢN VÀO CƠ SỞ DỮ LIỆU
         // =========================================================
@@ -102,13 +103,14 @@ namespace ProjectMonHoc
                 if (position == 2)
                 {
                     // TUYỆT ĐỐI KHÔNG insert vào bảng login. Chỉ lưu hồ sơ + pass vào bảng phòng chờ register_HR
-                    string queryHR = "INSERT INTO register_HR (Id, Username, Password, Fname, Lname, Email, Picture) " +
-                                     "VALUES (@id, @user, @pass, @fname, @lname, @email, @pic)";
+                    // Status = 0 (False) nghĩa là tài khoản CHƯA được Admin phê duyệt
+                    string queryHR = "INSERT INTO register_HR (Id, Username, Password, Fname, Lname, Email, Picture, Status) " +
+                                     "VALUES (@id, @user, @pass, @fname, @lname, @email, @pic, 0)";
 
                     SqlCommand cmdHR = new SqlCommand(queryHR, my_db.conn);
                     cmdHR.Parameters.Add("@id", SqlDbType.Int).Value = Convert.ToInt32(txb_MSGV.Text.Trim());
                     cmdHR.Parameters.Add("@user", SqlDbType.VarChar).Value = txb_User.Text.Trim();
-                    cmdHR.Parameters.Add("@pass", SqlDbType.VarChar).Value = ComputeSHA256(txb_Pass.Text); // Lưu pass tạm ở đây
+                    cmdHR.Parameters.Add("@pass", SqlDbType.VarChar).Value = ComputeSHA256(txb_Pass.Text);
                     cmdHR.Parameters.Add("@fname", SqlDbType.NVarChar).Value = txb_Fname.Text.Trim();
                     cmdHR.Parameters.Add("@lname", SqlDbType.NVarChar).Value = txb_Lname.Text.Trim();
                     cmdHR.Parameters.Add("@email", SqlDbType.VarChar).Value = txb_Email.Text.Trim();
@@ -161,6 +163,7 @@ namespace ProjectMonHoc
                 my_db.closeConnection();
             }
         }
+
         // =========================================================
         // LOGIC KIỂM TRA ĐIỀU KIỆN ĐĂNG KÝ
         // =========================================================
@@ -184,7 +187,7 @@ namespace ProjectMonHoc
             {
                 my_db.openConnection();
                 int count = (int)cmd.ExecuteScalar();
-                return count == 0; // Trả về true nếu count = 0 (Tài khoản chưa từng tồn tại -> Hợp lệ)
+                return count == 0; // Trả về true nếu chưa tồn tại (được phép đăng ký)
             }
             catch { return false; }
             finally { my_db.closeConnection(); }
@@ -196,7 +199,7 @@ namespace ProjectMonHoc
             MY_DB my_db = new MY_DB();
 
             string query = "SELECT COUNT(*) FROM (" +
-                           "SELECT Email FROM login WHERE Email = @email " +
+                           "SELECT email FROM login WHERE email = @email " +
                            "UNION ALL " +
                            "SELECT Email FROM register_HR WHERE Email = @email" +
                            ") as EmailTable";
@@ -208,26 +211,24 @@ namespace ProjectMonHoc
             {
                 my_db.openConnection();
                 int count = (int)cmd.ExecuteScalar();
-                return count == 0; // Trả về true nếu chưa có ai đăng ký email này
+                return count == 0; // Trả về true nếu email chưa tồn tại
             }
             catch { return false; }
-            finally { my_db.conn.Close(); }
+            finally { my_db.closeConnection(); }
         }
 
-        // Hàm kiểm tra định dạng và dữ liệu hợp lệ toàn diện (Validation)
         private bool verif()
         {
-
-            // 1. Kiểm tra rỗng (Đã bổ sung txb_ConfirmPass)
-            if (string.IsNullOrWhiteSpace(txb_MSGV.Text) ||
-                string.IsNullOrWhiteSpace(txb_Fname.Text) ||
-                string.IsNullOrWhiteSpace(txb_Lname.Text) ||
-                string.IsNullOrWhiteSpace(txb_User.Text) ||
+            // 1. Kiểm tra các trường bắt buộc không được để trống
+            if (string.IsNullOrWhiteSpace(txb_User.Text) ||
                 string.IsNullOrWhiteSpace(txb_Pass.Text) ||
                 string.IsNullOrWhiteSpace(txb_ConfirmPass.Text) ||
-                string.IsNullOrWhiteSpace(txb_Email.Text))
+                string.IsNullOrWhiteSpace(txb_Email.Text) ||
+                string.IsNullOrWhiteSpace(txb_MSGV.Text) ||
+                string.IsNullOrWhiteSpace(txb_Fname.Text) ||
+                string.IsNullOrWhiteSpace(txb_Lname.Text))
             {
-                MessageBox.Show("Vui lòng điền đầy đủ các thông tin bắt buộc (Bao gồm cả Xác nhận mật khẩu)!", "Dữ liệu thiếu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng điền đầy đủ thông tin!", "Thiếu thông tin", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
 
@@ -305,22 +306,17 @@ namespace ProjectMonHoc
             }
         }
 
-        private void ptb_Picture_Click(object sender, EventArgs e)
-        {
-
-        }
+        private void ptb_Picture_Click(object sender, EventArgs e) { }
 
         // Sự kiện TextChanged cho ô Confirm Password (Xác nhận realtime)
         private void txb_ConfirmPass_TextChanged(object sender, EventArgs e)
         {
-            // Nếu ô xác nhận đang trống thì ẩn thông báo đi
             if (string.IsNullOrEmpty(txb_ConfirmPass.Text))
             {
                 lbl_PassStatus.Text = "";
                 return;
             }
 
-            // So sánh khớp hay không
             if (txb_ConfirmPass.Text == txb_Pass.Text)
             {
                 lbl_PassStatus.Text = "Mật khẩu khớp!";
@@ -333,38 +329,16 @@ namespace ProjectMonHoc
             }
         }
 
-        private void txb_Pass_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
+        private void txb_Fname_TextChanged(object sender, EventArgs e) { }
+        private void txb_Pass_TextChanged(object sender, EventArgs e) { }
+        private void textBox1_TextChanged(object sender, EventArgs e) { }
 
         private void ptb_ShowConfirmPass_Click(object sender, EventArgs e)
         {
-            // Kiểm tra xem mật khẩu đang bị che hay đang hiện
-            // Lưu ý: Chữ '●' là ký tự che mật khẩu bạn đang dùng trong code, 
-            // nếu bạn dùng dấu '*' thì sửa lại thành '*' nhé.
-
             if (txb_ConfirmPass.PasswordChar == '●')
-            {
-                // 1. Nếu đang bị che -> Chuyển sang HỆN mật khẩu
-                txb_ConfirmPass.PasswordChar = '\0'; // '\0' là ký tự rỗng, giúp TextBox hiện chữ bình thường
-
-                // (Tùy chọn) Đổi ảnh con mắt thành con mắt bị gạch chéo 
-                // ptb_ShowConfirmPass.Image = Image.FromFile("đường_dẫn_tới_ảnh_mắt_nhắm.png");
-            }
+                txb_ConfirmPass.PasswordChar = '\0';
             else
-            {
-                // 2. Nếu đang hiện -> Chuyển sang CHE mật khẩu
                 txb_ConfirmPass.PasswordChar = '●';
-
-                // (Tùy chọn) Đổi ảnh con mắt lại thành mắt mở
-                // ptb_ShowConfirmPass.Image = Image.FromFile("đường_dẫn_tới_ảnh_mắt_mở.png");
-            }
         }
 
         private void txb_MSGV_KeyPress(object sender, KeyPressEventArgs e)
@@ -379,10 +353,7 @@ namespace ProjectMonHoc
                 e.Handled = true;
         }
 
-        private void txb_Lname_TextChanged(object sender, EventArgs e)
-        {
-
-        }
+        private void txb_Lname_TextChanged(object sender, EventArgs e) { }
 
         private void txb_Lname_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -393,7 +364,6 @@ namespace ProjectMonHoc
         private bool CheckStudentWhitelist(int mssv, string email)
         {
             MY_DB my_db = new MY_DB();
-            // Đối chiếu chính xác xem MSSV này có đi kèm với Email đăng ký này trong danh sách trường không
             string query = "SELECT COUNT(*) FROM Student WHERE MSSV = @id AND Email = @email";
             SqlCommand cmd = new SqlCommand(query, my_db.conn);
             cmd.Parameters.Add("@id", SqlDbType.Int).Value = mssv;
@@ -403,7 +373,7 @@ namespace ProjectMonHoc
             {
                 my_db.openConnection();
                 int count = (int)cmd.ExecuteScalar();
-                return count > 0; // Trả về true nếu sinh viên hợp lệ hợp pháp
+                return count > 0;
             }
             catch { return false; }
             finally { my_db.closeConnection(); }

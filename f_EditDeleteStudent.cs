@@ -47,11 +47,11 @@ namespace ProjectMonHoc
             }
 
             // Xử lý hiển thị ảnh đại diện cũ (nếu có)
-            if (studentRow.Cells["Picture"].Value != DBNull.Value && studentRow.Cells["Picture"].Value != null)
+            if (studentRow.Cells["Pture"].Value != DBNull.Value && studentRow.Cells["Pture"].Value != null)
             {
                 try
                 {
-                    byte[] imgData = (byte[])studentRow.Cells["Picture"].Value; // Đã đổi thành Picture
+                    byte[] imgData = (byte[])studentRow.Cells["Pture"].Value;
                     if (imgData.Length > 0)
                     {
                         using (MemoryStream ms = new MemoryStream(imgData))
@@ -166,6 +166,9 @@ namespace ProjectMonHoc
 
         }
 
+        private void txtPhone_TextChanged(object sender, EventArgs e)
+        {
 
+        }
     }
 }

@@ -165,6 +165,7 @@
             txtPhone.Name = "txtPhone";
             txtPhone.Size = new Size(220, 30);
             txtPhone.TabIndex = 10;
+            txtPhone.TextChanged += txtPhone_TextChanged;
             // 
             // lblAddress
             // 

@@ -57,8 +57,8 @@ namespace ProjectMonHoc
                 dgvStudents.Columns["Gder"].HeaderText = "Giới tính";
 
                 // Đặt tiêu đề tiếng Việt riêng cho cột ảnh đại diện
-                if (dgvStudents.Columns["Picture"] != null)
-                    dgvStudents.Columns["Picture"].HeaderText = "Ảnh đại diện";
+                if (dgvStudents.Columns["Pture"] != null)
+                    dgvStudents.Columns["Pture"].HeaderText = "Ảnh đại diện";
 
                 // Các cột chi tiết có thể ẩn đi trên danh sách tổng quan
                 if (dgvStudents.Columns["Phone"] != null) dgvStudents.Columns["Phone"].Visible = false;
@@ -96,14 +96,6 @@ namespace ProjectMonHoc
             addForm.ShowDialog();
         }
 
-        private void btnLogout_Click(object sender, EventArgs e)
-        {
-            Globals.ClearSession();
-            // Đảm bảo trỏ đúng tên Form đăng nhập của bạn (f_Login)
-            f_Login loginForm = new f_Login();
-            loginForm.Show();
-            this.Close();
-        }
         private void dgvStudents_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             // Đảm bảo người dùng click trúng dòng có dữ liệu hợp lệ (không phải hàng tiêu đề)
@@ -129,6 +121,21 @@ namespace ProjectMonHoc
             // Gọi lại hàm load dữ liệu
             RefreshData(); // Hoặc RefreshData() tùy theo tên hàm hiện tại của bạn
             MessageBox.Show("Danh sách sinh viên đã được cập nhật mới nhất!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void dgvStudents_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void lblTotal_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lb_Notification_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

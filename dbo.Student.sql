@@ -1,4 +1,4 @@
-USE [myDB]
+﻿USE [myDB]
 GO
 
 /****** Object: Table [dbo].[Student] Script Date: 5/11/2026 2:39:03 PM ******/
@@ -21,6 +21,11 @@ CREATE TABLE [dbo].[Student] (
     [Email]   NVARCHAR (100) NULL,
     [Pture]   IMAGE          NULL
 );
+GO
+
+-- Thêm Primary Key cho bảng Student (chạy 1 lần)
+ALTER TABLE [dbo].[Student]
+ADD CONSTRAINT PK_Student PRIMARY KEY (MSSV);
 GO
 
 
