@@ -87,6 +87,7 @@
             // 
             txb_NewPass.Location = new Point(253, 174);
             txb_NewPass.Name = "txb_NewPass";
+            txb_NewPass.PasswordChar = '*';
             txb_NewPass.Size = new Size(231, 27);
             txb_NewPass.TabIndex = 2;
             // 
@@ -94,6 +95,7 @@
             // 
             txb_ConfirmPass.Location = new Point(253, 243);
             txb_ConfirmPass.Name = "txb_ConfirmPass";
+            txb_ConfirmPass.PasswordChar = '*';
             txb_ConfirmPass.Size = new Size(231, 27);
             txb_ConfirmPass.TabIndex = 4;
             // 

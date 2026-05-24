@@ -33,6 +33,7 @@
             btn_StudentScore = new Button();
             btn_StudentInfo = new Button();
             pic_Logo_HCMUTE_MStu = new PictureBox();
+            btn_Logout_MainStudent = new Button();
             pnl_MainStudent_Student.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pic_Logo_HCMUTE_MStu).BeginInit();
             SuspendLayout();
@@ -40,6 +41,7 @@
             // pnl_MainStudent_Student
             // 
             pnl_MainStudent_Student.BackColor = Color.RoyalBlue;
+            pnl_MainStudent_Student.Controls.Add(btn_Logout_MainStudent);
             pnl_MainStudent_Student.Controls.Add(btn_Timetable);
             pnl_MainStudent_Student.Controls.Add(btn_StudentScore);
             pnl_MainStudent_Student.Controls.Add(btn_StudentInfo);
@@ -95,6 +97,19 @@
             pic_Logo_HCMUTE_MStu.TabIndex = 0;
             pic_Logo_HCMUTE_MStu.TabStop = false;
             // 
+            // btn_Logout_MainStudent
+            // 
+            btn_Logout_MainStudent.BackColor = Color.RoyalBlue;
+            btn_Logout_MainStudent.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btn_Logout_MainStudent.ForeColor = SystemColors.Window;
+            btn_Logout_MainStudent.Location = new Point(0, 559);
+            btn_Logout_MainStudent.Name = "btn_Logout_MainStudent";
+            btn_Logout_MainStudent.Size = new Size(182, 46);
+            btn_Logout_MainStudent.TabIndex = 4;
+            btn_Logout_MainStudent.Text = "Đăng xuất";
+            btn_Logout_MainStudent.UseVisualStyleBackColor = false;
+            btn_Logout_MainStudent.Click += btn_Logout_MainStudent_Click;
+            // 
             // f_MainStudent
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -116,5 +131,6 @@
         private Button btn_Timetable;
         private Button btn_StudentScore;
         private Button btn_StudentInfo;
+        private Button btn_Logout_MainStudent;
     }
 }

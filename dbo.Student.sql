@@ -7,7 +7,8 @@ GO
 
 SET QUOTED_IDENTIFIER ON
 GO
-
+DROP TABLE IF EXISTS [dbo].[Student];
+GO
 CREATE TABLE [dbo].[Student] (
     [MSSV]    INT            NOT NULL,
     [Fname]   NVARCHAR (50)  NOT NULL,
@@ -20,5 +21,6 @@ CREATE TABLE [dbo].[Student] (
     [Email]   NVARCHAR (100) NULL,
     [Pture]   IMAGE          NULL
 );
+GO
 
 

@@ -44,5 +44,22 @@ namespace ProjectMonHoc
             childForm.BringToFront();                       // Đẩy lên lớp trên cùng để không bị che khuất
             childForm.Show();                               // Kích hoạt hiển thị
         }
+
+        private void btn_Logout_MainStudent_Click(object sender, EventArgs e)
+        {
+            // 1. Xóa trạng thái đăng nhập toàn cục để đảm bảo bảo mật
+            Globals.GlobalUsername = string.Empty;
+            // Nếu trong Globals.cs của bạn có lưu thêm biến Role, hãy xóa nó ở đây (VD: Globals.GlobalRole = string.Empty;)
+
+            // 2. Ẩn form hiện tại đi
+            this.Hide();
+
+            // 3. Khởi tạo lại và hiển thị form Đăng nhập
+            f_Login formLogin = new f_Login();
+            formLogin.ShowDialog();
+
+            // 4. Giải phóng hoàn toàn form cũ sau khi form login đóng
+            this.Close();
+        }
     }
 }

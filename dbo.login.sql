@@ -11,6 +11,7 @@ GO
 DROP TABLE IF EXISTS [dbo].[login];
 GO
 
+-- 1. TẠO BẢNG LOGIN
 CREATE TABLE [dbo].[login] (
     [Id]            INT           NOT NULL,
     [username]      VARCHAR (50)  NOT NULL, -- Chuyển sang VARCHAR(50) để tài khoản linh hoạt và tối ưu bộ nhớ
@@ -21,5 +22,17 @@ CREATE TABLE [dbo].[login] (
     
     -- Thiết lập Id làm Khóa chính (Primary Key) để đảm bảo tính toàn vẹn dữ liệu
     CONSTRAINT [PK_login] PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+GO
+
+-- 2. TỰ ĐỘNG THÊM TÀI KHOẢN MẶC ĐỊNH NGAY SAU KHI TẠO BẢNG
+INSERT INTO [dbo].[login] ([Id], [username], [password], [role], [email], [LoginAttempts])
+VALUES (
+    1, 
+    'Admin', 
+    '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', -- Đây chính là chuỗi "12345" đã được băm SHA-256
+    'HR', 
+    'domixi@gmail.com', 
+    0
 );
 GO
