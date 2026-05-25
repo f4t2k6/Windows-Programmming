@@ -6,75 +6,44 @@ using Microsoft.Data.SqlClient;
 
 namespace ProjectMonHoc
 {
+    //Bỏ lỗi CA1416
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
+
     public partial class f_MainAdmin : Form
     {
-        private Form? activeForm = null;
+        private Panel? currentPanel = null;
 
         public f_MainAdmin()
         {
             InitializeComponent();
         }
 
-        private void OpenChildForm(Form childForm, Panel targetPanel)
+        private void SwitchOptionPanel(Panel targetPanel)
         {
-            if (activeForm != null)
+            if (currentPanel == targetPanel)
             {
-                activeForm.Close();
-                activeForm.Dispose();
+                currentPanel.Visible = false;
+                currentPanel = null;
+                return;
             }
 
-            activeForm = childForm;
-            childForm.TopLevel = false;
-            childForm.FormBorderStyle = FormBorderStyle.None;
-            childForm.Dock = DockStyle.Fill;
+            if (currentPanel != null)
+                currentPanel.Visible = false;
 
-            targetPanel.Controls.Clear();
-            targetPanel.Controls.Add(childForm);
-            targetPanel.Tag = childForm;
-
-            childForm.BringToFront();
-            childForm.Show();
+            currentPanel = targetPanel;
+            currentPanel.Visible = true;
+            currentPanel.BringToFront();
         }
 
         private void btn_letter_MainAdmin_Click(object sender, EventArgs e)
         {
-            // Ẩn panel con, hiện giao diện hộp thư
-            pnl_content_MainAdmin.Visible = false;
-            flp_requests_MainAdmin.Visible = true;
-            flp_requests_MainAdmin.BringToFront();
+            SwitchOptionPanel(pnl_letter_MainAdmin);
+            pnl_letter_MainAdmin.Visible = !pnl_letter_MainAdmin.Visible;
 
-            LoadRegistrationRequests();
+            if (pnl_letter_MainAdmin.Visible)
+                LoadRegistrationRequests();
         }
 
-        // ============================================
-        // 3 CHỨC NĂNG THÊM VÀO TỪ MAIN HR
-        // ============================================
-        private void btn_AddStudent_MainAdmin_Click(object sender, EventArgs e)
-        {
-            flp_requests_MainAdmin.Visible = false;
-            pnl_content_MainAdmin.Visible = true;
-            OpenChildForm(new f_AddStudent(), pnl_content_MainAdmin);
-        }
-
-        private void btn_StudentScore_MainAdmin_Click(object sender, EventArgs e)
-        {
-            flp_requests_MainAdmin.Visible = false;
-            pnl_content_MainAdmin.Visible = true;
-            string studentName = Globals.GlobalUsername;
-            int studentMSSV = Globals.GlobalUserId;
-            OpenChildForm(new f_ListScore(studentMSSV, studentName), pnl_content_MainAdmin);
-        }
-
-        private void btn_ListStudent_MainAdmin_Click(object sender, EventArgs e)
-        {
-            flp_requests_MainAdmin.Visible = false;
-            pnl_content_MainAdmin.Visible = true;
-            OpenChildForm(new f_ListStudent(), pnl_content_MainAdmin);
-        }
-
-        // ============================================
-        // CÁC CHỨC NĂNG XỬ LÝ MAIL CŨ CỦA ADMIN
-        // ============================================
         private void LoadRegistrationRequests()
         {
             flp_requests_MainAdmin.Controls.Clear();
@@ -82,6 +51,7 @@ namespace ProjectMonHoc
             MY_DB my_db = new MY_DB();
             try
             {
+                // Lấy tất cả các cột cần thiết, bao gồm cột Status để hiển thị trạng thái
                 string query = "SELECT Id, Username, Fname, Lname, Email, Password, Status FROM register_HR";
                 SqlCommand cmd = new SqlCommand(query, my_db.conn);
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
@@ -108,6 +78,7 @@ namespace ProjectMonHoc
                     string? email = row["Email"].ToString();
                     string? fullName = row["Fname"].ToString() + " " + row["Lname"].ToString();
                     string? password = row["Password"].ToString();
+                    // Đọc trạng thái phê duyệt: false = chưa duyệt, true = đã duyệt
                     bool isApproved = Convert.ToBoolean(row["Status"]);
 
                     Panel pnlItem = new Panel();
@@ -116,6 +87,7 @@ namespace ProjectMonHoc
                     pnlItem.BackColor = Color.White;
                     pnlItem.Margin = new Padding(0, 5, 0, 5);
 
+                    // Hiển thị thêm trạng thái Status ngay trên thẻ để Admin dễ theo dõi
                     string statusText = isApproved ? "✔ Đã duyệt" : "⏳ Chờ duyệt";
                     Color statusColor = isApproved ? Color.ForestGreen : Color.DarkOrange;
 
@@ -126,18 +98,20 @@ namespace ProjectMonHoc
                     lblInfo.Font = new Font("Segoe UI", 9, FontStyle.Regular);
                     lblInfo.ForeColor = Color.Black;
 
+                    // Tô màu phần trạng thái trực tiếp không cần label riêng (dùng RichTextBox nếu muốn màu riêng)
+                    // Ở đây dùng BackColor của Panel để phân biệt trực quan
                     if (isApproved)
-                        pnlItem.BackColor = Color.FromArgb(240, 255, 240);
+                        pnlItem.BackColor = Color.FromArgb(240, 255, 240); // Xanh nhạt nếu đã duyệt
 
                     Button btnAccept = new Button();
                     btnAccept.Text = "Accept";
-                    btnAccept.BackColor = isApproved ? Color.Gray : Color.ForestGreen;
+                    btnAccept.BackColor = isApproved ? Color.Gray : Color.ForestGreen; // Xám nếu đã duyệt rồi
                     btnAccept.ForeColor = Color.White;
                     btnAccept.Font = new Font("Segoe UI", 9, FontStyle.Bold);
                     btnAccept.Size = new Size(85, 35);
                     btnAccept.Location = new Point(pnlItem.Width - 195, 16);
                     btnAccept.Cursor = Cursors.Hand;
-                    btnAccept.Enabled = !isApproved;
+                    btnAccept.Enabled = !isApproved; // Vô hiệu hóa nút Accept nếu đã duyệt rồi
                     btnAccept.Tag = new HRRequestData { Id = hrId, Username = username, Email = email, Password = password };
                     btnAccept.Click += BtnAccept_Click;
 
@@ -184,11 +158,19 @@ namespace ProjectMonHoc
                 my_db.openConnection();
                 transaction = my_db.conn.BeginTransaction();
 
+                // =========================================================
+                // BƯỚC 1: Cập nhật Status = 1 (True) trong bảng register_HR
+                //         để đánh dấu tài khoản đã được Admin phê duyệt
+                // =========================================================
                 string updateStatusQuery = "UPDATE register_HR SET Status = 1 WHERE Id = @id";
                 SqlCommand cmdStatus = new SqlCommand(updateStatusQuery, my_db.conn, transaction);
                 cmdStatus.Parameters.Add("@id", SqlDbType.Int).Value = data.Id;
                 cmdStatus.ExecuteNonQuery();
 
+                // =========================================================
+                // BƯỚC 2: Chuyển thông tin sang bảng login
+                //         Chỉ lấy các cột cần thiết, BỎ QUA cột Status
+                // =========================================================
                 string insertQuery = "INSERT INTO login (Id, username, password, role, email, LoginAttempts) " +
                                      "VALUES (@id, @user, @pass, 'HR', @email, 0)";
                 SqlCommand cmdInsert = new SqlCommand(insertQuery, my_db.conn, transaction);
@@ -198,6 +180,9 @@ namespace ProjectMonHoc
                 cmdInsert.Parameters.Add("@email", SqlDbType.VarChar).Value = data.Email;
                 cmdInsert.ExecuteNonQuery();
 
+                // =========================================================
+                // BƯỚC 3: Xóa khỏi bảng tạm register_HR sau khi đã duyệt
+                // =========================================================
                 string deleteQuery = "DELETE FROM register_HR WHERE Id = @id";
                 SqlCommand cmdDelete = new SqlCommand(deleteQuery, my_db.conn, transaction);
                 cmdDelete.Parameters.Add("@id", SqlDbType.Int).Value = data.Id;
@@ -273,6 +258,7 @@ namespace ProjectMonHoc
         }
     }
 
+    // Class phụ để đóng gói dữ liệu truyền qua Tag của nút bấm
     public class HRRequestData
     {
         public int Id { get; set; }

@@ -12,6 +12,8 @@ using Microsoft.Data.SqlClient; // Bắt buộc thêm thư viện này để tha
 
 namespace ProjectMonHoc
 {
+    //Bỏ lỗi CA1416
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
     public partial class f_ForgetPass : Form
     {
         // Nhận giá trị từ f_Login (1 = Student, 2 = HR)

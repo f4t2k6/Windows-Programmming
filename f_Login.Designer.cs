@@ -32,10 +32,10 @@
             llbl_Register = new LinkLabel();
             label1 = new Label();
             pnl_login = new Panel();
-            llbl_ForgetPass = new LinkLabel();
             lbl_Welback_Login = new Label();
             pic_logo_HCMUTE_Login = new PictureBox();
             lbl_Intro_Login = new Label();
+            llbl_ForgetPass = new LinkLabel();
             ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
             pnl_login.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pic_logo_HCMUTE_Login).BeginInit();
@@ -130,7 +130,6 @@
             rdb_HR.Size = new Size(63, 34);
             rdb_HR.TabIndex = 1;
             rdb_HR.Text = "HR";
-            rdb_HR.CheckedChanged += rdb_HR_CheckedChanged;
             // 
             // chk_Remember
             // 
@@ -223,21 +222,6 @@
             pnl_login.Size = new Size(633, 677);
             pnl_login.TabIndex = 9;
             // 
-            // llbl_ForgetPass
-            // 
-            llbl_ForgetPass.AutoSize = true;
-            llbl_ForgetPass.BackColor = SystemColors.GrayText;
-            llbl_ForgetPass.Font = new Font("Segoe UI", 13F, FontStyle.Italic);
-            llbl_ForgetPass.ForeColor = SystemColors.ControlLight;
-            llbl_ForgetPass.LinkColor = Color.Azure;
-            llbl_ForgetPass.Location = new Point(340, 375);
-            llbl_ForgetPass.Name = "llbl_ForgetPass";
-            llbl_ForgetPass.Size = new Size(171, 30);
-            llbl_ForgetPass.TabIndex = 8;
-            llbl_ForgetPass.TabStop = true;
-            llbl_ForgetPass.Text = "Quên mật khẩu?";
-            llbl_ForgetPass.LinkClicked += llbl_ForgetPass_LinkClicked;
-            // 
             // lbl_Welback_Login
             // 
             lbl_Welback_Login.BackColor = Color.Transparent;
@@ -271,6 +255,21 @@
             lbl_Intro_Login.Size = new Size(426, 81);
             lbl_Intro_Login.TabIndex = 12;
             lbl_Intro_Login.Text = "This website is an academic project             currently under development.";
+            // 
+            // llbl_ForgetPass
+            // 
+            llbl_ForgetPass.AutoSize = true;
+            llbl_ForgetPass.BackColor = SystemColors.GrayText;
+            llbl_ForgetPass.Font = new Font("Segoe UI", 13F, FontStyle.Italic);
+            llbl_ForgetPass.ForeColor = SystemColors.ControlLight;
+            llbl_ForgetPass.LinkColor = Color.Azure;
+            llbl_ForgetPass.Location = new Point(340, 375);
+            llbl_ForgetPass.Name = "llbl_ForgetPass";
+            llbl_ForgetPass.Size = new Size(171, 30);
+            llbl_ForgetPass.TabIndex = 8;
+            llbl_ForgetPass.TabStop = true;
+            llbl_ForgetPass.Text = "Quên mật khẩu?";
+            llbl_ForgetPass.LinkClicked += llbl_ForgetPass_LinkClicked;
             // 
             // f_Login
             // 

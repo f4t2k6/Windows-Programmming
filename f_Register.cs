@@ -9,6 +9,8 @@ using Microsoft.Data.SqlClient;
 
 namespace ProjectMonHoc
 {
+    //Bỏ lỗi CA1416
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
     public partial class f_Register : Form
     {
         // Biến nhận giá trị position truyền từ f_Login sang (1 = Student, 2 = HR)

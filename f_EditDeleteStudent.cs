@@ -6,6 +6,8 @@ using System.Windows.Forms;
 
 namespace ProjectMonHoc
 {
+    //Bỏ lỗi CA1416
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
     public partial class f_EditDeleteStudent : Form
     {
         private DataGridViewRow studentRow;
@@ -98,7 +100,7 @@ namespace ProjectMonHoc
                 string email = txtEmail.Text;
 
                 // Xử lý ảnh đại diện an toàn chống lỗi dữ liệu
-                byte[] pic = null;
+                byte[]? pic = null;
                 if (picAvatar.Image != null)
                 {
                     using (MemoryStream ms = new MemoryStream())
@@ -113,7 +115,7 @@ namespace ProjectMonHoc
                 }
 
                 // Tạo đối tượng và thực hiện cập nhật dữ liệu
-                Student student = new Student(mssv, fname, lname, dob, gender, phone, address, htown, email, pic);
+                Student student = new Student(mssv, fname, lname, dob, gender, phone, address, htown, email, pic ?? Array.Empty<byte>());
 
                 if (student.EditStudent())
                 {

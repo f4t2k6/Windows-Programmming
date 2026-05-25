@@ -1,8 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ProjectMonHoc
 {
+    //Bỏ lỗi CA1416
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
     public partial class f_MainStudent : Form
     {
         private Form? activeForm = null;
@@ -13,47 +22,51 @@ namespace ProjectMonHoc
 
         private void OpenChildForm(Form childForm, Panel targetPanel)
         {
+            // 1. Nếu đang có một Form con khác mở, đóng hoàn toàn để giải phóng bộ nhớ
             if (activeForm != null)
             {
                 activeForm.Close();
                 activeForm.Dispose();
             }
 
+            // 2. Gán Form con mới vào biến theo dõi
             activeForm = childForm;
-            childForm.TopLevel = false;
-            childForm.FormBorderStyle = FormBorderStyle.None;
-            childForm.Dock = DockStyle.Fill;
 
-            targetPanel.Controls.Clear();
-            targetPanel.Controls.Add(childForm);
-            targetPanel.Tag = childForm;
+            // 3. Thiết lập bộ 3 thuộc tính gác cổng quan trọng
+            childForm.TopLevel = false;                      // Biến form thành control nội bộ
+            childForm.FormBorderStyle = FormBorderStyle.None; // Xóa sạch khung viền và thanh tiêu đề
+            childForm.Dock = DockStyle.Fill;                // Tự động kéo giãn khít theo kích thước Panel
 
-            childForm.BringToFront();
-            childForm.Show();
+            // 4. Dọn dẹp Panel và nạp Form con vào
+            targetPanel.Controls.Clear();                    // Xóa sạch các điều khiển/giao diện cũ trong panel
+            targetPanel.Controls.Add(childForm);            // Thêm form con vào panel
+            targetPanel.Tag = childForm;                    // Lưu trữ tham chiếu nếu cần dùng sau này
+
+            // 5. Hiển thị Form con lên màn hình
+            childForm.BringToFront();                       // Đẩy lên lớp trên cùng để không bị che khuất
+            childForm.Show();                               // Kích hoạt hiển thị
         }
 
         private void btn_Logout_MainStudent_Click(object sender, EventArgs e)
         {
+            // 1. Xóa trạng thái đăng nhập toàn cục để đảm bảo bảo mật
             Globals.GlobalUsername = string.Empty;
+            // Nếu trong Globals.cs của bạn có lưu thêm biến Role, hãy xóa nó ở đây (VD: Globals.GlobalRole = string.Empty;)
+
+            // 2. Ẩn form hiện tại đi
             this.Hide();
+
+            // 3. Khởi tạo lại và hiển thị form Đăng nhập
             f_Login formLogin = new f_Login();
             formLogin.ShowDialog();
+
+            // 4. Giải phóng hoàn toàn form cũ sau khi form login đóng
             this.Close();
         }
 
         private void btn_StudentScore_Click(object sender, EventArgs e)
         {
-            // Lấy ID và Username của chính sinh viên đang đăng nhập để hiển thị điểm
-            string studentName = Globals.GlobalUsername;
-            int studentMSSV = Globals.GlobalUserId;
 
-            // Mở form f_ListScore giống như HR, nhưng vì truyền MSSV của sinh viên nên form sẽ chỉ load điểm của sinh viên đó
-            OpenChildForm(new f_ListScore(studentMSSV, studentName), pnl_content_MainStudent);
-        }
-
-        private void btn_StudentInfo_Click(object sender, EventArgs e)
-        {
-            // Tạm thời chưa xử lý
         }
     }
 }

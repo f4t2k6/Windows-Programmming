@@ -4,6 +4,8 @@ using System.Windows.Forms;
 
 namespace ProjectMonHoc
 {
+    //Bỏ lỗi CA1416
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
     public partial class f_ListScore : Form
     {
         private int _studentMSSV;
@@ -158,21 +160,22 @@ namespace ProjectMonHoc
             MessageBox.Show("Bảng điểm đã được cập nhật mới nhất!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private void dgvScores_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        private void dgvScores_CellDoubleClick(object? sender, DataGridViewCellEventArgs e)
         {
             if (Globals.GlobalRole != "HR" && Globals.GlobalRole != "Admin")
             {
-                MessageBox.Show("Bạn không có quyền chỉnh sửa điểm!", "Từ chối truy cập", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Bạn không có quyền chỉnh sửa điểm!", "Từ chối truy cập",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            if (e.RowIndex >= 0)
-            {
-                DataGridViewRow row = dgvScores.Rows[e.RowIndex];
-                f_EditScore editForm = new f_EditScore(row);
-                editForm.FormClosed += (s, args) => RefreshData();
-                editForm.ShowDialog();
-            }
+            if (e.RowIndex < 0) return; // Bỏ qua click vào header
+
+            DataGridViewRow row = dgvScores.Rows[e.RowIndex];
+            // Truyền thêm _studentMSSV để đảm bảo luôn có MSSV đúng
+            f_EditScore editForm = new f_EditScore(row, _studentMSSV);
+            editForm.FormClosed += (s, args) => RefreshData();
+            editForm.ShowDialog();
         }
 
         private void dgvScores_CellContentClick(object sender, DataGridViewCellEventArgs e) { }

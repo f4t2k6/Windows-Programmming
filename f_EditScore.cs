@@ -3,34 +3,42 @@ using System.Windows.Forms;
 
 namespace ProjectMonHoc
 {
+    //Bỏ lỗi CA1416
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
+
     public partial class f_EditScore : Form
     {
         private DataGridViewRow _scoreRow;
+        private int _studentMSSV; // Nhận từ f_ListScore để đảm bảo đúng
 
-        // Constructor nhận dòng điểm được chọn từ danh sách
-        public f_EditScore(DataGridViewRow row)
+        public f_EditScore(DataGridViewRow row, int studentMSSV)
         {
             InitializeComponent();
             _scoreRow = row;
+            _studentMSSV = studentMSSV;
         }
 
         private void f_EditScore_Load(object sender, EventArgs e)
         {
-            // Điền dữ liệu cũ lên giao diện
-            txtStudentId.Text = _scoreRow.Cells["student_id"].Value?.ToString();
-            txtStudentId.Enabled = false; // Không cho sửa MSSV
+            // MSSV luôn lấy từ tham số truyền vào (tránh lỗi cột bị ẩn)
+            txtStudentId.Text = _studentMSSV.ToString();
+            txtStudentId.ReadOnly = true; // Hiển thị nhưng không cho sửa
+            txtStudentId.BackColor = System.Drawing.Color.LightGray;
 
-            txtCourseId.Text = _scoreRow.Cells["course_id"].Value?.ToString();
-            txtCourseId.Enabled = false; // Không cho sửa mã môn (là khóa chính)
+            // Mã môn học là khóa chính, không cho sửa
+            txtCourseId.Text = _scoreRow.Cells["course_id"].Value?.ToString() ?? "";
+            txtCourseId.ReadOnly = true;
+            txtCourseId.BackColor = System.Drawing.Color.LightGray;
 
-            txtCourseName.Text = _scoreRow.Cells["course_name"].Value?.ToString();
-            txtDescription.Text = _scoreRow.Cells["description"].Value?.ToString();
+            // Các trường được phép sửa
+            txtCourseName.Text = _scoreRow.Cells["course_name"].Value?.ToString() ?? "";
+            txtDescription.Text = _scoreRow.Cells["description"].Value?.ToString() ?? "";
 
-            // Xử lý điểm số an toàn
+            // Điểm số
             if (_scoreRow.Cells["score"].Value != null &&
                 double.TryParse(_scoreRow.Cells["score"].Value.ToString(), out double scoreVal))
             {
-                nudScore.Value = (decimal)scoreVal;
+                nudScore.Value = (decimal)Math.Max(0, Math.Min(10, scoreVal));
             }
             else
             {
@@ -38,21 +46,28 @@ namespace ProjectMonHoc
             }
         }
 
-        // XỬ LÝ LƯU ĐIỂM (UPDATE)
         private void btnSave_Click(object sender, EventArgs e)
         {
             try
             {
-                int studentId = int.Parse(txtStudentId.Text);
-                string courseId = txtCourseId.Text.Trim();
+                // --- Lấy dữ liệu ---
+                int studentId = _studentMSSV;                 // Luôn dùng giá trị gốc
+                string courseId = txtCourseId.Text.Trim();      // Khóa chính, không đổi
                 string courseName = txtCourseName.Text.Trim();
                 double score = (double)nudScore.Value;
                 string description = txtDescription.Text.Trim();
 
-                // Kiểm tra điểm hợp lệ
-                if (score < 0 || score > 10)
+                // --- Validate ---
+                if (studentId <= 0)
                 {
-                    MessageBox.Show("Điểm số phải nằm trong khoảng 0.0 đến 10.0!", "Lỗi dữ liệu",
+                    MessageBox.Show("MSSV không hợp lệ!", "Lỗi dữ liệu",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(courseId))
+                {
+                    MessageBox.Show("Mã môn học không được để trống!", "Lỗi dữ liệu",
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
@@ -64,8 +79,29 @@ namespace ProjectMonHoc
                     return;
                 }
 
-                Score scoreObj = new Score(studentId, courseId, courseName, score, description);
+                // nudScore đã giới hạn 0–10 ở Designer nhưng vẫn kiểm tra thêm
+                if (score < 0 || score > 10)
+                {
+                    MessageBox.Show("Điểm số phải nằm trong khoảng 0.0 đến 10.0!",
+                        "Lỗi dữ liệu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
 
+                if (description.Length > 500)
+                {
+                    MessageBox.Show("Ghi chú không được vượt quá 500 ký tự!",
+                        "Lỗi dữ liệu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // --- Xác nhận trước khi lưu ---
+                var confirm = MessageBox.Show(
+                    $"Xác nhận cập nhật điểm môn \"{courseName}\" thành {score:F1}?",
+                    "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (confirm != DialogResult.Yes) return;
+
+                // --- Lưu ---
+                Score scoreObj = new Score(studentId, courseId, courseName, score, description);
                 if (scoreObj.EditScore())
                 {
                     MessageBox.Show("Cập nhật điểm thành công!", "Thông báo",
@@ -85,15 +121,8 @@ namespace ProjectMonHoc
             }
         }
 
-        // XỬ LÝ HỦY
-        private void btnCancel_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
+        private void btnCancel_Click(object sender, EventArgs e) => this.Close();
 
-        private void txtCourseName_TextChanged(object sender, EventArgs e)
-        {
-
-        }
+        private void txtCourseName_TextChanged(object sender, EventArgs e) { }
     }
 }

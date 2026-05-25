@@ -5,6 +5,8 @@ using System.Windows.Forms;
 
 namespace ProjectMonHoc
 {
+    //Bỏ lỗi CA1416
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
     public partial class f_OTP : Form
     {
         // Thuộc tính nhận email đích từ f_Register truyền sang

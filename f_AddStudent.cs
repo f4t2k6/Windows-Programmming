@@ -10,6 +10,9 @@ using System.Windows.Forms;
 
 namespace ProjectMonHoc
 {
+    //Bỏ lỗi CA1416
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
+
     public partial class f_AddStudent : Form
     {
         public f_AddStudent()

@@ -8,6 +8,8 @@ using Microsoft.Data.SqlClient;
 
 namespace ProjectMonHoc
 {
+    //Bỏ lỗi CA1416
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
     public partial class f_ResetPass : Form
     {
         private string userEmail;

@@ -6,6 +6,9 @@ using System.Windows.Forms;
 
 namespace ProjectMonHoc
 {
+    //Bỏ lỗi CA1416
+    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
+
     public partial class f_Login : Form
     {
         private int position;
@@ -282,11 +285,6 @@ namespace ProjectMonHoc
             this.Hide();
             frmForgot.ShowDialog();
             this.Show(); // Hiện lại Login sau khi quá trình kết thúc
-        }
-
-        private void rdb_HR_CheckedChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }
