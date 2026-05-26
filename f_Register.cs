@@ -14,12 +14,24 @@ namespace ProjectMonHoc
     public partial class f_Register : Form
     {
         // Biến nhận giá trị position truyền từ f_Login sang (1 = Student, 2 = HR)
+        
+        private f_Login loginForm;
+        private string savedMSSV = "";
+        private string savedUsername = "";
+        private string savedPassword = "";
+        private string savedFname = "";
+        private string savedLname = "";
+        private string savedEmail = "";
+        private Image? savedImage = null;
         private int position;
+        public Action? onDone { get; set; }
+        private bool _registrationDone = false;
 
-        public f_Register(int rolePosition)
+        public f_Register(int rolePosition, f_Login loginForm)
         {
             InitializeComponent();
             this.position = rolePosition;
+            this.loginForm = loginForm;
         }
 
         private void f_Register_Load(object sender, EventArgs e)
@@ -29,9 +41,9 @@ namespace ProjectMonHoc
 
             // Hiển thị vai trò đang đăng ký trên thanh tiêu đề để người dùng biết
             if (position == 2)
-                this.Text = "Đăng Ký Tài Khoản Quản Lý (HR)";
+                lbl_Header.Text = "ĐĂNG KÝ TÀI KHOẢN HR";
             else
-                this.Text = "Đăng Ký Tài Khoản Sinh Viên (Student)";
+                lbl_Header.Text = "ĐĂNG KÝ TÀI KHOẢN STUDENT";
         }
 
         // =========================================================
@@ -41,15 +53,13 @@ namespace ProjectMonHoc
         {
             if (!verif()) return;
 
-            // CHỐT CHẶN WHITELIST CHO SINH VIÊN
-            if (position == 1) // Diện Student
+            if (position == 1)
             {
                 int mssvCheck = Convert.ToInt32(txb_MSGV.Text.Trim());
                 string emailCheck = txb_Email.Text.Trim();
-
                 if (!CheckStudentWhitelist(mssvCheck, emailCheck))
                 {
-                    MessageBox.Show("Mã số sinh viên hoặc Email không trùng khớp với danh sách nhà trường cấp! Vui lòng liên hệ phòng đào tạo.",
+                    MessageBox.Show("Mã số sinh viên hoặc Email không trùng khớp...",
                                     "Từ chối đăng ký", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                     return;
                 }
@@ -58,34 +68,51 @@ namespace ProjectMonHoc
             if (existUser() == false) { MessageBox.Show("Tên tài khoản này đã tồn tại!"); return; }
             if (existEmail() == false) { MessageBox.Show("Email này đã được sử dụng!"); return; }
 
-            f_OTP otp = new f_OTP();
-            otp.to = txb_Email.Text.Trim();
-            this.Hide();
+            // ✅ Lưu toàn bộ dữ liệu vào biến TRƯỚC khi mở OTP
+            // (vì sau khi panel chuyển sang f_OTP, các TextBox không còn đọc được nữa)
+            savedMSSV = txb_MSGV.Text.Trim();
+            savedUsername = txb_User.Text.Trim();
+            savedPassword = txb_Pass.Text;
+            savedFname = txb_Fname.Text.Trim();
+            savedLname = txb_Lname.Text.Trim();
+            savedEmail = txb_Email.Text.Trim();
+            savedImage = ptb_Picture.Image;
 
-            if (otp.ShowDialog() == DialogResult.OK)
+            f_OTP otp = new f_OTP();
+            otp.to = savedEmail;
+
+            otp.FormClosed += (s, args) =>
             {
-                if (RegisterAccount())
+                if (_registrationDone) return; // ← chặn gọi lần 2
+
+                if (otp.DialogResult == DialogResult.OK)
                 {
-                    // THÔNG BÁO THÔNG MINH THEO VAI TRÒ
-                    if (position == 2)
+                    if (RegisterAccount())
                     {
-                        MessageBox.Show("Đăng ký thành công! Đã gửi yêu cầu cấp quyền. Vui lòng chờ Admin phê duyệt kích hoạt tài khoản HR.",
-                                        "Hệ Thống Chờ Duyệt", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        _registrationDone = true; // ← đánh dấu đã xong
+
+                        if (position == 2)
+                            MessageBox.Show("Đăng ký thành công! Vui lòng chờ Admin phê duyệt.",
+                                            "Hệ Thống Chờ Duyệt", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        else
+                            MessageBox.Show("Xác thực thành công! Tài khoản đã kích hoạt.",
+                                            "Thành Công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        onDone?.Invoke();
                     }
                     else
                     {
-                        MessageBox.Show("Xác thực thành công! Tài khoản sinh viên của bạn đã kích hoạt. Bạn có thể đăng nhập ngay bấy giờ.",
-                                        "Thành Công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Lỗi ghi nhận dữ liệu.");
+                        loginForm.OpenChildForm(this, loginForm.pnl_login);
                     }
-                    this.Close();
                 }
                 else
                 {
-                    MessageBox.Show("Lỗi ghi nhận dữ liệu.");
-                    this.Show();
+                    loginForm.OpenChildForm(this, loginForm.pnl_login);
                 }
-            }
-            else { this.Show(); }
+            };
+
+            loginForm.OpenChildForm(otp, loginForm.pnl_login);
         }
 
         // =========================================================
@@ -94,76 +121,59 @@ namespace ProjectMonHoc
         private bool RegisterAccount()
         {
             MY_DB my_db = new MY_DB();
-
             try
             {
                 my_db.openConnection();
 
-                // =========================================================
-                // LUỒNG 1: ĐĂNG KÝ CHO DIỆN QUẢN LÝ (HR)
-                // =========================================================
                 if (position == 2)
                 {
-                    // TUYỆT ĐỐI KHÔNG insert vào bảng login. Chỉ lưu hồ sơ + pass vào bảng phòng chờ register_HR
-                    // Status = 0 (False) nghĩa là tài khoản CHƯA được Admin phê duyệt
                     string queryHR = "INSERT INTO register_HR (Id, Username, Password, Fname, Lname, Email, Picture, Status) " +
                                      "VALUES (@id, @user, @pass, @fname, @lname, @email, @pic, 0)";
-
                     SqlCommand cmdHR = new SqlCommand(queryHR, my_db.conn);
-                    cmdHR.Parameters.Add("@id", SqlDbType.Int).Value = Convert.ToInt32(txb_MSGV.Text.Trim());
-                    cmdHR.Parameters.Add("@user", SqlDbType.VarChar).Value = txb_User.Text.Trim();
-                    cmdHR.Parameters.Add("@pass", SqlDbType.VarChar).Value = ComputeSHA256(txb_Pass.Text);
-                    cmdHR.Parameters.Add("@fname", SqlDbType.NVarChar).Value = txb_Fname.Text.Trim();
-                    cmdHR.Parameters.Add("@lname", SqlDbType.NVarChar).Value = txb_Lname.Text.Trim();
-                    cmdHR.Parameters.Add("@email", SqlDbType.VarChar).Value = txb_Email.Text.Trim();
+                    cmdHR.Parameters.Add("@id", SqlDbType.Int).Value = Convert.ToInt32(savedMSSV);
+                    cmdHR.Parameters.Add("@user", SqlDbType.VarChar).Value = savedUsername;
+                    cmdHR.Parameters.Add("@pass", SqlDbType.VarChar).Value = ComputeSHA256(savedPassword);
+                    cmdHR.Parameters.Add("@fname", SqlDbType.NVarChar).Value = savedFname;
+                    cmdHR.Parameters.Add("@lname", SqlDbType.NVarChar).Value = savedLname;
+                    cmdHR.Parameters.Add("@email", SqlDbType.VarChar).Value = savedEmail;
 
                     MemoryStream ms = new MemoryStream();
-                    ptb_Picture.Image.Save(ms, ptb_Picture.Image.RawFormat);
+                    savedImage!.Save(ms, savedImage.RawFormat);
                     cmdHR.Parameters.Add("@pic", SqlDbType.Image).Value = ms.ToArray();
 
-                    int rowsHR = cmdHR.ExecuteNonQuery();
-                    return rowsHR > 0; // Trả về true nếu lưu phòng chờ thành công
+                    return cmdHR.ExecuteNonQuery() > 0;
                 }
-                // =========================================================
-                // LUỒNG 2: ĐĂNG KÝ CHO DIỆN SINH VIÊN (STUDENT)
-                // =========================================================
                 else
                 {
-                    // Vì thông tin cá nhân của sinh viên ĐÃ CÓ SẴN trong bảng Student (do nhà trường nạp trước),
-                    // ta CHỈ CẦN cấp tài khoản đăng nhập bằng cách insert thẳng dữ liệu vào bảng login.
-                    string queryLogin = "INSERT INTO login (Id, username, password, role, email) VALUES (@id, @user, @pass, @pos, @email)";
-
+                    string queryLogin = "INSERT INTO login (Id, username, password, role, email) " +
+                                        "VALUES (@id, @user, @pass, @pos, @email)";
                     SqlCommand cmdLogin = new SqlCommand(queryLogin, my_db.conn);
-                    cmdLogin.Parameters.Add("@id", SqlDbType.Int).Value = Convert.ToInt32(txb_MSGV.Text.Trim());
-                    cmdLogin.Parameters.Add("@user", SqlDbType.VarChar).Value = txb_User.Text.Trim();
-                    cmdLogin.Parameters.Add("@pass", SqlDbType.VarChar).Value = ComputeSHA256(txb_Pass.Text);
+                    cmdLogin.Parameters.Add("@id", SqlDbType.Int).Value = Convert.ToInt32(savedMSSV);
+                    cmdLogin.Parameters.Add("@user", SqlDbType.VarChar).Value = savedUsername;
+                    cmdLogin.Parameters.Add("@pass", SqlDbType.VarChar).Value = ComputeSHA256(savedPassword);
                     cmdLogin.Parameters.Add("@pos", SqlDbType.VarChar).Value = "Student";
-                    cmdLogin.Parameters.Add("@email", SqlDbType.VarChar).Value = txb_Email.Text.Trim();
+                    cmdLogin.Parameters.Add("@email", SqlDbType.VarChar).Value = savedEmail;
 
-                    // (Tùy chọn nâng cao): Cập nhật luôn ảnh đại diện mà sinh viên vừa tải lên vào hồ sơ gốc trong bảng Student
                     string queryUpdatePic = "UPDATE Student SET Pture = @pic WHERE MSSV = @id";
                     SqlCommand cmdUpdatePic = new SqlCommand(queryUpdatePic, my_db.conn);
-                    cmdUpdatePic.Parameters.Add("@id", SqlDbType.Int).Value = Convert.ToInt32(txb_MSGV.Text.Trim());
+                    cmdUpdatePic.Parameters.Add("@id", SqlDbType.Int).Value = Convert.ToInt32(savedMSSV);
 
                     MemoryStream ms = new MemoryStream();
-                    ptb_Picture.Image.Save(ms, ptb_Picture.Image.RawFormat);
+                    savedImage!.Save(ms, savedImage.RawFormat);
                     cmdUpdatePic.Parameters.Add("@pic", SqlDbType.Image).Value = ms.ToArray();
 
-                    int rowsLogin = cmdLogin.ExecuteNonQuery();
-                    cmdUpdatePic.ExecuteNonQuery(); // Đồng bộ ảnh đại diện vào hồ sơ sinh viên
-
-                    return rowsLogin > 0; // Sinh viên được phép hoạt động ngay lập tức
+                    int rows = cmdLogin.ExecuteNonQuery();
+                    cmdUpdatePic.ExecuteNonQuery();
+                    return rows > 0;
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi thực thi dữ liệu đăng ký: " + ex.Message, "Lỗi SQL", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Lỗi thực thi dữ liệu đăng ký: " + ex.Message, "Lỗi SQL",
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
-            finally
-            {
-                my_db.closeConnection();
-            }
+            finally { my_db.closeConnection(); }
         }
 
         // =========================================================
@@ -379,6 +389,16 @@ namespace ProjectMonHoc
             }
             catch { return false; }
             finally { my_db.closeConnection(); }
+        }
+
+        private void lbl_Header_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_Cancel_Register_Click(object sender, EventArgs e)
+        {
+            onDone?.Invoke();
         }
     }
 }

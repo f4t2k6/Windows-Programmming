@@ -43,6 +43,7 @@ namespace ProjectMonHoc
             }
         }
 
+
         // =========================================================
         // ĐĂNG NHẬP
         // =========================================================
@@ -208,8 +209,9 @@ namespace ProjectMonHoc
             }
         }
 
+
         // =========================================================
-        // VALIDATION REALTIME
+        // KIỂM TRA VALIDATION CỦA INPUT
         // =========================================================
         private bool ValidateInputs()
         {
@@ -242,38 +244,102 @@ namespace ProjectMonHoc
                 txb_Pass.Text == "" ? "Vui lòng nhập mật khẩu!" : "");
         }
 
+
         // =========================================================
-        // HỦY
+        // NÚT HỦY LOGIN - THOÁT CHƯƠNG TRÌNH
         // =========================================================
-        private void btn_Cancel_Click(object sender, EventArgs e)
+        private void btn_Cancel_Login_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
+
+        // =========================================================
+        // CÁC HÀM HELPERS
+        // =========================================================
+        // Thêm field vào đầu class f_Login
+        private Form? activeChildForm = null;
+
+        // Hàm OpenChildForm (thêm vào class f_Login)
+        internal void OpenChildForm(Form childForm, Panel targetPanel)
+        {
+            // Chỉ đóng form cũ nếu nó KHÁC với form mới đang được mở
+            // (tránh dispose chính form đang gọi hàm này)
+            if (activeChildForm != null && activeChildForm != childForm)
+            {
+                Form old = activeChildForm;
+                activeChildForm = null;
+                old.Close();
+                // KHÔNG gọi Dispose() thủ công — Close() + GC tự xử lý
+            }
+
+            activeChildForm = childForm;
+
+            childForm.TopLevel = false;
+            childForm.FormBorderStyle = FormBorderStyle.None;
+            childForm.Dock = DockStyle.Fill;
+
+            // Ẩn các control gốc của panel (chỉ ẩn control trực tiếp, không ảnh hưởng form con)
+            foreach (Control ctrl in targetPanel.Controls)
+            {
+                if (ctrl != childForm)
+                    ctrl.Visible = false;
+            }
+
+            targetPanel.Controls.Add(childForm);
+            targetPanel.Tag = childForm;
+            childForm.BringToFront();
+            childForm.Show();
+        }
+
+        // Hàm khôi phục pnl_login về trạng thái gốc
+        internal void RestoreLoginPanel()
+        {
+            // Đóng và dọn form con hiện tại nếu còn tồn tại
+            if (activeChildForm != null)
+            {
+                var old = activeChildForm;
+                activeChildForm = null;
+                if (!old.IsDisposed)
+                    old.Close();
+            }
+
+            // Xóa tất cả form con khỏi panel (giữ lại các control gốc)
+            var toRemove = pnl_login.Controls
+                .OfType<Form>()
+                .ToList();
+            foreach (var f in toRemove)
+                pnl_login.Controls.Remove(f);
+
+            // Hiện lại các control gốc
+            foreach (Control ctrl in pnl_login.Controls)
+                ctrl.Visible = true;
+        }
+
+
+        // =========================================================
+        // NÚT ĐĂNG KÍ TÀI KHOẢN - CHUYỂN PANEL SANG F_REGISTER
+        // =========================================================
         private void llbl_Register_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            // Lấy trạng thái vai trò hiện tại mà người dùng đang chọn trên Form Login
-            // (1 = Student nếu rdb_Student được tích, 2 = HR nếu rdb_HR được tích)
             int currentRolePosition = rdb_HR.Checked ? 2 : 1;
+            f_Register registerForm = new f_Register(currentRolePosition, this);
 
-            // Khởi tạo Form Đăng ký và truyền giá trị vai trò sang
-            f_Register registerForm = new f_Register(currentRolePosition);
+            // Gán callback trực tiếp — chắc chắn được gọi dù f_OTP đang active
+            registerForm.onDone = () => RestoreLoginPanel();
 
-            // Ẩn form đăng nhập hiện tại đi
-            this.Hide();
-
-            // Hiển thị form đăng ký dưới dạng hộp thoại
-            registerForm.ShowDialog();
-
-            // Sau khi người dùng đóng form Đăng ký, hiển thị lại Form đăng nhập ban đầu
-            this.Show();
+            OpenChildForm(registerForm, pnl_login);
         }
 
-        private void label2_Click(object sender, EventArgs e)
+        private void llb_HCMUTE_name_Click(object sender, EventArgs e)
         {
 
         }
 
+
+        // =========================================================
+        // NÚT QUÊN MẬT KHẨU - CHUYỂN PANEL SANG F_RESETPASS
+        // =========================================================
         private void llbl_ForgetPass_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             // Lấy Role hiện tại dựa trên RadioButton
@@ -285,6 +351,16 @@ namespace ProjectMonHoc
             this.Hide();
             frmForgot.ShowDialog();
             this.Show(); // Hiện lại Login sau khi quá trình kết thúc
+        }
+
+        private void pic_HCMUTE_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void chk_Remember_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

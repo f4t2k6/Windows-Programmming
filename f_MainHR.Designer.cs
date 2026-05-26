@@ -35,6 +35,7 @@
             btn_FixStudentScore = new Button();
             pic_Logo_HCMUTE_MHR = new PictureBox();
             pnl_content_MainHR = new Panel();
+            btn_ManageCourse = new Button();
             pnl_MainHR.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pic_Logo_HCMUTE_MHR).BeginInit();
             SuspendLayout();
@@ -42,6 +43,7 @@
             // pnl_MainHR
             // 
             pnl_MainHR.BackColor = Color.RoyalBlue;
+            pnl_MainHR.Controls.Add(btn_ManageCourse);
             pnl_MainHR.Controls.Add(btn_ListStudent);
             pnl_MainHR.Controls.Add(btn_Logout_MainHR);
             pnl_MainHR.Controls.Add(btn_AddStudent);
@@ -102,6 +104,7 @@
             btn_FixStudentScore.TabIndex = 2;
             btn_FixStudentScore.Text = "Điểm sinh viên  ";
             btn_FixStudentScore.UseVisualStyleBackColor = false;
+            btn_FixStudentScore.Click += btn_FixStudentScore_Click;
             // 
             // pic_Logo_HCMUTE_MHR
             // 
@@ -119,6 +122,19 @@
             pnl_content_MainHR.Name = "pnl_content_MainHR";
             pnl_content_MainHR.Size = new Size(1063, 627);
             pnl_content_MainHR.TabIndex = 2;
+            // 
+            // btn_ManageCourse
+            // 
+            btn_ManageCourse.BackColor = Color.RoyalBlue;
+            btn_ManageCourse.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btn_ManageCourse.ForeColor = SystemColors.Menu;
+            btn_ManageCourse.Location = new Point(0, 330);
+            btn_ManageCourse.Name = "btn_ManageCourse";
+            btn_ManageCourse.Size = new Size(182, 56);
+            btn_ManageCourse.TabIndex = 5;
+            btn_ManageCourse.Text = "Quản lý môn học";
+            btn_ManageCourse.UseVisualStyleBackColor = false;
+            btn_ManageCourse.Click += btn_ManageCourse_Click;
             // 
             // f_MainHR
             // 
@@ -144,5 +160,6 @@
         private Button btn_Logout_MainHR;
         private Panel pnl_content_MainHR;
         private Button btn_ListStudent;
+        private Button btn_ManageCourse;
     }
 }
