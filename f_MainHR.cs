@@ -73,5 +73,15 @@ namespace ProjectMonHoc
         {
             OpenChildForm(new f_ListStudent(), pnl_content_MainHR);
         }
+
+        private void btn_FixStudentScore_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void btn_ManageCourse_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new f_ManageCourse(), pnl_content_MainHR);
+        }
     }
 }

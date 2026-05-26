@@ -29,13 +29,13 @@
         private void InitializeComponent()
         {
             lbl_NewPass_Reset = new Label();
-            panel1 = new Panel();
-            lbl_ResetPass = new Label();
-            pic_Logo_HCMUTE_FPass = new PictureBox();
             txb_NewPass = new TextBox();
             txb_ConfirmPass = new TextBox();
             lbl_ConfirmPass_Reset = new Label();
             btn_Update = new Button();
+            panel1 = new Panel();
+            lbl_ResetPass = new Label();
+            pic_Logo_HCMUTE_FPass = new PictureBox();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pic_Logo_HCMUTE_FPass).BeginInit();
             SuspendLayout();
@@ -50,38 +50,6 @@
             lbl_NewPass_Reset.Size = new Size(128, 25);
             lbl_NewPass_Reset.TabIndex = 0;
             lbl_NewPass_Reset.Text = "Mật khẩu mới";
-            // 
-            // panel1
-            // 
-            panel1.BackColor = Color.RoyalBlue;
-            panel1.Controls.Add(lbl_ResetPass);
-            panel1.Controls.Add(pic_Logo_HCMUTE_FPass);
-            panel1.Location = new Point(0, 0);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(582, 100);
-            panel1.TabIndex = 1;
-            // 
-            // lbl_ResetPass
-            // 
-            lbl_ResetPass.AutoSize = true;
-            lbl_ResetPass.Font = new Font("Segoe UI Historic", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lbl_ResetPass.ForeColor = SystemColors.Window;
-            lbl_ResetPass.Location = new Point(261, 29);
-            lbl_ResetPass.Name = "lbl_ResetPass";
-            lbl_ResetPass.Size = new Size(223, 38);
-            lbl_ResetPass.TabIndex = 1;
-            lbl_ResetPass.Text = "Reset Password";
-            // 
-            // pic_Logo_HCMUTE_FPass
-            // 
-            pic_Logo_HCMUTE_FPass.BackColor = Color.DarkBlue;
-            pic_Logo_HCMUTE_FPass.Image = Properties.Resources.logo_HCMUTE_MainMenu;
-            pic_Logo_HCMUTE_FPass.Location = new Point(0, -81);
-            pic_Logo_HCMUTE_FPass.Name = "pic_Logo_HCMUTE_FPass";
-            pic_Logo_HCMUTE_FPass.Size = new Size(177, 262);
-            pic_Logo_HCMUTE_FPass.SizeMode = PictureBoxSizeMode.Zoom;
-            pic_Logo_HCMUTE_FPass.TabIndex = 0;
-            pic_Logo_HCMUTE_FPass.TabStop = false;
             // 
             // txb_NewPass
             // 
@@ -122,12 +90,44 @@
             btn_Update.UseVisualStyleBackColor = false;
             btn_Update.Click += btn_Update_Click;
             // 
+            // panel1
+            // 
+            panel1.BackColor = Color.RoyalBlue;
+            panel1.Controls.Add(lbl_ResetPass);
+            panel1.Controls.Add(pic_Logo_HCMUTE_FPass);
+            panel1.Location = new Point(0, 0);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(582, 100);
+            panel1.TabIndex = 1;
+            // 
+            // lbl_ResetPass
+            // 
+            lbl_ResetPass.AutoSize = true;
+            lbl_ResetPass.Font = new Font("Segoe UI Historic", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lbl_ResetPass.ForeColor = SystemColors.Window;
+            lbl_ResetPass.Location = new Point(261, 29);
+            lbl_ResetPass.Name = "lbl_ResetPass";
+            lbl_ResetPass.Size = new Size(223, 38);
+            lbl_ResetPass.TabIndex = 1;
+            lbl_ResetPass.Text = "Reset Password";
+            // 
+            // pic_Logo_HCMUTE_FPass
+            // 
+            pic_Logo_HCMUTE_FPass.BackColor = Color.DarkBlue;
+            pic_Logo_HCMUTE_FPass.Image = Properties.Resources.logo_HCMUTE_MainMenu;
+            pic_Logo_HCMUTE_FPass.Location = new Point(0, -81);
+            pic_Logo_HCMUTE_FPass.Name = "pic_Logo_HCMUTE_FPass";
+            pic_Logo_HCMUTE_FPass.Size = new Size(177, 262);
+            pic_Logo_HCMUTE_FPass.SizeMode = PictureBoxSizeMode.Zoom;
+            pic_Logo_HCMUTE_FPass.TabIndex = 0;
+            pic_Logo_HCMUTE_FPass.TabStop = false;
+            // 
             // f_ResetPass
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Info;
-            ClientSize = new Size(582, 453);
+            ClientSize = new Size(1262, 673);
             Controls.Add(btn_Update);
             Controls.Add(txb_ConfirmPass);
             Controls.Add(lbl_ConfirmPass_Reset);
@@ -147,12 +147,12 @@
         #endregion
 
         private Label lbl_NewPass_Reset;
-        private Panel panel1;
-        private Label lbl_ResetPass;
-        private PictureBox pic_Logo_HCMUTE_FPass;
         private TextBox txb_NewPass;
         private TextBox txb_ConfirmPass;
         private Label lbl_ConfirmPass_Reset;
         private Button btn_Update;
+        private Panel panel1;
+        private Label lbl_ResetPass;
+        private PictureBox pic_Logo_HCMUTE_FPass;
     }
 }

@@ -156,5 +156,11 @@ namespace ProjectMonHoc
                 e.Handled = true;
             }
         }
+
+        private void btn_Cancel_OTP_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.Cancel;
+            this.Close();
+        }
     }
 }
