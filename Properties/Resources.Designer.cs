@@ -73,6 +73,16 @@ namespace ProjectMonHoc.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap hcmute_bg {
+            get {
+                object obj = ResourceManager.GetObject("hcmute_bg", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap logo_HCMUTE_Login {
             get {
                 object obj = ResourceManager.GetObject("logo_HCMUTE_Login", resourceCulture);
