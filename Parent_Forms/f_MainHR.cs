@@ -93,5 +93,10 @@ namespace ProjectMonHoc
         {
 
         }
+
+        private void button_Chart_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new FormThongKe(), pnl_content_MainHR);
+        }
     }
 }

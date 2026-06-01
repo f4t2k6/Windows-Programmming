@@ -22,13 +22,14 @@ namespace ProjectMonHoc
             lblCurrentUser = new Label();
             lblNotification = new Label();
             pnl_studentSelector = new Panel();
-            lblSelectStudent = new Label();
             cboSelectStudent = new ComboBox();
+            lblSelectStudent = new Label();
             lblStudentInfo = new Label();
             btnRefresh = new Button();
             lblGPA = new Label();
             pnl_header = new Panel();
             pnl_toolbar = new Panel();
+            label_Search = new Label();
             pnl_footer = new Panel();
             ((System.ComponentModel.ISupportInitialize)dgvScores).BeginInit();
             pnl_studentSelector.SuspendLayout();
@@ -52,7 +53,7 @@ namespace ProjectMonHoc
             dgvScores.ReadOnly = true;
             dgvScores.RowHeadersWidth = 51;
             dgvScores.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvScores.Size = new Size(1045, 465);
+            dgvScores.Size = new Size(1027, 414);
             dgvScores.TabIndex = 0;
             // 
             // txtSearch
@@ -61,11 +62,10 @@ namespace ProjectMonHoc
             txtSearch.BorderStyle = BorderStyle.FixedSingle;
             txtSearch.Font = new Font("Segoe UI", 11F);
             txtSearch.ForeColor = Color.Gray;
-            txtSearch.Location = new Point(434, 7);
+            txtSearch.Location = new Point(569, 12);
             txtSearch.Name = "txtSearch";
             txtSearch.Size = new Size(280, 32);
             txtSearch.TabIndex = 0;
-            txtSearch.Text = "Tìm kiếm môn học...";
             txtSearch.TextChanged += txtSearch_TextChanged;
             txtSearch.Enter += txtSearch_Enter;
             txtSearch.Leave += txtSearch_Leave;
@@ -100,17 +100,6 @@ namespace ProjectMonHoc
             lblTotal.TabIndex = 0;
             lblTotal.Text = "Tổng số môn: 0";
             // 
-            // lblGPA
-            // 
-            lblGPA.AutoSize = true;
-            lblGPA.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            lblGPA.ForeColor = Color.DarkGreen;
-            lblGPA.Location = new Point(200, 10);
-            lblGPA.Name = "lblGPA";
-            lblGPA.Size = new Size(200, 23);
-            lblGPA.TabIndex = 5;
-            lblGPA.Text = "GPA: --";
-            // 
             // lblCurrentUser
             // 
             lblCurrentUser.AutoSize = true;
@@ -140,19 +129,10 @@ namespace ProjectMonHoc
             pnl_studentSelector.Dock = DockStyle.Top;
             pnl_studentSelector.Location = new Point(0, 120);
             pnl_studentSelector.Name = "pnl_studentSelector";
-            pnl_studentSelector.Size = new Size(1045, 50);
+            pnl_studentSelector.Size = new Size(1027, 50);
             pnl_studentSelector.TabIndex = 1;
             pnl_studentSelector.Visible = false;
-            // 
-            // lblSelectStudent
-            // 
-            lblSelectStudent.AutoSize = true;
-            lblSelectStudent.Font = new Font("Segoe UI", 10F);
-            lblSelectStudent.Location = new Point(23, 15);
-            lblSelectStudent.Name = "lblSelectStudent";
-            lblSelectStudent.Size = new Size(172, 23);
-            lblSelectStudent.TabIndex = 0;
-            lblSelectStudent.Text = "Chọn sinh viên:         ";
+            pnl_studentSelector.Paint += pnl_studentSelector_Paint;
             // 
             // cboSelectStudent
             // 
@@ -163,6 +143,16 @@ namespace ProjectMonHoc
             cboSelectStudent.Size = new Size(300, 31);
             cboSelectStudent.TabIndex = 1;
             cboSelectStudent.SelectedIndexChanged += cboSelectStudent_SelectedIndexChanged;
+            // 
+            // lblSelectStudent
+            // 
+            lblSelectStudent.AutoSize = true;
+            lblSelectStudent.Font = new Font("Segoe UI", 10F);
+            lblSelectStudent.Location = new Point(23, 15);
+            lblSelectStudent.Name = "lblSelectStudent";
+            lblSelectStudent.Size = new Size(172, 23);
+            lblSelectStudent.TabIndex = 0;
+            lblSelectStudent.Text = "Chọn sinh viên:         ";
             // 
             // lblStudentInfo
             // 
@@ -193,6 +183,17 @@ namespace ProjectMonHoc
             btnRefresh.UseVisualStyleBackColor = false;
             btnRefresh.Click += btnRefresh_Click;
             // 
+            // lblGPA
+            // 
+            lblGPA.AutoSize = true;
+            lblGPA.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            lblGPA.ForeColor = Color.DarkGreen;
+            lblGPA.Location = new Point(200, 10);
+            lblGPA.Name = "lblGPA";
+            lblGPA.Size = new Size(67, 23);
+            lblGPA.TabIndex = 5;
+            lblGPA.Text = "GPA: --";
+            // 
             // pnl_header
             // 
             pnl_header.BackColor = Color.SteelBlue;
@@ -200,12 +201,13 @@ namespace ProjectMonHoc
             pnl_header.Dock = DockStyle.Top;
             pnl_header.Location = new Point(0, 0);
             pnl_header.Name = "pnl_header";
-            pnl_header.Size = new Size(1045, 60);
+            pnl_header.Size = new Size(1027, 60);
             pnl_header.TabIndex = 3;
             // 
             // pnl_toolbar
             // 
             pnl_toolbar.BackColor = Color.WhiteSmoke;
+            pnl_toolbar.Controls.Add(label_Search);
             pnl_toolbar.Controls.Add(txtSearch);
             pnl_toolbar.Controls.Add(cboSort);
             pnl_toolbar.Controls.Add(lblSort);
@@ -213,8 +215,18 @@ namespace ProjectMonHoc
             pnl_toolbar.Dock = DockStyle.Top;
             pnl_toolbar.Location = new Point(0, 60);
             pnl_toolbar.Name = "pnl_toolbar";
-            pnl_toolbar.Size = new Size(1045, 60);
+            pnl_toolbar.Size = new Size(1027, 60);
             pnl_toolbar.TabIndex = 2;
+            // 
+            // label_Search
+            // 
+            label_Search.AutoSize = true;
+            label_Search.Font = new Font("Segoe UI", 10F);
+            label_Search.Location = new Point(407, 16);
+            label_Search.Name = "label_Search";
+            label_Search.Size = new Size(156, 23);
+            label_Search.TabIndex = 4;
+            label_Search.Text = "Tìm kiếm môn học:";
             // 
             // pnl_footer
             // 
@@ -223,17 +235,18 @@ namespace ProjectMonHoc
             pnl_footer.Controls.Add(lblGPA);
             pnl_footer.Controls.Add(lblNotification);
             pnl_footer.Dock = DockStyle.Bottom;
-            pnl_footer.Location = new Point(0, 635);
+            pnl_footer.Location = new Point(0, 584);
             pnl_footer.Name = "pnl_footer";
-            pnl_footer.Size = new Size(1045, 40);
+            pnl_footer.Size = new Size(1027, 44);
             pnl_footer.TabIndex = 4;
+            pnl_footer.Paint += pnl_footer_Paint;
             // 
             // f_ListScore
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(1045, 675);
+            ClientSize = new Size(1027, 628);
             Controls.Add(dgvScores);
             Controls.Add(pnl_studentSelector);
             Controls.Add(pnl_toolbar);
@@ -272,5 +285,6 @@ namespace ProjectMonHoc
         private System.Windows.Forms.Panel pnl_footer;
         private Label lblStudentInfo;
         private Label lblGPA;
+        private Label label_Search;
     }
 }

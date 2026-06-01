@@ -49,6 +49,7 @@
             button2 = new Button();
             btn_letter_MainAdmin = new Button();
             panel4 = new Panel();
+            button_Chart = new Button();
             pnl_MainStudent.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pic_Logo_HCMUTE_MStu).BeginInit();
             pnl_Side_Admin.SuspendLayout();
@@ -129,6 +130,7 @@
             // pnl_Side_Admin
             // 
             pnl_Side_Admin.BackColor = Color.RoyalBlue;
+            pnl_Side_Admin.Controls.Add(button_Chart);
             pnl_Side_Admin.Controls.Add(panel3);
             pnl_Side_Admin.Controls.Add(panel2);
             pnl_Side_Admin.Controls.Add(panel1);
@@ -183,7 +185,7 @@
             btn_ListScore.FlatStyle = FlatStyle.Flat;
             btn_ListScore.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btn_ListScore.ForeColor = SystemColors.Window;
-            btn_ListScore.Location = new Point(12, 320);
+            btn_ListScore.Location = new Point(12, 264);
             btn_ListScore.Name = "btn_ListScore";
             btn_ListScore.Size = new Size(195, 50);
             btn_ListScore.TabIndex = 6;
@@ -199,7 +201,7 @@
             btn_ManageCourse.FlatStyle = FlatStyle.Flat;
             btn_ManageCourse.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btn_ManageCourse.ForeColor = SystemColors.Menu;
-            btn_ManageCourse.Location = new Point(12, 264);
+            btn_ManageCourse.Location = new Point(12, 320);
             btn_ManageCourse.Name = "btn_ManageCourse";
             btn_ManageCourse.Size = new Size(195, 50);
             btn_ManageCourse.TabIndex = 8;
@@ -295,6 +297,22 @@
             panel4.TabIndex = 3;
             panel4.Paint += panel4_Paint;
             // 
+            // button_Chart
+            // 
+            button_Chart.BackColor = Color.RoyalBlue;
+            button_Chart.FlatAppearance.BorderSize = 0;
+            button_Chart.FlatStyle = FlatStyle.Flat;
+            button_Chart.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button_Chart.ForeColor = SystemColors.Menu;
+            button_Chart.Location = new Point(12, 376);
+            button_Chart.Name = "button_Chart";
+            button_Chart.Size = new Size(200, 50);
+            button_Chart.TabIndex = 9;
+            button_Chart.Text = "📈 Thống kê sinh viên";
+            button_Chart.TextAlign = ContentAlignment.MiddleLeft;
+            button_Chart.UseVisualStyleBackColor = false;
+            button_Chart.Click += button_Chart_Click;
+            // 
             // f_MainAdmin
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -335,5 +353,6 @@
         private Panel panel2;
         private Panel panel3;
         private Panel panel4;
+        private Button button_Chart;
     }
 }
