@@ -36,6 +36,7 @@
             btn_Logout_HR = new Button();
             btn_ListScore = new Button();
             pnl_content_MainHR = new Panel();
+            button_Chart = new Button();
             pnl_Side_HR.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pb_Logo_HR).BeginInit();
             SuspendLayout();
@@ -43,6 +44,7 @@
             // pnl_Side_HR
             // 
             pnl_Side_HR.BackColor = Color.RoyalBlue;
+            pnl_Side_HR.Controls.Add(button_Chart);
             pnl_Side_HR.Controls.Add(pb_Logo_HR);
             pnl_Side_HR.Controls.Add(btn_ManageCourse);
             pnl_Side_HR.Controls.Add(btn_ListStudent);
@@ -72,7 +74,7 @@
             btn_ManageCourse.FlatStyle = FlatStyle.Flat;
             btn_ManageCourse.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btn_ManageCourse.ForeColor = SystemColors.Menu;
-            btn_ManageCourse.Location = new Point(12, 264);
+            btn_ManageCourse.Location = new Point(6, 264);
             btn_ManageCourse.Name = "btn_ManageCourse";
             btn_ManageCourse.Size = new Size(195, 50);
             btn_ManageCourse.TabIndex = 5;
@@ -88,7 +90,7 @@
             btn_ListStudent.FlatStyle = FlatStyle.Flat;
             btn_ListStudent.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btn_ListStudent.ForeColor = SystemColors.Menu;
-            btn_ListStudent.Location = new Point(12, 152);
+            btn_ListStudent.Location = new Point(6, 152);
             btn_ListStudent.Name = "btn_ListStudent";
             btn_ListStudent.Size = new Size(211, 50);
             btn_ListStudent.TabIndex = 4;
@@ -104,7 +106,7 @@
             btn_Logout_HR.FlatStyle = FlatStyle.Flat;
             btn_Logout_HR.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btn_Logout_HR.ForeColor = SystemColors.Window;
-            btn_Logout_HR.Location = new Point(12, 564);
+            btn_Logout_HR.Location = new Point(6, 611);
             btn_Logout_HR.Name = "btn_Logout_HR";
             btn_Logout_HR.Size = new Size(195, 50);
             btn_Logout_HR.TabIndex = 3;
@@ -120,7 +122,7 @@
             btn_ListScore.FlatStyle = FlatStyle.Flat;
             btn_ListScore.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btn_ListScore.ForeColor = SystemColors.Window;
-            btn_ListScore.Location = new Point(12, 208);
+            btn_ListScore.Location = new Point(6, 208);
             btn_ListScore.Name = "btn_ListScore";
             btn_ListScore.Size = new Size(195, 50);
             btn_ListScore.TabIndex = 2;
@@ -137,11 +139,27 @@
             pnl_content_MainHR.TabIndex = 2;
             pnl_content_MainHR.Paint += pnl_content_MainHR_Paint;
             // 
+            // button_Chart
+            // 
+            button_Chart.BackColor = Color.RoyalBlue;
+            button_Chart.FlatAppearance.BorderSize = 0;
+            button_Chart.FlatStyle = FlatStyle.Flat;
+            button_Chart.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button_Chart.ForeColor = SystemColors.Menu;
+            button_Chart.Location = new Point(6, 320);
+            button_Chart.Name = "button_Chart";
+            button_Chart.Size = new Size(200, 50);
+            button_Chart.TabIndex = 7;
+            button_Chart.Text = "📈 Thống kê sinh viên";
+            button_Chart.TextAlign = ContentAlignment.MiddleLeft;
+            button_Chart.UseVisualStyleBackColor = false;
+            button_Chart.Click += button_Chart_Click;
+            // 
             // f_MainHR
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1244, 626);
+            ClientSize = new Size(1262, 673);
             Controls.Add(pnl_content_MainHR);
             Controls.Add(pnl_Side_HR);
             Name = "f_MainHR";
@@ -161,5 +179,6 @@
         private Button btn_ListStudent;
         private Button btn_ManageCourse;
         private PictureBox pb_Logo_HR;
+        private Button button_Chart;
     }
 }
