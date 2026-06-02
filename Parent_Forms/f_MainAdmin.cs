@@ -13,41 +13,33 @@ namespace ProjectMonHoc
             InitializeComponent();
         }
 
-        // Hàm gác cổng quản lý vòng đời và hiển thị form con duy nhất trong panel2
         private void OpenChildForm(Form childForm, Panel targetPanel)
         {
-            // 1. Nếu đang có một Form con khác mở, đóng hoàn toàn để giải phóng bộ nhớ
             if (activeForm != null)
             {
                 activeForm.Close();
                 activeForm.Dispose();
             }
-
-            // 2. Gán Form con mới vào biến theo dõi
             activeForm = childForm;
-
-            // 3. Thiết lập thuộc tính để đưa form lồng vào panel như một Control
             childForm.TopLevel = false;
             childForm.FormBorderStyle = FormBorderStyle.None;
             childForm.Dock = DockStyle.Fill;
-
-            // 4. Dọn dẹp Panel và nạp Form con vào
             targetPanel.Controls.Clear();
             targetPanel.Controls.Add(childForm);
             targetPanel.Tag = childForm;
-
-            // 5. Hiển thị Form con lên màn hình
             childForm.BringToFront();
             childForm.Show();
         }
 
-        // =========================================================
-        // ĐIỀU HƯỚNG CÁC CHỨC NĂNG SANG PANEL2
-        // =========================================================
+        // ── ĐIỀU HƯỚNG ────────────────────────────────────────────────
 
+        /// <summary>
+        /// Nút "📩 Hộp thư" — mở form duyệt yêu cầu in giấy xác nhận SV.
+        /// (Cũng có thể mở f_AdminRequests nếu dự án còn dùng form đó cho HR requests)
+        /// </summary>
         private void btn_letter_MainAdmin_Click(object sender, EventArgs e)
         {
-
+            // MỚI: mở hộp thư yêu cầu in giấy SV
             OpenChildForm(new f_AdminRequests(), panel4);
         }
 
@@ -70,26 +62,17 @@ namespace ProjectMonHoc
         {
             Globals.GlobalUsername = string.Empty;
             this.Hide();
-
             f_Login formLogin = new f_Login();
             formLogin.ShowDialog();
-
             this.Close();
-        }
-
-        private void panel2_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void panel4_Paint(object sender, PaintEventArgs e)
-        {
-
         }
 
         private void button_Chart_Click(object sender, EventArgs e)
         {
             OpenChildForm(new FormThongKe(), panel4);
         }
+
+        private void panel2_Paint(object sender, PaintEventArgs e) { }
+        private void panel4_Paint(object sender, PaintEventArgs e) { }
     }
 }

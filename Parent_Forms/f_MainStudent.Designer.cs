@@ -2,34 +2,22 @@
 {
     partial class f_MainStudent
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
+            if (disposing && (components != null)) components.Dispose();
             base.Dispose(disposing);
         }
 
         #region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(f_MainStudent));
             pnl_Side_Student = new Panel();
+            btn_PrintRequest = new Button();
+            btn_RegisterCourse = new Button();
             panel1 = new Panel();
             pb_main_student = new PictureBox();
             btn_Logout_Student = new Button();
@@ -37,7 +25,6 @@
             btn_ListScore = new Button();
             btn_Student_Info = new Button();
             pnl_Content_Student = new Panel();
-            btn_RegisterCourse = new Button();
             pnl_Side_Student.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pb_main_student).BeginInit();
             SuspendLayout();
@@ -45,6 +32,7 @@
             // pnl_Side_Student
             // 
             pnl_Side_Student.BackColor = Color.SteelBlue;
+            pnl_Side_Student.Controls.Add(btn_PrintRequest);
             pnl_Side_Student.Controls.Add(btn_RegisterCourse);
             pnl_Side_Student.Controls.Add(panel1);
             pnl_Side_Student.Controls.Add(pb_main_student);
@@ -57,6 +45,38 @@
             pnl_Side_Student.Size = new Size(220, 720);
             pnl_Side_Student.TabIndex = 0;
             pnl_Side_Student.Paint += pnl_Side_Student_Paint;
+            // 
+            // btn_PrintRequest
+            // 
+            btn_PrintRequest.BackColor = Color.SteelBlue;
+            btn_PrintRequest.FlatAppearance.BorderSize = 0;
+            btn_PrintRequest.FlatStyle = FlatStyle.Flat;
+            btn_PrintRequest.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
+            btn_PrintRequest.ForeColor = SystemColors.Window;
+            btn_PrintRequest.Location = new Point(12, 376);
+            btn_PrintRequest.Name = "btn_PrintRequest";
+            btn_PrintRequest.Size = new Size(208, 45);
+            btn_PrintRequest.TabIndex = 7;
+            btn_PrintRequest.Text = "🖨️ In giấy Xác nhận";
+            btn_PrintRequest.TextAlign = ContentAlignment.MiddleLeft;
+            btn_PrintRequest.UseVisualStyleBackColor = false;
+            btn_PrintRequest.Click += btn_PrintRequest_Click;
+            // 
+            // btn_RegisterCourse
+            // 
+            btn_RegisterCourse.BackColor = Color.SteelBlue;
+            btn_RegisterCourse.FlatAppearance.BorderSize = 0;
+            btn_RegisterCourse.FlatStyle = FlatStyle.Flat;
+            btn_RegisterCourse.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
+            btn_RegisterCourse.ForeColor = SystemColors.Window;
+            btn_RegisterCourse.Location = new Point(12, 320);
+            btn_RegisterCourse.Name = "btn_RegisterCourse";
+            btn_RegisterCourse.Size = new Size(195, 50);
+            btn_RegisterCourse.TabIndex = 6;
+            btn_RegisterCourse.Text = "📝 Đăng kí môn học";
+            btn_RegisterCourse.TextAlign = ContentAlignment.MiddleLeft;
+            btn_RegisterCourse.UseVisualStyleBackColor = false;
+            btn_RegisterCourse.Click += btn_RegisterCourse_Click;
             // 
             // panel1
             // 
@@ -81,7 +101,7 @@
             btn_Logout_Student.BackColor = Color.SteelBlue;
             btn_Logout_Student.FlatAppearance.BorderSize = 0;
             btn_Logout_Student.FlatStyle = FlatStyle.Flat;
-            btn_Logout_Student.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btn_Logout_Student.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
             btn_Logout_Student.ForeColor = Color.White;
             btn_Logout_Student.Location = new Point(12, 615);
             btn_Logout_Student.Name = "btn_Logout_Student";
@@ -97,7 +117,7 @@
             btn_Timetable.BackColor = Color.SteelBlue;
             btn_Timetable.FlatAppearance.BorderSize = 0;
             btn_Timetable.FlatStyle = FlatStyle.Flat;
-            btn_Timetable.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btn_Timetable.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
             btn_Timetable.ForeColor = SystemColors.Menu;
             btn_Timetable.Location = new Point(12, 208);
             btn_Timetable.Name = "btn_Timetable";
@@ -113,7 +133,7 @@
             btn_ListScore.BackColor = Color.SteelBlue;
             btn_ListScore.FlatAppearance.BorderSize = 0;
             btn_ListScore.FlatStyle = FlatStyle.Flat;
-            btn_ListScore.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btn_ListScore.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
             btn_ListScore.ForeColor = SystemColors.Window;
             btn_ListScore.Location = new Point(12, 264);
             btn_ListScore.Name = "btn_ListScore";
@@ -129,7 +149,7 @@
             btn_Student_Info.BackColor = Color.SteelBlue;
             btn_Student_Info.FlatAppearance.BorderSize = 0;
             btn_Student_Info.FlatStyle = FlatStyle.Flat;
-            btn_Student_Info.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btn_Student_Info.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
             btn_Student_Info.ForeColor = Color.White;
             btn_Student_Info.Location = new Point(12, 152);
             btn_Student_Info.Name = "btn_Student_Info";
@@ -147,22 +167,6 @@
             pnl_Content_Student.Size = new Size(1045, 675);
             pnl_Content_Student.TabIndex = 1;
             pnl_Content_Student.Paint += pnl_content_Student_Paint;
-            // 
-            // btn_RegisterCourse
-            // 
-            btn_RegisterCourse.BackColor = Color.SteelBlue;
-            btn_RegisterCourse.FlatAppearance.BorderSize = 0;
-            btn_RegisterCourse.FlatStyle = FlatStyle.Flat;
-            btn_RegisterCourse.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btn_RegisterCourse.ForeColor = SystemColors.Window;
-            btn_RegisterCourse.Location = new Point(12, 320);
-            btn_RegisterCourse.Name = "btn_RegisterCourse";
-            btn_RegisterCourse.Size = new Size(195, 50);
-            btn_RegisterCourse.TabIndex = 6;
-            btn_RegisterCourse.Text = "📝 Đăng kí môn học";
-            btn_RegisterCourse.TextAlign = ContentAlignment.MiddleLeft;
-            btn_RegisterCourse.UseVisualStyleBackColor = false;
-            btn_RegisterCourse.Click += btn_RegisterCourse_Click;
             // 
             // f_MainStudent
             // 
@@ -183,14 +187,15 @@
 
         #endregion
 
-        private Panel pnl_Side_Student;
-        private Button btn_Timetable;
-        private Button btn_ListScore;
-        private Button btn_Student_Info;
-        private Button btn_Logout_Student;
-        private PictureBox pb_main_student;
-        private Panel panel1;
-        private Panel pnl_Content_Student;
-        private Button btn_RegisterCourse;
+        private System.Windows.Forms.Panel pnl_Side_Student;
+        private System.Windows.Forms.Button btn_Timetable;
+        private System.Windows.Forms.Button btn_ListScore;
+        private System.Windows.Forms.Button btn_Student_Info;
+        private System.Windows.Forms.Button btn_Logout_Student;
+        private System.Windows.Forms.PictureBox pb_main_student;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel pnl_Content_Student;
+        private System.Windows.Forms.Button btn_RegisterCourse;
+        private System.Windows.Forms.Button btn_PrintRequest;    // ← MỚI
     }
 }

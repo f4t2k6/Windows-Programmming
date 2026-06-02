@@ -1,20 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ProjectMonHoc
 {
-    //Bỏ lỗi CA1416
     [System.Runtime.Versioning.SupportedOSPlatform("windows")]
     public partial class f_MainStudent : Form
     {
         private Form? activeForm = null;
+
         public f_MainStudent()
         {
             InitializeComponent();
@@ -22,60 +16,73 @@ namespace ProjectMonHoc
 
         private void OpenChildForm(Form childForm, Panel targetPanel)
         {
-            // 1. Nếu đang có một Form con khác mở, đóng hoàn toàn để giải phóng bộ nhớ
             if (activeForm != null)
             {
                 activeForm.Close();
                 activeForm.Dispose();
             }
-
-            // 2. Gán Form con mới vào biến theo dõi
             activeForm = childForm;
-
-            // 3. Thiết lập bộ 3 thuộc tính gác cổng quan trọng
-            childForm.TopLevel = false;                      // Biến form thành control nội bộ
-            childForm.FormBorderStyle = FormBorderStyle.None; // Xóa sạch khung viền và thanh tiêu đề
-            childForm.Dock = DockStyle.Fill;                // Tự động kéo giãn khít theo kích thước Panel
-
-            // 4. Dọn dẹp Panel và nạp Form con vào
-            targetPanel.Controls.Clear();                    // Xóa sạch các điều khiển/giao diện cũ trong panel
-            targetPanel.Controls.Add(childForm);            // Thêm form con vào panel
-            targetPanel.Tag = childForm;                    // Lưu trữ tham chiếu nếu cần dùng sau này
-
-            // 5. Hiển thị Form con lên màn hình
-            childForm.BringToFront();                       // Đẩy lên lớp trên cùng để không bị che khuất
-            childForm.Show();                               // Kích hoạt hiển thị
+            childForm.TopLevel = false;
+            childForm.FormBorderStyle = FormBorderStyle.None;
+            childForm.Dock = DockStyle.Fill;
+            targetPanel.Controls.Clear();
+            targetPanel.Controls.Add(childForm);
+            targetPanel.Tag = childForm;
+            childForm.BringToFront();
+            childForm.Show();
         }
 
         private void btn_Logout_Student_Click(object sender, EventArgs e)
         {
-            // 1. Xóa trạng thái đăng nhập toàn cục để đảm bảo bảo mật
             Globals.GlobalUsername = string.Empty;
-            // Nếu trong Globals.cs của bạn có lưu thêm biến Role, hãy xóa nó ở đây (VD: Globals.GlobalRole = string.Empty;)
-
-            // 2. Ẩn form hiện tại đi
             this.Hide();
-
-            // 3. Khởi tạo lại và hiển thị form Đăng nhập
             f_Login formLogin = new f_Login();
             formLogin.ShowDialog();
-
-            // 4. Giải phóng hoàn toàn form cũ sau khi form login đóng
             this.Close();
         }
-
-        //=================================================================
-        // Button mở form ListScore, hàm helper lấy thông tin MSSV & Họ tên
-        //=================================================================
 
         private void btn_Student_Score_Click(object sender, EventArgs e)
         {
             DataTable dt = Student.GetStudents(Globals.GlobalMSSV.ToString(), "Tất cả", "Theo MSSV");
-
             if (dt.Rows.Count == 0)
             {
                 MessageBox.Show("Không tìm thấy thông tin sinh viên!", "Lỗi",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            DataRow row = dt.Rows[0];
+            int mssv = Convert.ToInt32(row["MSSV"]);
+            string fullName = $"{row["Fname"]} {row["Lname"]}".Trim();
+            OpenChildForm(new f_ListScore(mssv, fullName), pnl_Content_Student);
+        }
+
+        private void btn_Student_Info_Click(object sender, EventArgs e)
+        {
+            // TODO: mở form thông tin cá nhân
+        }
+
+        private void btn_Timetable_Click(object sender, EventArgs e)
+        {
+            // TODO: mở form thời khóa biểu
+        }
+
+        private void btn_RegisterCourse_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new f_RegisterCourse(), pnl_Content_Student);
+        }
+
+        // ============================================================
+        // MỚI: Nút "In giấy Xác nhận Sinh viên"
+        // ============================================================
+        private void btn_PrintRequest_Click(object sender, EventArgs e)
+        {
+            // Lấy thông tin sinh viên từ MSSV đang đăng nhập
+            DataTable dt = Student.GetStudents(Globals.GlobalMSSV.ToString(), "Tất cả", "Theo MSSV");
+
+            if (dt.Rows.Count == 0)
+            {
+                MessageBox.Show("Không tìm thấy thông tin sinh viên!",
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -83,42 +90,14 @@ namespace ProjectMonHoc
             int mssv = Convert.ToInt32(row["MSSV"]);
             string fullName = $"{row["Fname"]} {row["Lname"]}".Trim();
 
-            OpenChildForm(new f_ListScore(mssv, fullName), pnl_Content_Student);
+            // Mở form f_PrintRequest trong panel nội dung
+            OpenChildForm(new f_PrintRequest(mssv, fullName), pnl_Content_Student);
         }
 
-        private void btn_Student_Info_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btn_Timetable_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void pnl_Side_Student_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void pb_main_student_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void f_MainStudent_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void pnl_content_Student_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void btn_RegisterCourse_Click(object sender, EventArgs e)
-        {
-            OpenChildForm(new f_RegisterCourse(), pnl_Content_Student);
-        }
+        // ── sự kiện giao diện không cần logic ──────────────────────
+        private void pnl_Side_Student_Paint(object sender, PaintEventArgs e) { }
+        private void pb_main_student_Click(object sender, EventArgs e) { }
+        private void f_MainStudent_Load(object sender, EventArgs e) { }
+        private void pnl_content_Student_Paint(object sender, PaintEventArgs e) { }
     }
 }
