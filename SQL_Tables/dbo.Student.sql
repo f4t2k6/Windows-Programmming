@@ -28,4 +28,16 @@ ALTER TABLE [dbo].[Student]
 ADD CONSTRAINT PK_Student PRIMARY KEY (MSSV);
 GO
 
+ALTER TABLE [dbo].[Student]
+ADD [PrintRequest] NVARCHAR(20) NULL;
+GO
+ 
+-- (Tuỳ chọn) Thêm cột lưu thời điểm gửi yêu cầu
+ALTER TABLE [dbo].[Student]
+ADD [PrintRequestDate] DATETIME NULL;
+GO
+ 
+PRINT N'Đã thêm cột PrintRequest và PrintRequestDate vào bảng Student thành công.';
+GO
+
 

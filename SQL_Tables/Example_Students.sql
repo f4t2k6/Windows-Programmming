@@ -210,6 +210,32 @@ IF NOT EXISTS (SELECT 1 FROM Score WHERE student_id = 108 AND course_id = 'INT22
 GO
 
 -- ============================================================
+-- THÊM LỚP HỌC MẪU VÀO BẢNG Classroom
+-- Dựa trên sinh viên K22 (MSSV 104–108) và môn học hiện có
+-- ============================================================
+ 
+IF NOT EXISTS (SELECT 1 FROM Classroom WHERE MaLop = 'CNTT2201')
+    INSERT INTO Classroom (MaLop, TenLop, SiSo, GVCN)
+    VALUES ('CNTT2201', N'Công nghệ thông tin K22 - Lớp 1', 35, N'Nguyễn Văn An');
+ 
+IF NOT EXISTS (SELECT 1 FROM Classroom WHERE MaLop = 'CNTT2202')
+    INSERT INTO Classroom (MaLop, TenLop, SiSo, GVCN)
+    VALUES ('CNTT2202', N'Công nghệ thông tin K22 - Lớp 2', 33, N'Trần Thị Bích');
+ 
+IF NOT EXISTS (SELECT 1 FROM Classroom WHERE MaLop = 'KTPM2201')
+    INSERT INTO Classroom (MaLop, TenLop, SiSo, GVCN)
+    VALUES ('KTPM2201', N'Kỹ thuật phần mềm K22', 38, N'Lê Hoàng Cường');
+ 
+IF NOT EXISTS (SELECT 1 FROM Classroom WHERE MaLop = 'HTTT2201')
+    INSERT INTO Classroom (MaLop, TenLop, SiSo, GVCN)
+    VALUES ('HTTT2201', N'Hệ thống thông tin K22', 40, N'Phạm Minh Đức');
+ 
+IF NOT EXISTS (SELECT 1 FROM Classroom WHERE MaLop = 'ATTT2201')
+    INSERT INTO Classroom (MaLop, TenLop, SiSo, GVCN)
+    VALUES ('ATTT2201', N'An toàn thông tin K22', 30, N'Võ Thị Hoa');
+GO
+
+-- ============================================================
 -- KIỂM TRA KẾT QUẢ
 -- ============================================================
 SELECT s.MSSV, s.Lname + N' ' + s.Fname AS HoTen, s.Gder, s.Email FROM Student s ORDER BY s.MSSV;
@@ -232,4 +258,7 @@ SELECT
 FROM Score sc
 INNER JOIN Student st ON sc.student_id = st.MSSV
 ORDER BY sc.student_id, sc.course_id;
+
+SELECT MaLop, TenLop, SiSo, GVCN FROM Classroom ORDER BY MaLop;
 GO
+
