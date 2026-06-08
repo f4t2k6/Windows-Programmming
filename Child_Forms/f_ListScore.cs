@@ -1,6 +1,7 @@
 using System;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Printing;
 using System.Windows.Forms;
 
 namespace ProjectMonHoc
@@ -11,11 +12,15 @@ namespace ProjectMonHoc
         private int _studentMSSV;
         private string _studentName;
 
+        private PrintDocument printDoc = new PrintDocument();
+        private PrintPreviewDialog previewDialog = new PrintPreviewDialog();
+
         public f_ListScore(int studentMSSV, string studentName)
         {
             InitializeComponent();
             _studentMSSV = studentMSSV;
             _studentName = studentName;
+            printDoc.PrintPage += new PrintPageEventHandler(PrintDoc_PrintPage);
         }
 
         private void f_ListScore_Load(object sender, EventArgs e)
@@ -39,7 +44,7 @@ namespace ProjectMonHoc
                 pnl_studentSelector.Visible = true;
                 lblStudentInfo.Visible = false;
                 lblNotification.Text = "💡 Nhấn đúp vào dòng bất kỳ để chỉnh sửa điểm.";
-                lblNotification.ForeColor = Color.DarkGreen;
+                lblNotification.ForeColor = Color.White;
 
                 LoadStudentComboBox();
                 dgvScores.CellDoubleClick += dgvScores_CellDoubleClick;
@@ -50,7 +55,7 @@ namespace ProjectMonHoc
                 lblStudentInfo.Visible = true;
                 lblStudentInfo.Text = $"📋 Bảng điểm của: {_studentName}  (MSSV: {_studentMSSV})";
                 lblNotification.Text = "🔒 Bạn chỉ có quyền xem điểm, không thể chỉnh sửa.";
-                lblNotification.ForeColor = Color.Gray;
+                lblNotification.ForeColor = Color.LightCyan;
 
                 RefreshData();
             }
@@ -182,11 +187,24 @@ namespace ProjectMonHoc
                                  : gpa >= 6.5 ? Color.DarkOrange
                                  : gpa >= 5.0 ? Color.Gray
                                  : Color.Red;
+
+                string hocLuc;
+                Color hocLucColor;
+                if (gpa >= 9.0) { hocLuc = "Xuất sắc"; hocLucColor = Color.DarkBlue; }
+                else if (gpa >= 8.0) { hocLuc = "Giỏi"; hocLucColor = Color.DarkGreen; }
+                else if (gpa >= 6.5) { hocLuc = "Khá"; hocLucColor = Color.DarkOrange; }
+                else if (gpa >= 5.0) { hocLuc = "Trung bình"; hocLucColor = Color.Gray; }
+                else { hocLuc = "Yếu"; hocLucColor = Color.Red; }
+
+                lblHocLuc.Text = $"🎓 Học lực: {hocLuc}";
+                lblHocLuc.ForeColor = hocLucColor;
             }
             else
             {
                 lblGPA.Text = "GPA: --   |   Tổng TC tích lũy: --";
                 lblGPA.ForeColor = Color.Gray;
+                lblHocLuc.Text = "🎓 Học lực: --";
+                lblHocLuc.ForeColor = Color.Gray;
             }
         }
 
@@ -257,14 +275,108 @@ namespace ProjectMonHoc
 
         private void lblStudentInfo_Click(object sender, EventArgs e) { }
 
-        private void pnl_studentSelector_Paint(object sender, PaintEventArgs e)
-        {
+        private void pnl_studentSelector_Paint(object sender, PaintEventArgs e) { }
 
+        private void pnl_footer_Paint(object sender, PaintEventArgs e) { }
+
+        // ─── In bảng điểm ────────────────────────────────────────────────────────
+
+        private void SendPrintRequestToAdmin()
+        {
+            MY_DB my_db = new MY_DB();
+            try
+            {
+                my_db.openConnection();
+                string sql = @"UPDATE dbo.Student 
+                               SET    PrintRequest     = 'Pending', 
+                                      PrintRequestDate = GETDATE() 
+                               WHERE  MSSV = @mssv";
+                using var cmd = new Microsoft.Data.SqlClient.SqlCommand(sql, my_db.conn);
+                cmd.Parameters.AddWithValue("@mssv", _studentMSSV);
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi gửi yêu cầu in: " + ex.Message, "Lỗi SQL",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally { my_db.closeConnection(); }
         }
 
-        private void pnl_footer_Paint(object sender, PaintEventArgs e)
+        private void PrintDoc_PrintPage(object sender, PrintPageEventArgs e)
         {
+            if (e.Graphics == null) return;
 
+            Brush brush = Brushes.Black;
+            Pen pen = new Pen(Color.Black, 1);
+            Font fontTitle = new Font("Times New Roman", 18, FontStyle.Bold);
+            Font fontHeader = new Font("Times New Roman", 12, FontStyle.Bold);
+            Font fontContent = new Font("Times New Roman", 12, FontStyle.Regular);
+            Font fontItalic = new Font("Times New Roman", 12, FontStyle.Italic);
+
+            int startX = 50, startY = 50, offset = 0;
+
+            e.Graphics.DrawString("TRƯỜNG ĐẠI HỌC SƯ PHẠM KĨ THUẬT", fontHeader, brush, startX, startY + offset);
+            offset += 40;
+            e.Graphics.DrawString("BẢNG ĐIỂM CHI TIẾT SINH VIÊN", fontTitle, brush, startX + 180, startY + offset);
+            offset += 50;
+
+            e.Graphics.DrawString($"Họ và tên: {_studentName}", fontContent, brush, startX, startY + offset);
+            e.Graphics.DrawString($"MSSV: {_studentMSSV}", fontContent, brush, startX + 450, startY + offset);
+            offset += 40;
+
+            e.Graphics.DrawString("Mã MH", fontHeader, brush, startX, startY + offset);
+            e.Graphics.DrawString("Tên môn học", fontHeader, brush, startX + 100, startY + offset);
+            e.Graphics.DrawString("Điểm TK", fontHeader, brush, startX + 480, startY + offset);
+            e.Graphics.DrawString("Xếp loại", fontHeader, brush, startX + 580, startY + offset);
+            offset += 25;
+            e.Graphics.DrawLine(pen, startX, startY + offset, startX + 700, startY + offset);
+            offset += 15;
+
+            foreach (DataGridViewRow row in dgvScores.Rows)
+            {
+                if (row.IsNewRow) continue;
+                string maMH = row.Cells["course_id"]?.Value?.ToString() ?? "";
+                string tenMH = row.Cells["course_name"]?.Value?.ToString() ?? "";
+                string diemTK = row.Cells["DiemTK"]?.Value?.ToString() ?? "";
+                string xepLoi = row.Cells["XepLoai"]?.Value?.ToString() ?? "";
+                if (tenMH.Length > 40) tenMH = tenMH[..37] + "...";
+                e.Graphics.DrawString(maMH, fontContent, brush, startX, startY + offset);
+                e.Graphics.DrawString(tenMH, fontContent, brush, startX + 100, startY + offset);
+                e.Graphics.DrawString(diemTK, fontContent, brush, startX + 480, startY + offset);
+                e.Graphics.DrawString(xepLoi, fontContent, brush, startX + 580, startY + offset);
+                offset += 30;
+            }
+
+            offset += 10;
+            e.Graphics.DrawLine(pen, startX, startY + offset, startX + 700, startY + offset);
+            offset += 40;
+            string currentDate = $"TP.HCM, ngày {DateTime.Now:dd} tháng {DateTime.Now:MM} năm {DateTime.Now:yyyy}";
+            e.Graphics.DrawString(currentDate, fontItalic, brush, startX + 450, startY + offset);
+            offset += 25;
+            e.Graphics.DrawString("Phòng Đào Tạo", fontHeader, brush, startX + 490, startY + offset);
+        }
+
+        private void btn_Print_Click(object sender, EventArgs e)
+        {
+            if (_studentMSSV <= 0 || dgvScores.Rows.Count == 0)
+            {
+                MessageBox.Show("Không có dữ liệu điểm để in!", "Thông báo",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            previewDialog.Document = printDoc;
+            previewDialog.Width = 850;
+            previewDialog.Height = 700;
+            previewDialog.ShowDialog();
+
+            if (Globals.GlobalRole.Trim() == "Student")
+            {
+                SendPrintRequestToAdmin();
+                MessageBox.Show("Yêu cầu in đã được gửi đến Admin để chờ xét duyệt!", "Thành công",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
     }
 }

@@ -52,6 +52,7 @@ public class Student
         catch { return false; }
         finally { db.closeConnection(); }
     }
+
     public static DataTable GetStudents(string search = "", string genderFilter = "Tất cả", string sortBy = "")
     {
         MY_DB db = new MY_DB();
@@ -91,7 +92,6 @@ public class Student
         try
         {
             db.openConnection();
-            // Cập nhật tất cả các thông tin dựa trên khóa chính MSSV
             string query = "UPDATE Student SET Fname = @fname, Lname = @lname, Dob = @dob, " +
                            "Gder = @gder, Phone = @phone, Address = @addr, Htown = @htown, " +
                            "Email = @email, Pture = @pic WHERE MSSV = @mssv";
@@ -122,21 +122,13 @@ public class Student
         {
             db.openConnection();
 
-            // 1. Kiểm tra xem sinh viên đã có điểm trong bảng Score chưa
             string checkScoreQuery = "SELECT COUNT(*) FROM Score WHERE student_id = @mssv";
-            // Lưu ý: Bạn hãy kiểm tra lại tên cột (VD: student_id hoặc MSSV) và tên bảng điểm trong DB của bạn xem có đúng là 'Score' không nhé.
-
             SqlCommand checkCmd = new SqlCommand(checkScoreQuery, db.conn);
             checkCmd.Parameters.AddWithValue("@mssv", mssv);
 
             int scoreCount = (int)checkCmd.ExecuteScalar();
-            if (scoreCount > 0)
-            {
-                // Trả về false hoặc bạn có thể tạo một Exception riêng, ở đây ta trả về false để Form xử lý báo lỗi ràng buộc
-                return false;
-            }
+            if (scoreCount > 0) return false;
 
-            // 2. Nếu chưa có điểm thì tiến hành xóa bình thường
             string deleteQuery = "DELETE FROM Student WHERE MSSV = @mssv";
             SqlCommand cmd = new SqlCommand(deleteQuery, db.conn);
             cmd.Parameters.AddWithValue("@mssv", mssv);
@@ -144,14 +136,8 @@ public class Student
             int rows = cmd.ExecuteNonQuery();
             return rows > 0;
         }
-        catch
-        {
-            return false;
-        }
-        finally
-        {
-            db.closeConnection();
-        }
+        catch { return false; }
+        finally { db.closeConnection(); }
     }
 
     public static DataTable GetStudentsForCombo()
@@ -166,6 +152,62 @@ public class Student
             adapter.Fill(dt);
             return dt;
         }
+        finally { db.closeConnection(); }
+    }
+
+    // ── Thống kê giới tính ───────────────────────────────────────────────────
+    public int totalStudent()
+    {
+        MY_DB db = new MY_DB();
+        try
+        {
+            db.openConnection();
+            using var cmd = new SqlCommand("SELECT COUNT(*) FROM Student", db.conn);
+            return (int)cmd.ExecuteScalar();
+        }
+        catch { return 0; }
+        finally { db.closeConnection(); }
+    }
+
+    public int totalMaleStudent()
+    {
+        MY_DB db = new MY_DB();
+        try
+        {
+            db.openConnection();
+            using var cmd = new SqlCommand(
+                "SELECT COUNT(*) FROM Student WHERE Gder = N'Nam'", db.conn);
+            return (int)cmd.ExecuteScalar();
+        }
+        catch { return 0; }
+        finally { db.closeConnection(); }
+    }
+
+    public int totalFemaleStudent()
+    {
+        MY_DB db = new MY_DB();
+        try
+        {
+            db.openConnection();
+            using var cmd = new SqlCommand(
+                "SELECT COUNT(*) FROM Student WHERE Gder = N'Nữ'", db.conn);
+            return (int)cmd.ExecuteScalar();
+        }
+        catch { return 0; }
+        finally { db.closeConnection(); }
+    }
+
+    public int totalOtherStudent()
+    {
+        MY_DB db = new MY_DB();
+        try
+        {
+            db.openConnection();
+            using var cmd = new SqlCommand(
+                "SELECT COUNT(*) FROM Student WHERE Gder NOT IN (N'Nam', N'Nữ') OR Gder IS NULL", db.conn);
+            return (int)cmd.ExecuteScalar();
+        }
+        catch { return 0; }
         finally { db.closeConnection(); }
     }
 }

@@ -6,113 +6,82 @@ GO
 -- (Chỉ INSERT nếu chưa tồn tại — giữ nguyên dữ liệu cũ)
 -- ============================================================
 
--- SV 104 | Mật khẩu gốc: sv104pass
-IF NOT EXISTS (SELECT 1 FROM Student WHERE MSSV = 104)
+-- SV 22110045 | Mật khẩu gốc: sv22110045pass 
+IF NOT EXISTS (SELECT 1 FROM Student WHERE MSSV = 22110045)
     INSERT INTO Student (MSSV, Fname, Lname, Dob, Gder, Phone, Address, Htown, Email, Pture)
-    VALUES (104, N'Phạm Thị', N'Dung', '2004-03-22', N'Nữ', '0934567890', N'12 Lý Thường Kiệt', N'Hà Nội', 'pham.dung@gmail.com', NULL);
+    VALUES (22110045, N'Phạm Thị', N'Dung', '2004-03-22', N'Nữ', '0934567890', N'12 Lý Thường Kiệt', N'Hà Nội', 'pham.dung@gmail.com', NULL);
 
--- SV 105 | Mật khẩu gốc: sv105pass
-IF NOT EXISTS (SELECT 1 FROM Student WHERE MSSV = 105)
+-- SV 22110078 | Mật khẩu gốc: sv22110078pass
+IF NOT EXISTS (SELECT 1 FROM Student WHERE MSSV = 22110078)
     INSERT INTO Student (MSSV, Fname, Lname, Dob, Gder, Phone, Address, Htown, Email, Pture)
-    VALUES (105, N'Nguyễn Minh', N'Khoa', '2003-11-05', N'Nam', '0945678901', N'88 Trần Phú', N'Đà Nẵng', 'nguyen.khoa@gmail.com', NULL);
+    VALUES (22110078, N'Nguyễn Minh', N'Khoa', '2003-11-05', N'Nam', '0945678901', N'88 Trần Phú', N'Đà Nẵng', 'nguyen.khoa@gmail.com', NULL);
 
--- SV 106 | Mật khẩu gốc: sv106pass
-IF NOT EXISTS (SELECT 1 FROM Student WHERE MSSV = 106)
+-- SV 23110032 | Mật khẩu gốc: sv23110032pass
+IF NOT EXISTS (SELECT 1 FROM Student WHERE MSSV = 23110032)
     INSERT INTO Student (MSSV, Fname, Lname, Dob, Gder, Phone, Address, Htown, Email, Pture)
-    VALUES (106, N'Trần Hoàng', N'Long', '2004-07-18', N'Nam', '0956789012', N'45 Nguyễn Văn Cừ', N'TP.HCM', 'tran.long@gmail.com', NULL);
+    VALUES (23110032, N'Trần Hoàng', N'Long', '2004-07-18', N'Nam', '0956789012', N'45 Nguyễn Văn Cừ', N'TP.HCM', 'tran.long@gmail.com', NULL);
 
--- SV 107 | Mật khẩu gốc: sv107pass
-IF NOT EXISTS (SELECT 1 FROM Student WHERE MSSV = 107)
+-- SV 23110156 | Mật khẩu gốc: sv23110156pass
+IF NOT EXISTS (SELECT 1 FROM Student WHERE MSSV = 23110156)
     INSERT INTO Student (MSSV, Fname, Lname, Dob, Gder, Phone, Address, Htown, Email, Pture)
-    VALUES (107, N'Lê Thị', N'Mai', '2005-01-30', N'Nữ', '0967890123', N'77 Hai Bà Trưng', N'Huế', 'le.mai@gmail.com', NULL);
+    VALUES (23110156, N'Lê Thị', N'Mai', '2005-01-30', N'Nữ', '0967890123', N'77 Hai Bà Trưng', N'Huế', 'le.mai@gmail.com', NULL);
 
--- SV 108 | Mật khẩu gốc: sv108pass
-IF NOT EXISTS (SELECT 1 FROM Student WHERE MSSV = 108)
+-- SV 24110089 | Mật khẩu gốc: sv24110089pass
+IF NOT EXISTS (SELECT 1 FROM Student WHERE MSSV = 24110089)
     INSERT INTO Student (MSSV, Fname, Lname, Dob, Gder, Phone, Address, Htown, Email, Pture)
-    VALUES (108, N'Võ Thanh', N'Tùng', '2003-09-14', N'Nam', '0978901234', N'33 Điện Biên Phủ', N'Cần Thơ', 'vo.tung@gmail.com', NULL);
+    VALUES (24110089, N'Võ Thanh', N'Tùng', '2003-09-14', N'Nam', '0978901234', N'33 Điện Biên Phủ', N'Cần Thơ', 'vo.tung@gmail.com', NULL);
 GO
 
 -- ============================================================
 -- THÊM TÀI KHOẢN LOGIN CHO SINH VIÊN MỚI
--- Mật khẩu đã băm SHA-256
---
---   sv104pass → SHA-256: 3c1ddf2e3e7db6c0e8dbbbf7da86e2f5a9c9e4a3f1f7c6c2b8d9e0f1a2b3c4d5
---   (thực tế dùng hàm băm C# hoặc công cụ online)
---
--- Để tiện, bảng dưới dùng chuỗi SHA-256 tính sẵn:
---   sv104pass → a3d2e1f0b9c8d7e6f5a4b3c2d1e0f9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2
---   (xem ghi chú cuối file để tính lại đúng nếu cần)
+-- Mật khẩu đã băm SHA-256 (UTF-8, khớp chuẩn C#)
 --
 -- BẢNG MẬT KHẨU GỐC (lưu lại để test):
---   Id=4  | username=sv104 | password gốc: sv104pass
---   Id=5  | username=sv105 | password gốc: sv105pass
---   Id=6  | username=sv106 | password gốc: sv106pass
---   Id=7  | username=sv107 | password gốc: sv107pass
---   Id=8  | username=sv108 | password gốc: sv108pass
+--   username=sv22110045 | password gốc: sv22110045pass
+--   username=sv22110078 | password gốc: sv22110078pass
+--   username=sv23110032 | password gốc: sv23110032pass
+--   username=sv23110156 | password gốc: sv23110156pass
+--   username=sv24110089 | password gốc: sv24110089pass
 -- ============================================================
 
--- sv104pass  (SHA-256 = hash của chuỗi "sv104pass")
-IF NOT EXISTS (SELECT 1 FROM login WHERE username = 'sv104')
+IF NOT EXISTS (SELECT 1 FROM login WHERE username = 'sv22110045')
     INSERT INTO login (Id, username, password, role, email, LoginAttempts)
-    VALUES (4, 'sv104',
-        'b3f74c3e1a2d4e6f8c0b2a4d6e8f0c2a4b6d8e0f2c4a6b8d0e2f4c6a8b0d2e4',
+    VALUES (ISNULL((SELECT MAX(Id) FROM login), 0) + 1,
+        'sv22110045',
+        CONVERT(NVARCHAR(64), HASHBYTES('SHA2_256', 'sv22110045pass'), 2),
         'Student', 'pham.dung@gmail.com', 0);
 
--- sv105pass
-IF NOT EXISTS (SELECT 1 FROM login WHERE username = 'sv105')
+IF NOT EXISTS (SELECT 1 FROM login WHERE username = 'sv22110078')
     INSERT INTO login (Id, username, password, role, email, LoginAttempts)
-    VALUES (5, 'sv105',
-        'c4a8b2d6e0f4a8b2d6e0f4a8b2d6e0f4a8b2d6e0f4a8b2d6e0f4a8b2d6e0f4',
+    VALUES (ISNULL((SELECT MAX(Id) FROM login), 0) + 1,
+        'sv22110078',
+        CONVERT(NVARCHAR(64), HASHBYTES('SHA2_256', 'sv22110078pass'), 2),
         'Student', 'nguyen.khoa@gmail.com', 0);
 
--- sv106pass
-IF NOT EXISTS (SELECT 1 FROM login WHERE username = 'sv106')
+IF NOT EXISTS (SELECT 1 FROM login WHERE username = 'sv23110032')
     INSERT INTO login (Id, username, password, role, email, LoginAttempts)
-    VALUES (6, 'sv106',
-        'd5b9c3e7f1a5b9c3e7f1a5b9c3e7f1a5b9c3e7f1a5b9c3e7f1a5b9c3e7f1a5',
+    VALUES (ISNULL((SELECT MAX(Id) FROM login), 0) + 1,
+        'sv23110032',
+        CONVERT(NVARCHAR(64), HASHBYTES('SHA2_256', 'sv23110032pass'), 2),
         'Student', 'tran.long@gmail.com', 0);
 
--- sv107pass
-IF NOT EXISTS (SELECT 1 FROM login WHERE username = 'sv107')
+IF NOT EXISTS (SELECT 1 FROM login WHERE username = 'sv23110156')
     INSERT INTO login (Id, username, password, role, email, LoginAttempts)
-    VALUES (7, 'sv107',
-        'e6c0d4f8a2b6c0d4f8a2b6c0d4f8a2b6c0d4f8a2b6c0d4f8a2b6c0d4f8a2b6',
+    VALUES (ISNULL((SELECT MAX(Id) FROM login), 0) + 1,
+        'sv23110156',
+        CONVERT(NVARCHAR(64), HASHBYTES('SHA2_256', 'sv23110156pass'), 2),
         'Student', 'le.mai@gmail.com', 0);
 
--- sv108pass
-IF NOT EXISTS (SELECT 1 FROM login WHERE username = 'sv108')
+IF NOT EXISTS (SELECT 1 FROM login WHERE username = 'sv24110089')
     INSERT INTO login (Id, username, password, role, email, LoginAttempts)
-    VALUES (8, 'sv108',
-        'f7d1e5a9b3c7d1e5a9b3c7d1e5a9b3c7d1e5a9b3c7d1e5a9b3c7d1e5a9b3c7',
+    VALUES (ISNULL((SELECT MAX(Id) FROM login), 0) + 1,
+        'sv24110089',
+        CONVERT(NVARCHAR(64), HASHBYTES('SHA2_256', 'sv24110089pass'), 2),
         'Student', 'vo.tung@gmail.com', 0);
 GO
 
 -- ============================================================
--- ⚠️  GHI CHÚ QUAN TRỌNG VỀ MẬT KHẨU
--- ============================================================
--- Các chuỗi hash trên là placeholder. Để lấy hash SHA-256 đúng
--- khớp với hàm băm trong C# của bạn, chạy đoạn code sau
--- trong project rồi copy kết quả vào UPDATE bên dưới:
---
---   using System.Security.Cryptography;
---   using System.Text;
---   static string Sha256(string input) {
---       using var sha = SHA256.Create();
---       var bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(input));
---       return BitConverter.ToString(bytes).Replace("-","").ToLower();
---   }
---   Console.WriteLine(Sha256("sv104pass")); // copy kết quả vào đây
---
--- Sau đó chạy UPDATE để cập nhật lại hash đúng:
--- UPDATE login SET password = '<hash_dung>' WHERE username = 'sv104';
--- UPDATE login SET password = '<hash_dung>' WHERE username = 'sv105';
--- ... (tương tự cho sv106, sv107, sv108)
--- ============================================================
-
--- ============================================================
--- THÊM ĐIỂM MẪU VÀO BẢNG Score
--- Lấy môn học từ bảng Course (INT2204, INT2205 đã có sẵn)
--- Thêm môn INT2206, INT2207 nếu chưa có trong Course
+-- THÊM MÔN HỌC MẪU NẾU CHƯA CÓ
 -- ============================================================
 
 IF NOT EXISTS (SELECT 1 FROM Course WHERE MaMH = 'INT2206')
@@ -128,108 +97,111 @@ IF NOT EXISTS (SELECT 1 FROM Course WHERE MaMH = 'INT2208')
     VALUES ('INT2208', N'Software Engineering', 2, 12, 2, N'Công nghệ phần mềm');
 GO
 
--- ── SV 104 – Phạm Thị Dung (Khá / Giỏi) ──────────────────────────────────
-IF NOT EXISTS (SELECT 1 FROM Score WHERE student_id = 104 AND course_id = 'INT2204')
-    INSERT INTO Score (student_id, course_id, course_name, DiemQT, DiemCK, description)
-    VALUES (104, 'INT2204', N'Windows Programming', 7.5, 7.0, N'Học kỳ 2 - Lớp K22');
-    -- DiemTK = 7.5*0.4 + 7.0*0.6 = 7.20  → Khá
+-- ============================================================
+-- THÊM ĐIỂM MẪU VÀO BẢNG Score
+-- ============================================================
 
-IF NOT EXISTS (SELECT 1 FROM Score WHERE student_id = 104 AND course_id = 'INT2206')
+-- ── SV 22110045 – Phạm Thị Dung (Khá / Giỏi) ────────────────────────────
+IF NOT EXISTS (SELECT 1 FROM Score WHERE student_id = 22110045 AND course_id = 'INT2204')
     INSERT INTO Score (student_id, course_id, course_name, DiemQT, DiemCK, description)
-    VALUES (104, 'INT2206', N'Object-Oriented Programming', 8.0, 8.5, N'Học kỳ 1 - Lớp K22');
-    -- DiemTK = 8.0*0.4 + 8.5*0.6 = 8.30  → Giỏi
+    VALUES (22110045, 'INT2204', N'Windows Programming', 7.5, 7.0, N'Học kỳ 2 - Lớp K22');
+    -- DiemTK = 7.20 → Khá
 
-IF NOT EXISTS (SELECT 1 FROM Score WHERE student_id = 104 AND course_id = 'INT2207')
+IF NOT EXISTS (SELECT 1 FROM Score WHERE student_id = 22110045 AND course_id = 'INT2206')
     INSERT INTO Score (student_id, course_id, course_name, DiemQT, DiemCK, description)
-    VALUES (104, 'INT2207', N'Data Structures & Algorithms', 6.5, 7.0, N'Học kỳ 1 - Lớp K22');
-    -- DiemTK = 6.5*0.4 + 7.0*0.6 = 6.80  → Khá
+    VALUES (22110045, 'INT2206', N'Object-Oriented Programming', 8.0, 8.5, N'Học kỳ 1 - Lớp K22');
+    -- DiemTK = 8.30 → Giỏi
 
--- ── SV 105 – Nguyễn Minh Khoa (Xuất sắc) ──────────────────────────────────
-IF NOT EXISTS (SELECT 1 FROM Score WHERE student_id = 105 AND course_id = 'INT2204')
+IF NOT EXISTS (SELECT 1 FROM Score WHERE student_id = 22110045 AND course_id = 'INT2207')
     INSERT INTO Score (student_id, course_id, course_name, DiemQT, DiemCK, description)
-    VALUES (105, 'INT2204', N'Windows Programming', 9.5, 9.0, N'Học kỳ 2 - Lớp K22');
-    -- DiemTK = 9.5*0.4 + 9.0*0.6 = 9.20  → Xuất sắc
+    VALUES (22110045, 'INT2207', N'Data Structures & Algorithms', 6.5, 7.0, N'Học kỳ 1 - Lớp K22');
+    -- DiemTK = 6.80 → Khá
 
-IF NOT EXISTS (SELECT 1 FROM Score WHERE student_id = 105 AND course_id = 'INT2205')
+-- ── SV 22110078 – Nguyễn Minh Khoa (Xuất sắc) ───────────────────────────
+IF NOT EXISTS (SELECT 1 FROM Score WHERE student_id = 22110078 AND course_id = 'INT2204')
     INSERT INTO Score (student_id, course_id, course_name, DiemQT, DiemCK, description)
-    VALUES (105, 'INT2205', N'Database Management', 9.0, 9.5, N'Học kỳ 2 - Lớp K22');
-    -- DiemTK = 9.0*0.4 + 9.5*0.6 = 9.30  → Xuất sắc
+    VALUES (22110078, 'INT2204', N'Windows Programming', 9.5, 9.0, N'Học kỳ 2 - Lớp K22');
+    -- DiemTK = 9.20 → Xuất sắc
 
-IF NOT EXISTS (SELECT 1 FROM Score WHERE student_id = 105 AND course_id = 'INT2207')
+IF NOT EXISTS (SELECT 1 FROM Score WHERE student_id = 22110078 AND course_id = 'INT2205')
     INSERT INTO Score (student_id, course_id, course_name, DiemQT, DiemCK, description)
-    VALUES (105, 'INT2207', N'Data Structures & Algorithms', 8.5, 9.0, N'Học kỳ 1 - Lớp K22');
-    -- DiemTK = 8.5*0.4 + 9.0*0.6 = 8.80  → Giỏi
+    VALUES (22110078, 'INT2205', N'Database Management', 9.0, 9.5, N'Học kỳ 2 - Lớp K22');
+    -- DiemTK = 9.30 → Xuất sắc
 
--- ── SV 106 – Trần Hoàng Long (Trung bình) ─────────────────────────────────
-IF NOT EXISTS (SELECT 1 FROM Score WHERE student_id = 106 AND course_id = 'INT2204')
+IF NOT EXISTS (SELECT 1 FROM Score WHERE student_id = 22110078 AND course_id = 'INT2207')
     INSERT INTO Score (student_id, course_id, course_name, DiemQT, DiemCK, description)
-    VALUES (106, 'INT2204', N'Windows Programming', 5.0, 5.5, N'Học kỳ 2 - Lớp K22');
-    -- DiemTK = 5.0*0.4 + 5.5*0.6 = 5.30  → Trung bình
+    VALUES (22110078, 'INT2207', N'Data Structures & Algorithms', 8.5, 9.0, N'Học kỳ 1 - Lớp K22');
+    -- DiemTK = 8.80 → Giỏi
 
-IF NOT EXISTS (SELECT 1 FROM Score WHERE student_id = 106 AND course_id = 'INT2206')
+-- ── SV 23110032 – Trần Hoàng Long (Trung bình / Yếu) ─────────────────────
+IF NOT EXISTS (SELECT 1 FROM Score WHERE student_id = 23110032 AND course_id = 'INT2204')
     INSERT INTO Score (student_id, course_id, course_name, DiemQT, DiemCK, description)
-    VALUES (106, 'INT2206', N'Object-Oriented Programming', 4.5, 5.0, N'Học kỳ 1 - Lớp K22');
-    -- DiemTK = 4.5*0.4 + 5.0*0.6 = 4.80  → Yếu
+    VALUES (23110032, 'INT2204', N'Windows Programming', 5.0, 5.5, N'Học kỳ 2 - Lớp K22');
+    -- DiemTK = 5.30 → Trung bình
 
-IF NOT EXISTS (SELECT 1 FROM Score WHERE student_id = 106 AND course_id = 'INT2208')
+IF NOT EXISTS (SELECT 1 FROM Score WHERE student_id = 23110032 AND course_id = 'INT2206')
     INSERT INTO Score (student_id, course_id, course_name, DiemQT, DiemCK, description)
-    VALUES (106, 'INT2208', N'Software Engineering', 6.0, 5.5, N'Học kỳ 2 - Lớp K22');
-    -- DiemTK = 6.0*0.4 + 5.5*0.6 = 5.70  → Trung bình
+    VALUES (23110032, 'INT2206', N'Object-Oriented Programming', 4.5, 5.0, N'Học kỳ 1 - Lớp K22');
+    -- DiemTK = 4.80 → Yếu
 
--- ── SV 107 – Lê Thị Mai (Giỏi) ────────────────────────────────────────────
-IF NOT EXISTS (SELECT 1 FROM Score WHERE student_id = 107 AND course_id = 'INT2205')
+IF NOT EXISTS (SELECT 1 FROM Score WHERE student_id = 23110032 AND course_id = 'INT2208')
     INSERT INTO Score (student_id, course_id, course_name, DiemQT, DiemCK, description)
-    VALUES (107, 'INT2205', N'Database Management', 8.0, 8.5, N'Học kỳ 2 - Lớp K22');
-    -- DiemTK = 8.0*0.4 + 8.5*0.6 = 8.30  → Giỏi
+    VALUES (23110032, 'INT2208', N'Software Engineering', 6.0, 5.5, N'Học kỳ 2 - Lớp K22');
+    -- DiemTK = 5.70 → Trung bình
 
-IF NOT EXISTS (SELECT 1 FROM Score WHERE student_id = 107 AND course_id = 'INT2207')
+-- ── SV 23110156 – Lê Thị Mai (Giỏi) ─────────────────────────────────────
+IF NOT EXISTS (SELECT 1 FROM Score WHERE student_id = 23110156 AND course_id = 'INT2205')
     INSERT INTO Score (student_id, course_id, course_name, DiemQT, DiemCK, description)
-    VALUES (107, 'INT2207', N'Data Structures & Algorithms', 7.5, 8.0, N'Học kỳ 1 - Lớp K22');
-    -- DiemTK = 7.5*0.4 + 8.0*0.6 = 7.80  → Khá
+    VALUES (23110156, 'INT2205', N'Database Management', 8.0, 8.5, N'Học kỳ 2 - Lớp K22');
+    -- DiemTK = 8.30 → Giỏi
 
-IF NOT EXISTS (SELECT 1 FROM Score WHERE student_id = 107 AND course_id = 'INT2208')
+IF NOT EXISTS (SELECT 1 FROM Score WHERE student_id = 23110156 AND course_id = 'INT2207')
     INSERT INTO Score (student_id, course_id, course_name, DiemQT, DiemCK, description)
-    VALUES (107, 'INT2208', N'Software Engineering', 8.5, 8.0, N'Học kỳ 2 - Lớp K22');
-    -- DiemTK = 8.5*0.4 + 8.0*0.6 = 8.20  → Giỏi
+    VALUES (23110156, 'INT2207', N'Data Structures & Algorithms', 7.5, 8.0, N'Học kỳ 1 - Lớp K22');
+    -- DiemTK = 7.80 → Khá
 
--- ── SV 108 – Võ Thanh Tùng (Khá) ─────────────────────────────────────────
-IF NOT EXISTS (SELECT 1 FROM Score WHERE student_id = 108 AND course_id = 'INT2204')
+IF NOT EXISTS (SELECT 1 FROM Score WHERE student_id = 23110156 AND course_id = 'INT2208')
     INSERT INTO Score (student_id, course_id, course_name, DiemQT, DiemCK, description)
-    VALUES (108, 'INT2204', N'Windows Programming', 7.0, 6.5, N'Học kỳ 2 - Lớp K22');
-    -- DiemTK = 7.0*0.4 + 6.5*0.6 = 6.70  → Khá
+    VALUES (23110156, 'INT2208', N'Software Engineering', 8.5, 8.0, N'Học kỳ 2 - Lớp K22');
+    -- DiemTK = 8.20 → Giỏi
 
-IF NOT EXISTS (SELECT 1 FROM Score WHERE student_id = 108 AND course_id = 'INT2206')
+-- ── SV 24110089 – Võ Thanh Tùng (Khá) ───────────────────────────────────
+IF NOT EXISTS (SELECT 1 FROM Score WHERE student_id = 24110089 AND course_id = 'INT2204')
     INSERT INTO Score (student_id, course_id, course_name, DiemQT, DiemCK, description)
-    VALUES (108, 'INT2206', N'Object-Oriented Programming', 6.5, 7.5, N'Học kỳ 1 - Lớp K22');
-    -- DiemTK = 6.5*0.4 + 7.5*0.6 = 7.10  → Khá
+    VALUES (24110089, 'INT2204', N'Windows Programming', 7.0, 6.5, N'Học kỳ 2 - Lớp K22');
+    -- DiemTK = 6.70 → Khá
 
-IF NOT EXISTS (SELECT 1 FROM Score WHERE student_id = 108 AND course_id = 'INT2205')
+IF NOT EXISTS (SELECT 1 FROM Score WHERE student_id = 24110089 AND course_id = 'INT2206')
     INSERT INTO Score (student_id, course_id, course_name, DiemQT, DiemCK, description)
-    VALUES (108, 'INT2205', N'Database Management', 7.0, 7.5, N'Học kỳ 2 - Lớp K22');
-    -- DiemTK = 7.0*0.4 + 7.5*0.6 = 7.30  → Khá
+    VALUES (24110089, 'INT2206', N'Object-Oriented Programming', 6.5, 7.5, N'Học kỳ 1 - Lớp K22');
+    -- DiemTK = 7.10 → Khá
+
+IF NOT EXISTS (SELECT 1 FROM Score WHERE student_id = 24110089 AND course_id = 'INT2205')
+    INSERT INTO Score (student_id, course_id, course_name, DiemQT, DiemCK, description)
+    VALUES (24110089, 'INT2205', N'Database Management', 7.0, 7.5, N'Học kỳ 2 - Lớp K22');
+    -- DiemTK = 7.30 → Khá
 GO
 
 -- ============================================================
 -- THÊM LỚP HỌC MẪU VÀO BẢNG Classroom
--- Dựa trên sinh viên K22 (MSSV 104–108) và môn học hiện có
 -- ============================================================
- 
+
 IF NOT EXISTS (SELECT 1 FROM Classroom WHERE MaLop = 'CNTT2201')
     INSERT INTO Classroom (MaLop, TenLop, SiSo, GVCN)
     VALUES ('CNTT2201', N'Công nghệ thông tin K22 - Lớp 1', 35, N'Nguyễn Văn An');
- 
+
 IF NOT EXISTS (SELECT 1 FROM Classroom WHERE MaLop = 'CNTT2202')
     INSERT INTO Classroom (MaLop, TenLop, SiSo, GVCN)
     VALUES ('CNTT2202', N'Công nghệ thông tin K22 - Lớp 2', 33, N'Trần Thị Bích');
- 
+
 IF NOT EXISTS (SELECT 1 FROM Classroom WHERE MaLop = 'KTPM2201')
     INSERT INTO Classroom (MaLop, TenLop, SiSo, GVCN)
     VALUES ('KTPM2201', N'Kỹ thuật phần mềm K22', 38, N'Lê Hoàng Cường');
- 
+
 IF NOT EXISTS (SELECT 1 FROM Classroom WHERE MaLop = 'HTTT2201')
     INSERT INTO Classroom (MaLop, TenLop, SiSo, GVCN)
     VALUES ('HTTT2201', N'Hệ thống thông tin K22', 40, N'Phạm Minh Đức');
- 
+
 IF NOT EXISTS (SELECT 1 FROM Classroom WHERE MaLop = 'ATTT2201')
     INSERT INTO Classroom (MaLop, TenLop, SiSo, GVCN)
     VALUES ('ATTT2201', N'An toàn thông tin K22', 30, N'Võ Thị Hoa');
@@ -261,4 +233,3 @@ ORDER BY sc.student_id, sc.course_id;
 
 SELECT MaLop, TenLop, SiSo, GVCN FROM Classroom ORDER BY MaLop;
 GO
-
