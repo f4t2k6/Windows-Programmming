@@ -1,8 +1,0 @@
-﻿CREATE TABLE Course (
-    MaMH CHAR(10) PRIMARY KEY,
-    TenMH NVARCHAR(100) NOT NULL,
-    SoTC INT,
-    Tuan INT,
-    Hky INT,
-    Mota NVARCHAR(500)
-);
