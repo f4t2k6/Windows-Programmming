@@ -34,6 +34,14 @@ namespace ProjectMonHoc
         private DataTable _dtTopGPA;    // top SV GPA
         private DataTable _dtMonHoc;    // điểm TB theo môn
         private DataTable _dtDangKy;    // số SV đăng ký theo môn
+        private DataTable _dtGioiTinh;  // thống kê giới tính (cho Pie)
+        private DataTable _dtNamNhap;   // thống kê theo năm nhập học
+
+        // ─── Màu panel giới tính ───────────────────────────────────────────────
+        private static readonly Color panTotalColor = Color.FromArgb(54, 162, 235);
+        private static readonly Color panMaleColor = Color.FromArgb(75, 192, 192);
+        private static readonly Color panFemaleColor = Color.FromArgb(255, 99, 132);
+        private static readonly Color panOtherColor = Color.FromArgb(153, 102, 255);
 
         // ─── Summary cards ─────────────────────────────────────────────────────
         private int _totalStudents, _totalCourses, _totalScores;
@@ -55,6 +63,8 @@ namespace ProjectMonHoc
             SetDoubleBuffered(pnlChartTopGPA);
             SetDoubleBuffered(pnlChartMonHoc);
             SetDoubleBuffered(pnlChartDangKy);
+            SetDoubleBuffered(pnlPieGioiTinh);
+            SetDoubleBuffered(pnlNamNhapHoc);
 
             // Bo góc cho các summary card
             SetRoundedCorners(cardSV);
@@ -70,11 +80,18 @@ namespace ProjectMonHoc
             pnlChartTopGPA.Paint += PnlChartTopGPA_Paint;
             pnlChartMonHoc.Paint += PnlChartMonHoc_Paint;
             pnlChartDangKy.Paint += PnlChartDangKy_Paint;
+            pnlPieGioiTinh.Paint += PnlPieGioiTinh_Paint;
+            pnlNamNhapHoc.Paint += PnlNamNhapHoc_Paint;
 
             pnlChartXepLoai.Invalidate();
             pnlChartTopGPA.Invalidate();
             pnlChartMonHoc.Invalidate();
             pnlChartDangKy.Invalidate();
+
+            // Tab Giới tính
+            LoadGioiTinhData();
+            pnlPieGioiTinh.Invalidate();
+            pnlNamNhapHoc.Invalidate();
         }
 
         private static void SetDoubleBuffered(System.Windows.Forms.Control c)
@@ -117,24 +134,36 @@ namespace ProjectMonHoc
                 _avgGPA = Math.Round(Convert.ToDouble(avgObj), 2);
 
                 // ── 1. Xếp loại học lực ────────────────────────────────────────
+                // Tính GPA tích lũy (có trọng số tín chỉ) cho từng SV trước,
+                // sau đó xếp loại và đếm số SINH VIÊN (không phải số dòng điểm)
                 _dtXepLoai = Fill(db, @"
+                    WITH GPA_SV AS (
+                        SELECT
+                            sc.student_id,
+                            ROUND(
+                                SUM(sc.DiemTK * c.SoTC) / NULLIF(SUM(c.SoTC), 0)
+                            , 2) AS GPA
+                        FROM Score sc
+                        INNER JOIN Course c ON sc.course_id = c.MaMH
+                        WHERE sc.DiemTK IS NOT NULL
+                        GROUP BY sc.student_id
+                    )
                     SELECT
                         CASE
-                            WHEN DiemTK >= 9.0 THEN N'Xuất sắc'
-                            WHEN DiemTK >= 8.0 THEN N'Giỏi'
-                            WHEN DiemTK >= 6.5 THEN N'Khá'
-                            WHEN DiemTK >= 5.0 THEN N'Trung bình'
+                            WHEN GPA >= 9.0 THEN N'Xuất sắc'
+                            WHEN GPA >= 8.0 THEN N'Giỏi'
+                            WHEN GPA >= 6.5 THEN N'Khá'
+                            WHEN GPA >= 5.0 THEN N'Trung bình'
                             ELSE N'Yếu'
                         END AS XepLoai,
                         COUNT(*) AS SoLuong
-                    FROM Score
-                    WHERE DiemTK IS NOT NULL
+                    FROM GPA_SV
                     GROUP BY
                         CASE
-                            WHEN DiemTK >= 9.0 THEN N'Xuất sắc'
-                            WHEN DiemTK >= 8.0 THEN N'Giỏi'
-                            WHEN DiemTK >= 6.5 THEN N'Khá'
-                            WHEN DiemTK >= 5.0 THEN N'Trung bình'
+                            WHEN GPA >= 9.0 THEN N'Xuất sắc'
+                            WHEN GPA >= 8.0 THEN N'Giỏi'
+                            WHEN GPA >= 6.5 THEN N'Khá'
+                            WHEN GPA >= 5.0 THEN N'Trung bình'
                             ELSE N'Yếu'
                         END");
 
@@ -506,6 +535,263 @@ namespace ProjectMonHoc
         }
 
         // ════════════════════════════════════════════════════════════════════════
+        //  TAB GIỚI TÍNH – 4 PANEL THỐNG KÊ + PIE CHART + NĂM NHẬP HỌC
+        // ════════════════════════════════════════════════════════════════════════
+        private void LoadGioiTinhData()
+        {
+            try
+            {
+                Student student = new Student();
+                double total = student.totalStudent();
+                double totalMale = student.totalMaleStudent();
+                double totalFemale = student.totalFemaleStudent();
+                double totalOther = student.totalOtherStudent();
+
+                lb_Total.Text = "Tổng Sinh Viên\n" + total;
+                lb_Male.Text = "Nam\n" + (total > 0 ? (totalMale / total * 100).ToString("0.00") + "%" : "0%");
+                lb_Female.Text = "Nữ\n" + (total > 0 ? (totalFemale / total * 100).ToString("0.00") + "%" : "0%");
+                lb_Other.Text = "Khác\n" + (total > 0 ? (totalOther / total * 100).ToString("0.00") + "%" : "0%");
+
+                // Nạp data cho Pie và Bar chart
+                MY_DB db = new MY_DB();
+                try
+                {
+                    db.openConnection();
+
+                    // Giới tính — dùng cho Pie chart
+                    _dtGioiTinh = Fill(db, @"
+                        SELECT
+                            CASE
+                                WHEN Gder = N'Nam' THEN N'Nam'
+                                WHEN Gder = N'Nữ'  THEN N'Nữ'
+                                ELSE N'Khác'
+                            END AS GioiTinh,
+                            COUNT(*) AS SoLuong
+                        FROM Student
+                        GROUP BY
+                            CASE
+                                WHEN Gder = N'Nam' THEN N'Nam'
+                                WHEN Gder = N'Nữ'  THEN N'Nữ'
+                                ELSE N'Khác'
+                            END");
+
+                    // Năm nhập học — lấy 2 số đầu của MSSV rồi cộng 2000
+                    _dtNamNhap = Fill(db, @"
+                        SELECT
+                            2000 + (MSSV / 1000000) AS NamNhapHoc,
+                            COUNT(*) AS SoSV
+                        FROM Student
+                        GROUP BY MSSV / 1000000
+                        ORDER BY NamNhapHoc");
+                }
+                finally { db.closeConnection(); }
+            }
+            catch (Exception ex)
+            {
+                lb_Total.Text = "Lỗi tải dữ liệu";
+                System.Diagnostics.Debug.WriteLine("LoadGioiTinhData: " + ex.Message);
+            }
+        }
+
+        // ── Hover: panel_Total ────────────────────────────────────────────────
+        private void panel_Total_MouseEnter(object sender, EventArgs e)
+        {
+            lb_Total.ForeColor = panTotalColor;
+            lb_Total.BackColor = Color.White;
+            panel_Total.BackColor = Color.White;
+        }
+        private void panel_Total_MouseLeave(object sender, EventArgs e)
+        {
+            lb_Total.ForeColor = Color.White;
+            lb_Total.BackColor = panTotalColor;
+            panel_Total.BackColor = panTotalColor;
+        }
+
+        // ── Hover: panel_Male ─────────────────────────────────────────────────
+        private void panel_Male_MouseEnter(object sender, EventArgs e)
+        {
+            lb_Male.ForeColor = panMaleColor;
+            lb_Male.BackColor = Color.White;
+            panel_Male.BackColor = Color.White;
+        }
+        private void panel_Male_MouseLeave(object sender, EventArgs e)
+        {
+            lb_Male.ForeColor = Color.White;
+            lb_Male.BackColor = panMaleColor;
+            panel_Male.BackColor = panMaleColor;
+        }
+
+        // ── Hover: panel_Female ───────────────────────────────────────────────
+        private void panel_Female_MouseEnter(object sender, EventArgs e)
+        {
+            lb_Female.ForeColor = panFemaleColor;
+            lb_Female.BackColor = Color.White;
+            panel_Female.BackColor = Color.White;
+        }
+        private void panel_Female_MouseLeave(object sender, EventArgs e)
+        {
+            lb_Female.ForeColor = Color.White;
+            lb_Female.BackColor = panFemaleColor;
+            panel_Female.BackColor = panFemaleColor;
+        }
+
+        // ── Hover: panel_Other ────────────────────────────────────────────────
+        private void panel_Other_MouseEnter(object sender, EventArgs e)
+        {
+            lb_Other.ForeColor = panOtherColor;
+            lb_Other.BackColor = Color.White;
+            panel_Other.BackColor = Color.White;
+        }
+        private void panel_Other_MouseLeave(object sender, EventArgs e)
+        {
+            lb_Other.ForeColor = Color.White;
+            lb_Other.BackColor = panOtherColor;
+            panel_Other.BackColor = panOtherColor;
+        }
+
+        // ════════════════════════════════════════════════════════════════════════
+        //  BIỂU ĐỒ 5 – PIE: TỶ LỆ GIỚI TÍNH
+        // ════════════════════════════════════════════════════════════════════════
+        private void PnlPieGioiTinh_Paint(object sender, PaintEventArgs e)
+        {
+            var g = e.Graphics;
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+            var rc = pnlPieGioiTinh.ClientRectangle;
+            g.Clear(Color.White);
+
+            if (_dtGioiTinh == null || _dtGioiTinh.Rows.Count == 0)
+            { DrawEmpty(g, rc, "Chưa có dữ liệu giới tính"); return; }
+
+            // Thứ tự cố định & màu
+            string[] labels = { "Nam", "Nữ", "Khác" };
+            Color[] colors = { panMaleColor, panFemaleColor, panOtherColor };
+
+            int[] counts = labels.Select(lb =>
+            {
+                foreach (DataRow r in _dtGioiTinh.Rows)
+                    if (r["GioiTinh"].ToString() == lb) return Convert.ToInt32(r["SoLuong"]);
+                return 0;
+            }).ToArray();
+
+            int total = counts.Sum();
+            if (total == 0) { DrawEmpty(g, rc, "Chưa có dữ liệu"); return; }
+
+            // Tiêu đề nhỏ
+            using var fntTitle = new Font("Segoe UI", 8.5f, FontStyle.Bold);
+            g.DrawString("Tỷ lệ Giới tính", fntTitle, new SolidBrush(CLR_TEXT_DARK), 8, 6);
+
+            // Pie
+            int size = Math.Min(rc.Height - 24, rc.Width - 150);
+            int pieX = 8;
+            int pieY = rc.Height / 2 - size / 2 + 10;
+            var pieRc = new Rectangle(pieX, pieY, size, size);
+
+            float startAngle = -90f;
+            for (int i = 0; i < labels.Length; i++)
+            {
+                if (counts[i] == 0) continue;
+                float sweep = 360f * counts[i] / total;
+                using var br = new SolidBrush(colors[i]);
+                g.FillPie(br, pieRc, startAngle, sweep);
+                using var pen = new Pen(Color.White, 1.5f);
+                g.DrawPie(pen, pieRc, startAngle, sweep);
+
+                // % label bên trong slice
+                float mid = (startAngle + sweep / 2f) * (float)Math.PI / 180f;
+                float r = size * 0.30f;
+                float lx = pieX + size / 2f + r * (float)Math.Cos(mid) - 14;
+                float ly = pieY + size / 2f + r * (float)Math.Sin(mid) - 7;
+                double pct = 100.0 * counts[i] / total;
+                if (pct > 5)
+                    using (var fntPct = new Font("Segoe UI", 7.5f, FontStyle.Bold))
+                        g.DrawString($"{pct:0.0}%", fntPct, Brushes.White, lx, ly);
+
+                startAngle += sweep;
+            }
+
+            // Legend
+            int lgX = pieX + size + 30;
+            using var fntLeg = new Font("Segoe UI", 8.5f);
+            for (int i = 0; i < labels.Length; i++)
+            {
+                int iy = pieY + i * 26;
+                using var br = new SolidBrush(colors[i]);
+                g.FillRectangle(br, lgX, iy + 2, 12, 12);
+                double pct = total > 0 ? 100.0 * counts[i] / total : 0;
+                g.DrawString($"{labels[i]}: {counts[i]} ({pct:0.0}%)",
+                    fntLeg, new SolidBrush(CLR_TEXT_DARK), lgX + 16, iy);
+            }
+        }
+
+        // ════════════════════════════════════════════════════════════════════════
+        //  BIỂU ĐỒ 6 – BAR: SỐ SV THEO NĂM NHẬP HỌC
+        // ════════════════════════════════════════════════════════════════════════
+        private void PnlNamNhapHoc_Paint(object sender, PaintEventArgs e)
+        {
+            var g = e.Graphics;
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+            var rc = pnlNamNhapHoc.ClientRectangle;
+            g.Clear(Color.White);
+
+            if (_dtNamNhap == null || _dtNamNhap.Rows.Count == 0)
+            { DrawEmpty(g, rc, "Chưa có dữ liệu năm nhập học"); return; }
+
+            // Tiêu đề nhỏ
+            using var fntTitle = new Font("Segoe UI", 8.5f, FontStyle.Bold);
+            g.DrawString("Sinh viên theo Năm nhập học", fntTitle, new SolidBrush(CLR_TEXT_DARK), 8, 6);
+
+            int n = _dtNamNhap.Rows.Count;
+            int padL = 28, padR = 10, padT = 24, padB = 22;
+            int plotW = rc.Width - padL - padR;
+            int plotH = rc.Height - padT - padB;
+
+            int maxVal = _dtNamNhap.AsEnumerable().Max(r => Convert.ToInt32(r["SoSV"]));
+            if (maxVal == 0) { DrawEmpty(g, rc, "Chưa có dữ liệu"); return; }
+
+            float yScale = (float)plotH / (maxVal + 1);
+            float step = (float)plotW / n;
+            float barW = step * 0.55f;
+
+            using var fntAxis = new Font("Segoe UI", 7f);
+            using var fntVal = new Font("Segoe UI", 7f, FontStyle.Bold);
+
+            // Y grid (2 lines)
+            for (int v = 0; v <= maxVal + 1; v += Math.Max(1, (maxVal + 1) / 3))
+            {
+                int gy = padT + plotH - (int)(v * yScale);
+                using var gPen = new Pen(Color.FromArgb(220, 220, 230));
+                g.DrawLine(gPen, padL, gy, padL + plotW, gy);
+                g.DrawString(v.ToString(), fntAxis, new SolidBrush(CLR_TEXT_LIGHT), 2, gy - 7);
+            }
+
+            for (int i = 0; i < n; i++)
+            {
+                var row = _dtNamNhap.Rows[i];
+                string year = row["NamNhapHoc"].ToString();
+                int cnt = Convert.ToInt32(row["SoSV"]);
+
+                float bh = cnt * yScale;
+                float bx = padL + i * step + (step - barW) / 2f;
+                float by = padT + plotH - bh;
+
+                Color barColor = PALETTE[i % PALETTE.Length];
+                using var lgBr = new LinearGradientBrush(
+                    new PointF(bx, by), new PointF(bx, padT + plotH),
+                    barColor, Color.FromArgb(80, barColor));
+                g.FillRectangle(lgBr, bx, by, barW, bh);
+
+                // Số trên đỉnh bar
+                g.DrawString(cnt.ToString(), fntVal, new SolidBrush(CLR_TEXT_DARK),
+                    bx + barW / 2f - 5, by - 13);
+
+                // Nhãn năm
+                var sz = g.MeasureString(year, fntAxis);
+                g.DrawString(year, fntAxis, new SolidBrush(CLR_TEXT_DARK),
+                    bx + barW / 2f - sz.Width / 2f, padT + plotH + 4);
+            }
+        }
+
+        // ════════════════════════════════════════════════════════════════════════
         //  BUTTON EVENTS
         // ════════════════════════════════════════════════════════════════════════
         private void btnRefresh_Click(object sender, EventArgs e)
@@ -516,6 +802,9 @@ namespace ProjectMonHoc
             pnlChartTopGPA.Invalidate();
             pnlChartMonHoc.Invalidate();
             pnlChartDangKy.Invalidate();
+            LoadGioiTinhData();
+            pnlPieGioiTinh.Invalidate();
+            pnlNamNhapHoc.Invalidate();
         }
 
         private void btnExportExcel_Click(object sender, EventArgs e)
@@ -540,7 +829,18 @@ namespace ProjectMonHoc
                 case 1: lblChartTitle.Text = "🏆  Top 10 Sinh viên GPA cao nhất"; break;
                 case 2: lblChartTitle.Text = "📚  Điểm Trung bình / Min / Max theo Môn học"; break;
                 case 3: lblChartTitle.Text = "📋  Số Sinh viên Đăng ký theo Môn học"; break;
+                case 4: lblChartTitle.Text = "⚧  Thống kê Giới tính Sinh viên"; break;
             }
+        }
+
+        private void lblChartTitle_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void FormThongKe_Load_1(object sender, EventArgs e)
+        {
+
         }
     }
 }

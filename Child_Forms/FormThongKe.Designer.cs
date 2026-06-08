@@ -47,6 +47,17 @@
             pnlChartMonHoc = new Panel();
             tabDangKy = new TabPage();
             pnlChartDangKy = new Panel();
+            tabGioiTinh = new TabPage();
+            panel_Total = new Panel();
+            lb_Total = new Label();
+            panel_Male = new Panel();
+            lb_Male = new Label();
+            panel_Female = new Panel();
+            lb_Female = new Label();
+            panel_Other = new Panel();
+            lb_Other = new Label();
+            pnlPieGioiTinh = new Panel();
+            pnlNamNhapHoc = new Panel();
             lblChartTitle = new Label();
             pnlHeader.SuspendLayout();
             pnlCards.SuspendLayout();
@@ -60,6 +71,13 @@
             tabTopGPA.SuspendLayout();
             tabMonHoc.SuspendLayout();
             tabDangKy.SuspendLayout();
+            tabGioiTinh.SuspendLayout();
+            panel_Total.SuspendLayout();
+            panel_Male.SuspendLayout();
+            panel_Female.SuspendLayout();
+            panel_Other.SuspendLayout();
+            pnlPieGioiTinh.SuspendLayout();
+            pnlNamNhapHoc.SuspendLayout();
             SuspendLayout();
             // 
             // pnlHeader
@@ -352,6 +370,7 @@
             tabControl.Controls.Add(tabTopGPA);
             tabControl.Controls.Add(tabMonHoc);
             tabControl.Controls.Add(tabDangKy);
+            tabControl.Controls.Add(tabGioiTinh);
             tabControl.Dock = DockStyle.Fill;
             tabControl.Font = new Font("Segoe UI", 9.5F);
             tabControl.Location = new Point(16, 36);
@@ -369,7 +388,7 @@
             tabXepLoai.Name = "tabXepLoai";
             tabXepLoai.Size = new Size(987, 359);
             tabXepLoai.TabIndex = 0;
-            tabXepLoai.Text = "Xếp loại";
+            tabXepLoai.Text = "Học lực";
             // 
             // pnlChartXepLoai
             // 
@@ -437,6 +456,142 @@
             pnlChartDangKy.Size = new Size(987, 359);
             pnlChartDangKy.TabIndex = 0;
             // 
+            // tabGioiTinh
+            // 
+            tabGioiTinh.BackColor = Color.FromArgb(245, 247, 250);
+            tabGioiTinh.Controls.Add(pnlNamNhapHoc);
+            tabGioiTinh.Controls.Add(pnlPieGioiTinh);
+            tabGioiTinh.Controls.Add(panel_Other);
+            tabGioiTinh.Controls.Add(panel_Female);
+            tabGioiTinh.Controls.Add(panel_Male);
+            tabGioiTinh.Controls.Add(panel_Total);
+            tabGioiTinh.Location = new Point(4, 33);
+            tabGioiTinh.Name = "tabGioiTinh";
+            tabGioiTinh.Padding = new Padding(20);
+            tabGioiTinh.Size = new Size(987, 359);
+            tabGioiTinh.TabIndex = 4;
+            tabGioiTinh.Text = "Giới tính";
+            // 
+            // panel_Total
+            // 
+            panel_Total.BackColor = Color.FromArgb(54, 162, 235);
+            panel_Total.Controls.Add(lb_Total);
+            panel_Total.Cursor = Cursors.Hand;
+            panel_Total.Location = new Point(40, 10);
+            panel_Total.Name = "panel_Total";
+            panel_Total.Size = new Size(180, 65);
+            panel_Total.TabIndex = 0;
+            panel_Total.MouseEnter += panel_Total_MouseEnter;
+            panel_Total.MouseLeave += panel_Total_MouseLeave;
+            // 
+            // lb_Total
+            // 
+            lb_Total.BackColor = Color.FromArgb(54, 162, 235);
+            lb_Total.Dock = DockStyle.Fill;
+            lb_Total.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            lb_Total.ForeColor = Color.White;
+            lb_Total.Name = "lb_Total";
+            lb_Total.Size = new Size(180, 65);
+            lb_Total.TabIndex = 0;
+            lb_Total.Text = "Tổng Sinh Viên : ...";
+            lb_Total.TextAlign = ContentAlignment.MiddleCenter;
+            lb_Total.MouseEnter += panel_Total_MouseEnter;
+            lb_Total.MouseLeave += panel_Total_MouseLeave;
+            // 
+            // panel_Male
+            // 
+            panel_Male.BackColor = Color.FromArgb(75, 192, 192);
+            panel_Male.Controls.Add(lb_Male);
+            panel_Male.Cursor = Cursors.Hand;
+            panel_Male.Location = new Point(240, 10);
+            panel_Male.Name = "panel_Male";
+            panel_Male.Size = new Size(180, 65);
+            panel_Male.TabIndex = 1;
+            panel_Male.MouseEnter += panel_Male_MouseEnter;
+            panel_Male.MouseLeave += panel_Male_MouseLeave;
+            // 
+            // lb_Male
+            // 
+            lb_Male.BackColor = Color.FromArgb(75, 192, 192);
+            lb_Male.Dock = DockStyle.Fill;
+            lb_Male.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            lb_Male.ForeColor = Color.White;
+            lb_Male.Name = "lb_Male";
+            lb_Male.Size = new Size(180, 65);
+            lb_Male.TabIndex = 0;
+            lb_Male.Text = "Nam : ...";
+            lb_Male.TextAlign = ContentAlignment.MiddleCenter;
+            lb_Male.MouseEnter += panel_Male_MouseEnter;
+            lb_Male.MouseLeave += panel_Male_MouseLeave;
+            // 
+            // panel_Female
+            // 
+            panel_Female.BackColor = Color.FromArgb(255, 99, 132);
+            panel_Female.Controls.Add(lb_Female);
+            panel_Female.Cursor = Cursors.Hand;
+            panel_Female.Location = new Point(440, 10);
+            panel_Female.Name = "panel_Female";
+            panel_Female.Size = new Size(180, 65);
+            panel_Female.TabIndex = 2;
+            panel_Female.MouseEnter += panel_Female_MouseEnter;
+            panel_Female.MouseLeave += panel_Female_MouseLeave;
+            // 
+            // lb_Female
+            // 
+            lb_Female.BackColor = Color.FromArgb(255, 99, 132);
+            lb_Female.Dock = DockStyle.Fill;
+            lb_Female.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            lb_Female.ForeColor = Color.White;
+            lb_Female.Name = "lb_Female";
+            lb_Female.Size = new Size(180, 65);
+            lb_Female.TabIndex = 0;
+            lb_Female.Text = "Nữ : ...";
+            lb_Female.TextAlign = ContentAlignment.MiddleCenter;
+            lb_Female.MouseEnter += panel_Female_MouseEnter;
+            lb_Female.MouseLeave += panel_Female_MouseLeave;
+            // 
+            // panel_Other
+            // 
+            panel_Other.BackColor = Color.FromArgb(153, 102, 255);
+            panel_Other.Controls.Add(lb_Other);
+            panel_Other.Cursor = Cursors.Hand;
+            panel_Other.Location = new Point(640, 10);
+            panel_Other.Name = "panel_Other";
+            panel_Other.Size = new Size(180, 65);
+            panel_Other.TabIndex = 3;
+            panel_Other.MouseEnter += panel_Other_MouseEnter;
+            panel_Other.MouseLeave += panel_Other_MouseLeave;
+            // 
+            // lb_Other
+            // 
+            lb_Other.BackColor = Color.FromArgb(153, 102, 255);
+            lb_Other.Dock = DockStyle.Fill;
+            lb_Other.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            lb_Other.ForeColor = Color.White;
+            lb_Other.Name = "lb_Other";
+            lb_Other.Size = new Size(180, 65);
+            lb_Other.TabIndex = 0;
+            lb_Other.Text = "Khác : ...";
+            lb_Other.TextAlign = ContentAlignment.MiddleCenter;
+            lb_Other.MouseEnter += panel_Other_MouseEnter;
+            lb_Other.MouseLeave += panel_Other_MouseLeave;
+            // 
+            // pnlPieGioiTinh
+            // 
+            pnlPieGioiTinh.BackColor = Color.White;
+            pnlPieGioiTinh.Location = new Point(20, 88);
+            pnlPieGioiTinh.Name = "pnlPieGioiTinh";
+            pnlPieGioiTinh.Size = new Size(470, 255);
+            pnlPieGioiTinh.TabIndex = 4;
+            // 
+            // pnlNamNhapHoc
+            // 
+            pnlNamNhapHoc.BackColor = Color.White;
+            pnlNamNhapHoc.Location = new Point(500, 88);
+            pnlNamNhapHoc.Name = "pnlNamNhapHoc";
+            pnlNamNhapHoc.Size = new Size(470, 255);
+            pnlNamNhapHoc.TabIndex = 5;
+            // 
             // lblChartTitle
             // 
             lblChartTitle.Dock = DockStyle.Top;
@@ -447,7 +602,8 @@
             lblChartTitle.Padding = new Padding(0, 6, 0, 0);
             lblChartTitle.Size = new Size(995, 36);
             lblChartTitle.TabIndex = 1;
-            lblChartTitle.Text = "PHÂN BỐ XẾP LOẠI HỌC LỰC";
+            lblChartTitle.Text = "PHÂN BỐ XẾP LOẠI";
+            lblChartTitle.Click += lblChartTitle_Click;
             // 
             // FormThongKe
             // 
@@ -478,6 +634,13 @@
             tabTopGPA.ResumeLayout(false);
             tabMonHoc.ResumeLayout(false);
             tabDangKy.ResumeLayout(false);
+            tabGioiTinh.ResumeLayout(false);
+            panel_Total.ResumeLayout(false);
+            panel_Male.ResumeLayout(false);
+            panel_Female.ResumeLayout(false);
+            panel_Other.ResumeLayout(false);
+            pnlPieGioiTinh.ResumeLayout(false);
+            pnlNamNhapHoc.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -527,5 +690,17 @@
 
         private System.Windows.Forms.TabPage tabDangKy;
         private System.Windows.Forms.Panel pnlChartDangKy;
+
+        private System.Windows.Forms.TabPage tabGioiTinh;
+        private System.Windows.Forms.Panel panel_Total;
+        private System.Windows.Forms.Label lb_Total;
+        private System.Windows.Forms.Panel panel_Male;
+        private System.Windows.Forms.Label lb_Male;
+        private System.Windows.Forms.Panel panel_Female;
+        private System.Windows.Forms.Label lb_Female;
+        private System.Windows.Forms.Panel panel_Other;
+        private System.Windows.Forms.Label lb_Other;
+        private System.Windows.Forms.Panel pnlPieGioiTinh;
+        private System.Windows.Forms.Panel pnlNamNhapHoc;
     }
 }

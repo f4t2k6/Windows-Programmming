@@ -31,7 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(f_MainHR));
             pnl_Side_HR = new Panel();
             button_Classroom = new Button();
-            button1 = new Button();
             button_Chart = new Button();
             pb_Logo_HR = new PictureBox();
             btn_ManageCourse = new Button();
@@ -47,7 +46,6 @@
             // 
             pnl_Side_HR.BackColor = Color.RoyalBlue;
             pnl_Side_HR.Controls.Add(button_Classroom);
-            pnl_Side_HR.Controls.Add(button1);
             pnl_Side_HR.Controls.Add(button_Chart);
             pnl_Side_HR.Controls.Add(pb_Logo_HR);
             pnl_Side_HR.Controls.Add(btn_ManageCourse);
@@ -76,21 +74,6 @@
             button_Classroom.UseVisualStyleBackColor = false;
             button_Classroom.Click += button2_Click;
             // 
-            // button1
-            // 
-            button1.BackColor = Color.RoyalBlue;
-            button1.FlatAppearance.BorderSize = 0;
-            button1.FlatStyle = FlatStyle.Flat;
-            button1.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button1.ForeColor = SystemColors.Menu;
-            button1.Location = new Point(6, 320);
-            button1.Name = "button1";
-            button1.Size = new Size(200, 50);
-            button1.TabIndex = 8;
-            button1.Text = "📈 Thống kê sinh viên";
-            button1.TextAlign = ContentAlignment.MiddleLeft;
-            button1.UseVisualStyleBackColor = false;
-            // 
             // button_Chart
             // 
             button_Chart.BackColor = Color.RoyalBlue;
@@ -101,11 +84,11 @@
             button_Chart.Location = new Point(6, 320);
             button_Chart.Name = "button_Chart";
             button_Chart.Size = new Size(200, 50);
-            button_Chart.TabIndex = 7;
+            button_Chart.TabIndex = 8;
             button_Chart.Text = "📈 Thống kê sinh viên";
             button_Chart.TextAlign = ContentAlignment.MiddleLeft;
             button_Chart.UseVisualStyleBackColor = false;
-            button_Chart.Click += button_Chart_Click;
+            button_Chart.Click += this.button1_Click;
             // 
             // pb_Logo_HR
             // 
@@ -216,6 +199,5 @@
         private PictureBox pb_Logo_HR;
         private Button button_Chart;
         private Button button_Classroom;
-        private Button button1;
     }
 }

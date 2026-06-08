@@ -94,14 +94,14 @@ namespace ProjectMonHoc
 
         }
 
-        private void button_Chart_Click(object sender, EventArgs e)
-        {
-            OpenChildForm(new FormThongKe(), pnl_content_MainHR);
-        }
-
         private void button2_Click(object sender, EventArgs e)
         {
             OpenChildForm(new frmClassroom(), pnl_content_MainHR);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new FormThongKe(), pnl_content_MainHR);
         }
     }
 }

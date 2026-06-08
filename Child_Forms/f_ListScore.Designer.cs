@@ -27,6 +27,8 @@ namespace ProjectMonHoc
             lblStudentInfo = new Label();
             btnRefresh = new Button();
             lblGPA = new Label();
+            lblHocLuc = new Label();
+            btn_Print = new Button();
             pnl_header = new Panel();
             pnl_toolbar = new Panel();
             label_Search = new Label();
@@ -115,7 +117,8 @@ namespace ProjectMonHoc
             // 
             lblNotification.AutoSize = true;
             lblNotification.Font = new Font("Segoe UI", 10F, FontStyle.Italic);
-            lblNotification.Location = new Point(500, 10);
+            lblNotification.ForeColor = Color.White;
+            lblNotification.Location = new Point(420, 18);
             lblNotification.Name = "lblNotification";
             lblNotification.Size = new Size(0, 23);
             lblNotification.TabIndex = 1;
@@ -194,10 +197,38 @@ namespace ProjectMonHoc
             lblGPA.TabIndex = 5;
             lblGPA.Text = "GPA: --";
             // 
+            // lblHocLuc
+            // 
+            lblHocLuc.AutoSize = true;
+            lblHocLuc.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            lblHocLuc.ForeColor = Color.Gray;
+            lblHocLuc.Location = new Point(560, 10);
+            lblHocLuc.Name = "lblHocLuc";
+            lblHocLuc.Size = new Size(123, 23);
+            lblHocLuc.TabIndex = 6;
+            lblHocLuc.Text = "🎓 Học lực: --";
+            // 
+            // btn_Print
+            // 
+            btn_Print.BackColor = Color.FromArgb(41, 128, 185);
+            btn_Print.Cursor = Cursors.Hand;
+            btn_Print.FlatAppearance.BorderSize = 0;
+            btn_Print.FlatStyle = FlatStyle.Flat;
+            btn_Print.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btn_Print.ForeColor = Color.White;
+            btn_Print.Location = new Point(849, 7);
+            btn_Print.Name = "btn_Print";
+            btn_Print.Size = new Size(162, 30);
+            btn_Print.TabIndex = 7;
+            btn_Print.Text = "🖨️ In Bảng Điểm";
+            btn_Print.UseVisualStyleBackColor = false;
+            btn_Print.Click += btn_Print_Click;
+            // 
             // pnl_header
             // 
             pnl_header.BackColor = Color.SteelBlue;
             pnl_header.Controls.Add(lblCurrentUser);
+            pnl_header.Controls.Add(lblNotification);
             pnl_header.Dock = DockStyle.Top;
             pnl_header.Location = new Point(0, 0);
             pnl_header.Name = "pnl_header";
@@ -233,7 +264,8 @@ namespace ProjectMonHoc
             pnl_footer.BackColor = Color.WhiteSmoke;
             pnl_footer.Controls.Add(lblTotal);
             pnl_footer.Controls.Add(lblGPA);
-            pnl_footer.Controls.Add(lblNotification);
+            pnl_footer.Controls.Add(lblHocLuc);
+            pnl_footer.Controls.Add(btn_Print);
             pnl_footer.Dock = DockStyle.Bottom;
             pnl_footer.Location = new Point(0, 584);
             pnl_footer.Name = "pnl_footer";
@@ -285,6 +317,8 @@ namespace ProjectMonHoc
         private System.Windows.Forms.Panel pnl_footer;
         private Label lblStudentInfo;
         private Label lblGPA;
+        private Label lblHocLuc;
         private Label label_Search;
+        private Button btn_Print;
     }
 }
