@@ -832,8 +832,6 @@ namespace ProjectMonHoc
                 case 4: lblChartTitle.Text = "⚧  Thống kê Giới tính Sinh viên"; break;
             }
         }
-<<<<<<< Updated upstream
-=======
 
         private void lblChartTitle_Click(object sender, EventArgs e)
         {
@@ -844,6 +842,5 @@ namespace ProjectMonHoc
         {
 
         }
->>>>>>> Stashed changes
     }
 }
