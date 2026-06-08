@@ -461,6 +461,7 @@
             Name = "FormThongKe";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Thong ke & Bieu do";
+            Load += FormThongKe_Load_1;
             pnlHeader.ResumeLayout(false);
             pnlHeader.PerformLayout();
             pnlCards.ResumeLayout(false);

@@ -542,5 +542,10 @@ namespace ProjectMonHoc
                 case 3: lblChartTitle.Text = "📋  Số Sinh viên Đăng ký theo Môn học"; break;
             }
         }
+
+        private void FormThongKe_Load_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }
