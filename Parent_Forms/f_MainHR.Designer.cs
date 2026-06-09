@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(f_MainHR));
             pnl_Side_HR = new Panel();
+            button_Assign = new Button();
             button_Classroom = new Button();
             button_Chart = new Button();
             pb_Logo_HR = new PictureBox();
@@ -38,6 +39,7 @@
             btn_Logout_HR = new Button();
             btn_ListScore = new Button();
             pnl_content_MainHR = new Panel();
+            button_Contact = new Button();
             pnl_Side_HR.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pb_Logo_HR).BeginInit();
             SuspendLayout();
@@ -45,6 +47,8 @@
             // pnl_Side_HR
             // 
             pnl_Side_HR.BackColor = Color.RoyalBlue;
+            pnl_Side_HR.Controls.Add(button_Contact);
+            pnl_Side_HR.Controls.Add(button_Assign);
             pnl_Side_HR.Controls.Add(button_Classroom);
             pnl_Side_HR.Controls.Add(button_Chart);
             pnl_Side_HR.Controls.Add(pb_Logo_HR);
@@ -58,6 +62,22 @@
             pnl_Side_HR.TabIndex = 1;
             pnl_Side_HR.Paint += pnl_MainHR_Paint;
             // 
+            // button_Assign
+            // 
+            button_Assign.BackColor = Color.RoyalBlue;
+            button_Assign.FlatAppearance.BorderSize = 0;
+            button_Assign.FlatStyle = FlatStyle.Flat;
+            button_Assign.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button_Assign.ForeColor = SystemColors.Menu;
+            button_Assign.Location = new Point(0, 432);
+            button_Assign.Name = "button_Assign";
+            button_Assign.Size = new Size(221, 50);
+            button_Assign.TabIndex = 10;
+            button_Assign.Text = "📃 Phân công giảng dạy";
+            button_Assign.TextAlign = ContentAlignment.MiddleLeft;
+            button_Assign.UseVisualStyleBackColor = false;
+            button_Assign.Click += button_Assign_Click;
+            // 
             // button_Classroom
             // 
             button_Classroom.BackColor = Color.RoyalBlue;
@@ -65,7 +85,7 @@
             button_Classroom.FlatStyle = FlatStyle.Flat;
             button_Classroom.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button_Classroom.ForeColor = SystemColors.Menu;
-            button_Classroom.Location = new Point(6, 376);
+            button_Classroom.Location = new Point(0, 376);
             button_Classroom.Name = "button_Classroom";
             button_Classroom.Size = new Size(200, 50);
             button_Classroom.TabIndex = 9;
@@ -81,14 +101,14 @@
             button_Chart.FlatStyle = FlatStyle.Flat;
             button_Chart.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button_Chart.ForeColor = SystemColors.Menu;
-            button_Chart.Location = new Point(6, 320);
+            button_Chart.Location = new Point(0, 320);
             button_Chart.Name = "button_Chart";
             button_Chart.Size = new Size(200, 50);
             button_Chart.TabIndex = 8;
             button_Chart.Text = "📈 Thống kê sinh viên";
             button_Chart.TextAlign = ContentAlignment.MiddleLeft;
             button_Chart.UseVisualStyleBackColor = false;
-            button_Chart.Click += this.button1_Click;
+            button_Chart.Click += button1_Click;
             // 
             // pb_Logo_HR
             // 
@@ -108,7 +128,7 @@
             btn_ManageCourse.FlatStyle = FlatStyle.Flat;
             btn_ManageCourse.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btn_ManageCourse.ForeColor = SystemColors.Menu;
-            btn_ManageCourse.Location = new Point(6, 264);
+            btn_ManageCourse.Location = new Point(0, 264);
             btn_ManageCourse.Name = "btn_ManageCourse";
             btn_ManageCourse.Size = new Size(195, 50);
             btn_ManageCourse.TabIndex = 5;
@@ -124,7 +144,7 @@
             btn_ListStudent.FlatStyle = FlatStyle.Flat;
             btn_ListStudent.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btn_ListStudent.ForeColor = SystemColors.Menu;
-            btn_ListStudent.Location = new Point(6, 152);
+            btn_ListStudent.Location = new Point(0, 152);
             btn_ListStudent.Name = "btn_ListStudent";
             btn_ListStudent.Size = new Size(211, 50);
             btn_ListStudent.TabIndex = 4;
@@ -156,7 +176,7 @@
             btn_ListScore.FlatStyle = FlatStyle.Flat;
             btn_ListScore.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btn_ListScore.ForeColor = SystemColors.Window;
-            btn_ListScore.Location = new Point(6, 208);
+            btn_ListScore.Location = new Point(0, 208);
             btn_ListScore.Name = "btn_ListScore";
             btn_ListScore.Size = new Size(195, 50);
             btn_ListScore.TabIndex = 2;
@@ -172,6 +192,22 @@
             pnl_content_MainHR.Size = new Size(1045, 675);
             pnl_content_MainHR.TabIndex = 2;
             pnl_content_MainHR.Paint += pnl_content_MainHR_Paint;
+            // 
+            // button_Contact
+            // 
+            button_Contact.BackColor = Color.RoyalBlue;
+            button_Contact.FlatAppearance.BorderSize = 0;
+            button_Contact.FlatStyle = FlatStyle.Flat;
+            button_Contact.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button_Contact.ForeColor = SystemColors.Menu;
+            button_Contact.Location = new Point(0, 488);
+            button_Contact.Name = "button_Contact";
+            button_Contact.Size = new Size(221, 50);
+            button_Contact.TabIndex = 11;
+            button_Contact.Text = "📞 Quản lý danh bạ";
+            button_Contact.TextAlign = ContentAlignment.MiddleLeft;
+            button_Contact.UseVisualStyleBackColor = false;
+            button_Contact.Click += button_Contact_Click;
             // 
             // f_MainHR
             // 
@@ -199,5 +235,7 @@
         private PictureBox pb_Logo_HR;
         private Button button_Chart;
         private Button button_Classroom;
+        private Button button_Assign;
+        private Button button_Contact;
     }
 }
