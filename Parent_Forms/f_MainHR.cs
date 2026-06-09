@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using YourApp;
 
 namespace ProjectMonHoc
 {
@@ -102,6 +103,16 @@ namespace ProjectMonHoc
         private void button1_Click(object sender, EventArgs e)
         {
             OpenChildForm(new FormThongKe(), pnl_content_MainHR);
+        }
+
+        private void button_Assign_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new f_Assign(), pnl_content_MainHR);
+        }
+
+        private void button_Contact_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new f_Contact(Globals.GlobalUserId), pnl_content_MainHR);
         }
     }
 }
