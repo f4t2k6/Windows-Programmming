@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.SqlClient" Version="7.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.5-beta1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,6 +36,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="api_keys.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="images\hcmute.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>

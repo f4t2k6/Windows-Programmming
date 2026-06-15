@@ -74,5 +74,10 @@ namespace ProjectMonHoc
 
         private void panel2_Paint(object sender, PaintEventArgs e) { }
         private void panel4_Paint(object sender, PaintEventArgs e) { }
+
+        private void btn_CreateTB_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new Child_Forms.f_createTB_DB(), panel4);
+        }
     }
 }

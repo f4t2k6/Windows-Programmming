@@ -35,3 +35,5 @@ bld/
 *.projects.v9.bin
 *.strings.v9.bin
 .DS_Store
+
+api_keys.config

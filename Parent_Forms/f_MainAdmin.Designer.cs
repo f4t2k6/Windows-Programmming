@@ -36,6 +36,8 @@
             btn_StudentInfo = new Button();
             pic_Logo_HCMUTE_MStu = new PictureBox();
             pnl_Side_Admin = new Panel();
+            btn_CreateTB = new Button();
+            button_Chart = new Button();
             panel3 = new Panel();
             panel2 = new Panel();
             panel1 = new Panel();
@@ -49,7 +51,6 @@
             button2 = new Button();
             btn_letter_MainAdmin = new Button();
             panel4 = new Panel();
-            button_Chart = new Button();
             pnl_MainStudent.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pic_Logo_HCMUTE_MStu).BeginInit();
             pnl_Side_Admin.SuspendLayout();
@@ -130,6 +131,7 @@
             // pnl_Side_Admin
             // 
             pnl_Side_Admin.BackColor = Color.RoyalBlue;
+            pnl_Side_Admin.Controls.Add(btn_CreateTB);
             pnl_Side_Admin.Controls.Add(button_Chart);
             pnl_Side_Admin.Controls.Add(panel3);
             pnl_Side_Admin.Controls.Add(panel2);
@@ -148,6 +150,38 @@
             pnl_Side_Admin.Name = "pnl_Side_Admin";
             pnl_Side_Admin.Size = new Size(220, 673);
             pnl_Side_Admin.TabIndex = 2;
+            // 
+            // btn_CreateTB
+            // 
+            btn_CreateTB.BackColor = Color.RoyalBlue;
+            btn_CreateTB.FlatAppearance.BorderSize = 0;
+            btn_CreateTB.FlatStyle = FlatStyle.Flat;
+            btn_CreateTB.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btn_CreateTB.ForeColor = SystemColors.Menu;
+            btn_CreateTB.Location = new Point(12, 432);
+            btn_CreateTB.Name = "btn_CreateTB";
+            btn_CreateTB.Size = new Size(200, 50);
+            btn_CreateTB.TabIndex = 10;
+            btn_CreateTB.Text = " ⊟  AI tạo bảng CSDL";
+            btn_CreateTB.TextAlign = ContentAlignment.MiddleLeft;
+            btn_CreateTB.UseVisualStyleBackColor = false;
+            btn_CreateTB.Click += btn_CreateTB_Click;
+            // 
+            // button_Chart
+            // 
+            button_Chart.BackColor = Color.RoyalBlue;
+            button_Chart.FlatAppearance.BorderSize = 0;
+            button_Chart.FlatStyle = FlatStyle.Flat;
+            button_Chart.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button_Chart.ForeColor = SystemColors.Menu;
+            button_Chart.Location = new Point(12, 376);
+            button_Chart.Name = "button_Chart";
+            button_Chart.Size = new Size(200, 50);
+            button_Chart.TabIndex = 9;
+            button_Chart.Text = "📈 Thống kê sinh viên";
+            button_Chart.TextAlign = ContentAlignment.MiddleLeft;
+            button_Chart.UseVisualStyleBackColor = false;
+            button_Chart.Click += button_Chart_Click;
             // 
             // panel3
             // 
@@ -297,22 +331,6 @@
             panel4.TabIndex = 3;
             panel4.Paint += panel4_Paint;
             // 
-            // button_Chart
-            // 
-            button_Chart.BackColor = Color.RoyalBlue;
-            button_Chart.FlatAppearance.BorderSize = 0;
-            button_Chart.FlatStyle = FlatStyle.Flat;
-            button_Chart.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button_Chart.ForeColor = SystemColors.Menu;
-            button_Chart.Location = new Point(12, 376);
-            button_Chart.Name = "button_Chart";
-            button_Chart.Size = new Size(200, 50);
-            button_Chart.TabIndex = 9;
-            button_Chart.Text = "📈 Thống kê sinh viên";
-            button_Chart.TextAlign = ContentAlignment.MiddleLeft;
-            button_Chart.UseVisualStyleBackColor = false;
-            button_Chart.Click += button_Chart_Click;
-            // 
             // f_MainAdmin
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -354,5 +372,6 @@
         private Panel panel3;
         private Panel panel4;
         private Button button_Chart;
+        private Button btn_CreateTB;
     }
 }
