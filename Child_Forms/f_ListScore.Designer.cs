@@ -14,6 +14,7 @@ namespace ProjectMonHoc
 
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             dgvScores = new DataGridView();
             txtSearch = new TextBox();
             cboSort = new ComboBox();
@@ -28,16 +29,21 @@ namespace ProjectMonHoc
             btnRefresh = new Button();
             lblGPA = new Label();
             lblHocLuc = new Label();
-            btn_Print = new Button();
             pnl_header = new Panel();
             pnl_toolbar = new Panel();
             label_Search = new Label();
             pnl_footer = new Panel();
+            btn_Export = new Button();
+            contextMenuStrip1 = new ContextMenuStrip(components);
+            inBảngĐiểmToolStripMenuItem = new ToolStripMenuItem();
+            xuấtRaPdfToolStripMenuItem = new ToolStripMenuItem();
+            xuấtRaExcelToolStripMenuItem = new ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)dgvScores).BeginInit();
             pnl_studentSelector.SuspendLayout();
             pnl_header.SuspendLayout();
             pnl_toolbar.SuspendLayout();
             pnl_footer.SuspendLayout();
+            contextMenuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // dgvScores
@@ -207,22 +213,7 @@ namespace ProjectMonHoc
             lblHocLuc.Size = new Size(123, 23);
             lblHocLuc.TabIndex = 6;
             lblHocLuc.Text = "🎓 Học lực: --";
-            // 
-            // btn_Print
-            // 
-            btn_Print.BackColor = Color.FromArgb(41, 128, 185);
-            btn_Print.Cursor = Cursors.Hand;
-            btn_Print.FlatAppearance.BorderSize = 0;
-            btn_Print.FlatStyle = FlatStyle.Flat;
-            btn_Print.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            btn_Print.ForeColor = Color.White;
-            btn_Print.Location = new Point(849, 7);
-            btn_Print.Name = "btn_Print";
-            btn_Print.Size = new Size(162, 30);
-            btn_Print.TabIndex = 7;
-            btn_Print.Text = "🖨️ In Bảng Điểm";
-            btn_Print.UseVisualStyleBackColor = false;
-            btn_Print.Click += btn_Print_Click;
+            lblHocLuc.Click += lblHocLuc_Click;
             // 
             // pnl_header
             // 
@@ -262,16 +253,56 @@ namespace ProjectMonHoc
             // pnl_footer
             // 
             pnl_footer.BackColor = Color.WhiteSmoke;
+            pnl_footer.Controls.Add(btn_Export);
             pnl_footer.Controls.Add(lblTotal);
             pnl_footer.Controls.Add(lblGPA);
             pnl_footer.Controls.Add(lblHocLuc);
-            pnl_footer.Controls.Add(btn_Print);
             pnl_footer.Dock = DockStyle.Bottom;
             pnl_footer.Location = new Point(0, 584);
             pnl_footer.Name = "pnl_footer";
             pnl_footer.Size = new Size(1027, 44);
             pnl_footer.TabIndex = 4;
             pnl_footer.Paint += pnl_footer_Paint;
+            // 
+            // btn_Export
+            // 
+            btn_Export.BackColor = Color.CornflowerBlue;
+            btn_Export.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+            btn_Export.Location = new Point(899, 4);
+            btn_Export.Name = "btn_Export";
+            btn_Export.Size = new Size(116, 37);
+            btn_Export.TabIndex = 7;
+            btn_Export.Text = "Xuất ra file";
+            btn_Export.UseVisualStyleBackColor = false;
+            btn_Export.Click += btn_Export_Click;
+            // 
+            // contextMenuStrip1
+            // 
+            contextMenuStrip1.ImageScalingSize = new Size(20, 20);
+            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { inBảngĐiểmToolStripMenuItem, xuấtRaPdfToolStripMenuItem, xuấtRaExcelToolStripMenuItem });
+            contextMenuStrip1.Name = "contextMenuStrip1";
+            contextMenuStrip1.Size = new Size(194, 76);
+            // 
+            // inBảngĐiểmToolStripMenuItem
+            // 
+            inBảngĐiểmToolStripMenuItem.Name = "inBảngĐiểmToolStripMenuItem";
+            inBảngĐiểmToolStripMenuItem.Size = new Size(193, 24);
+            inBảngĐiểmToolStripMenuItem.Text = "🖨️ In Bảng Điểm";
+            inBảngĐiểmToolStripMenuItem.Click += inBảngĐiểmToolStripMenuItem_Click;
+            // 
+            // xuấtRaPdfToolStripMenuItem
+            // 
+            xuấtRaPdfToolStripMenuItem.Name = "xuấtRaPdfToolStripMenuItem";
+            xuấtRaPdfToolStripMenuItem.Size = new Size(193, 24);
+            xuấtRaPdfToolStripMenuItem.Text = "Xuất ra pdf";
+            xuấtRaPdfToolStripMenuItem.Click += xuấtRaPdfToolStripMenuItem_Click;
+            // 
+            // xuấtRaExcelToolStripMenuItem
+            // 
+            xuấtRaExcelToolStripMenuItem.Name = "xuấtRaExcelToolStripMenuItem";
+            xuấtRaExcelToolStripMenuItem.Size = new Size(193, 24);
+            xuấtRaExcelToolStripMenuItem.Text = "Xuất ra excel";
+            xuấtRaExcelToolStripMenuItem.Click += xuấtRaExcelToolStripMenuItem_Click;
             // 
             // f_ListScore
             // 
@@ -296,6 +327,7 @@ namespace ProjectMonHoc
             pnl_toolbar.PerformLayout();
             pnl_footer.ResumeLayout(false);
             pnl_footer.PerformLayout();
+            contextMenuStrip1.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -319,6 +351,10 @@ namespace ProjectMonHoc
         private Label lblGPA;
         private Label lblHocLuc;
         private Label label_Search;
-        private Button btn_Print;
+        private ContextMenuStrip contextMenuStrip1;
+        private ToolStripMenuItem inBảngĐiểmToolStripMenuItem;
+        private ToolStripMenuItem xuấtRaPdfToolStripMenuItem;
+        private ToolStripMenuItem xuấtRaExcelToolStripMenuItem;
+        private Button btn_Export;
     }
 }

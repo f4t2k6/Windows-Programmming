@@ -1,7 +1,10 @@
-﻿using System;
+﻿using OfficeOpenXml;
+using System;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
+using System.IO;
+using OfficeOpenXml;
 
 namespace ProjectMonHoc
 {
@@ -165,5 +168,82 @@ namespace ProjectMonHoc
         private void dgvStudents_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
         private void lblTotal_Click(object sender, EventArgs e) { }
         private void lb_Notification_Click(object sender, EventArgs e) { }
+
+        private void btn_ExportExcelStudent_Click(object sender, EventArgs e)
+        {
+            if (dgvStudents.Rows.Count == 0)
+            {
+                MessageBox.Show("Không có dữ liệu sinh viên để xuất!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            SaveFileDialog sfd = new SaveFileDialog
+            {
+                Filter = "Excel (*.xlsx)|*.xlsx",
+                FileName = "DanhSachSinhVien.xlsx"
+            };
+
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    // Khai báo bản quyền EPPlus 8
+                    ExcelPackage.License.SetNonCommercialPersonal("TenCuaBan");
+
+                    using (ExcelPackage package = new ExcelPackage())
+                    {
+                        ExcelWorksheet ws = package.Workbook.Worksheets.Add("Danh sách SV");
+
+                        // 1. TẠO HEADER ĐÚNG YÊU CẦU TÀI LIỆU
+                        string[] headers = { "MSSV", "Họ", "Tên", "Ngày sinh", "Giới tính", "SĐT", "Email" };
+                        for (int i = 0; i < headers.Length; i++)
+                        {
+                            ws.Cells[1, i + 1].Value = headers[i];
+                            ws.Cells[1, i + 1].Style.Font.Bold = true; // In đậm
+                                                                       // Đổ nền cho Header dễ nhìn
+                            ws.Cells[1, i + 1].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                            ws.Cells[1, i + 1].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightSkyBlue);
+                        }
+
+                        // 2. DUYỆT DATAGRIDVIEW ĐỂ ĐỔ DỮ LIỆU VÀO ĐÚNG CỘT
+                        int rowExcel = 2;
+                        foreach (DataGridViewRow row in dgvStudents.Rows)
+                        {
+                            if (row.IsNewRow) continue;
+
+                            ws.Cells[rowExcel, 1].Value = row.Cells["MSSV"].Value?.ToString();
+                            ws.Cells[rowExcel, 2].Value = row.Cells["Fname"].Value?.ToString();
+                            ws.Cells[rowExcel, 3].Value = row.Cells["Lname"].Value?.ToString();
+
+                            // Cột 4: Ngày sinh (Định dạng lại cho đẹp)
+                            if (row.Cells["Dob"].Value != null && DateTime.TryParse(row.Cells["Dob"].Value.ToString(), out DateTime dob))
+                            {
+                                ws.Cells[rowExcel, 4].Value = dob.ToString("dd/MM/yyyy");
+                            }
+                            else
+                            {
+                                ws.Cells[rowExcel, 4].Value = row.Cells["Dob"].Value?.ToString();
+                            }
+
+                            ws.Cells[rowExcel, 5].Value = row.Cells["Gder"].Value?.ToString();
+                            ws.Cells[rowExcel, 6].Value = row.Cells["Phone"].Value?.ToString();
+                            ws.Cells[rowExcel, 7].Value = row.Cells["Email"].Value?.ToString();
+
+                            rowExcel++;
+                        }
+
+                        // 3. AUTOFIT VÀ LƯU FILE
+                        ws.Cells[ws.Dimension.Address].AutoFitColumns();
+                        package.SaveAs(new FileInfo(sfd.FileName));
+
+                        MessageBox.Show("Xuất danh sách sinh viên ra Excel thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi xuất Excel: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
     }
 }

@@ -3,6 +3,14 @@ using System.Data;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.Windows.Forms;
+using System.IO;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using System.IO;
+using OfficeOpenXml;
+using OfficeOpenXml.Drawing.Chart;
+using Font = System.Drawing.Font;
+using Image = System.Drawing.Image;
 
 namespace ProjectMonHoc
 {
@@ -359,6 +367,117 @@ namespace ProjectMonHoc
 
         private void btn_Print_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void btn_ExportPDF_Click(object sender, EventArgs e)
+        {
+            if (dgvScores.Rows.Count == 0)
+            {
+                MessageBox.Show("Không có dữ liệu để xuất!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            SaveFileDialog sfd = new SaveFileDialog
+            {
+                Filter = "PDF (*.pdf)|*.pdf",
+                FileName = $"BangDiem_{_studentMSSV}.pdf"
+            };
+
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    // Khởi tạo tài liệu A4
+                    Document pdfDoc = new Document(PageSize.A4, 30, 30, 40, 40);
+                    PdfWriter.GetInstance(pdfDoc, new FileStream(sfd.FileName, FileMode.Create));
+                    pdfDoc.Open();
+
+                    // 1. CHÈN LOGO TRƯỜNG (Thay "logo_HCMUTE_Login.jpg" bằng tên file thực tế của bạn)
+                    if (File.Exists("logo_HCMUTE_Login.jpg"))
+                    {
+                        iTextSharp.text.Image logo = iTextSharp.text.Image.GetInstance("logo.png");
+                        logo.ScaleToFit(80f, 80f);
+                        logo.Alignment = Element.ALIGN_CENTER;
+                        pdfDoc.Add(logo);
+                    }
+
+                    // Cấu hình Font chữ (Sử dụng font mặc định hỗ trợ tiếng Việt cơ bản hoặc load font Arial)
+                    string fontPath = Environment.GetFolderPath(Environment.SpecialFolder.Fonts) + "\\arial.ttf";
+                    BaseFont bf = BaseFont.CreateFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+                    iTextSharp.text.Font fontTitle = new iTextSharp.text.Font(bf, 16, iTextSharp.text.Font.BOLD);
+                    iTextSharp.text.Font fontNormal = new iTextSharp.text.Font(bf, 12, iTextSharp.text.Font.NORMAL);
+                    iTextSharp.text.Font fontItalic = new iTextSharp.text.Font(bf, 11, iTextSharp.text.Font.ITALIC);
+
+                    // 2. CHÈN HEADER (TÊN TRƯỜNG, KHOA VÀ TIÊU ĐỀ)
+                    Paragraph header = new Paragraph("TRƯỜNG ĐẠI HỌC SƯ PHẠM KĨ THUẬT\n\nBẢNG ĐIỂM TỔNG HỢP SINH VIÊN\n\n", fontTitle)
+                    {
+                        Alignment = Element.ALIGN_CENTER
+                    };
+                    pdfDoc.Add(header);
+
+                    // 3. THÔNG TIN SINH VIÊN
+                    pdfDoc.Add(new Paragraph($"Họ và tên: {_studentName}", fontNormal));
+                    pdfDoc.Add(new Paragraph($"MSSV: {_studentMSSV}\n\n", fontNormal));
+
+                    // 4. TẠO BẢNG (TABLE) CHỨA ĐIỂM
+                    PdfPTable pdfTable = new PdfPTable(dgvScores.Columns.Count);
+                    pdfTable.WidthPercentage = 100;
+
+                    // Thêm Header cho bảng
+                    foreach (DataGridViewColumn column in dgvScores.Columns)
+                    {
+                        PdfPCell cell = new PdfPCell(new Phrase(column.HeaderText, fontNormal));
+                        cell.BackgroundColor = new iTextSharp.text.BaseColor(240, 240, 240); // Màu nền xám nhạt
+                        cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                        pdfTable.AddCell(cell);
+                    }
+
+                    // Đổ dữ liệu từng dòng vào bảng
+                    foreach (DataGridViewRow row in dgvScores.Rows)
+                    {
+                        if (row.IsNewRow) continue;
+                        foreach (DataGridViewCell cell in row.Cells)
+                        {
+                            string cellValue = cell.Value?.ToString() ?? "";
+                            PdfPCell pdfCell = new PdfPCell(new Phrase(cellValue, fontNormal));
+                            pdfTable.AddCell(pdfCell);
+                        }
+                    }
+                    pdfDoc.Add(pdfTable);
+
+                    // 5. CHÈN FOOTER (NGÀY XUẤT BÁO CÁO)
+                    string currentDate = $"\n\nTP.HCM, ngày {DateTime.Now:dd} tháng {DateTime.Now:MM} năm {DateTime.Now:yyyy}";
+                    Paragraph footer = new Paragraph(currentDate, fontItalic)
+                    {
+                        Alignment = Element.ALIGN_RIGHT
+                    };
+                    pdfDoc.Add(footer);
+
+                    // Đóng file
+                    pdfDoc.Close();
+
+                    MessageBox.Show("Đã xuất file PDF thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi xuất PDF: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void lblHocLuc_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+
+        }
+
+        private void inBảngĐiểmToolStripMenuItem_Click(object sender, EventArgs e)
+        {
             if (_studentMSSV <= 0 || dgvScores.Rows.Count == 0)
             {
                 MessageBox.Show("Không có dữ liệu điểm để in!", "Thông báo",
@@ -376,6 +495,219 @@ namespace ProjectMonHoc
                 SendPrintRequestToAdmin();
                 MessageBox.Show("Yêu cầu in đã được gửi đến Admin để chờ xét duyệt!", "Thành công",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void xuấtRaPdfToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (dgvScores.Rows.Count == 0)
+            {
+                MessageBox.Show("Không có dữ liệu để xuất!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            SaveFileDialog sfd = new SaveFileDialog
+            {
+                Filter = "PDF (*.pdf)|*.pdf",
+                FileName = $"BangDiem_{_studentMSSV}.pdf"
+            };
+
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    // Khởi tạo tài liệu A4
+                    Document pdfDoc = new Document(PageSize.A4, 30, 30, 40, 40);
+                    PdfWriter.GetInstance(pdfDoc, new FileStream(sfd.FileName, FileMode.Create));
+                    pdfDoc.Open();
+
+                    // 1. CHÈN LOGO TRƯỜNG (Thay "logo_HCMUTE_Login.jpg" bằng tên file thực tế của bạn)
+                    if (File.Exists("logo_HCMUTE_Login.jpg"))
+                    {
+                        iTextSharp.text.Image logo = iTextSharp.text.Image.GetInstance("logo.png");
+                        logo.ScaleToFit(80f, 80f);
+                        logo.Alignment = Element.ALIGN_CENTER;
+                        pdfDoc.Add(logo);
+                    }
+
+                    // Cấu hình Font chữ (Sử dụng font mặc định hỗ trợ tiếng Việt cơ bản hoặc load font Arial)
+                    string fontPath = Environment.GetFolderPath(Environment.SpecialFolder.Fonts) + "\\arial.ttf";
+                    BaseFont bf = BaseFont.CreateFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+                    iTextSharp.text.Font fontTitle = new iTextSharp.text.Font(bf, 16, iTextSharp.text.Font.BOLD);
+                    iTextSharp.text.Font fontNormal = new iTextSharp.text.Font(bf, 12, iTextSharp.text.Font.NORMAL);
+                    iTextSharp.text.Font fontItalic = new iTextSharp.text.Font(bf, 11, iTextSharp.text.Font.ITALIC);
+
+                    // 2. CHÈN HEADER (TÊN TRƯỜNG, KHOA VÀ TIÊU ĐỀ)
+                    Paragraph header = new Paragraph("TRƯỜNG ĐẠI HỌC SƯ PHẠM KĨ THUẬT\n\nBẢNG ĐIỂM TỔNG HỢP SINH VIÊN\n\n", fontTitle)
+                    {
+                        Alignment = Element.ALIGN_CENTER
+                    };
+                    pdfDoc.Add(header);
+
+                    // 3. THÔNG TIN SINH VIÊN
+                    pdfDoc.Add(new Paragraph($"Họ và tên: {_studentName}", fontNormal));
+                    pdfDoc.Add(new Paragraph($"MSSV: {_studentMSSV}\n\n", fontNormal));
+
+                    // 4. TẠO BẢNG (TABLE) CHỨA ĐIỂM
+                    PdfPTable pdfTable = new PdfPTable(dgvScores.Columns.Count);
+                    pdfTable.WidthPercentage = 100;
+
+                    // Thêm Header cho bảng
+                    foreach (DataGridViewColumn column in dgvScores.Columns)
+                    {
+                        PdfPCell cell = new PdfPCell(new Phrase(column.HeaderText, fontNormal));
+                        cell.BackgroundColor = new iTextSharp.text.BaseColor(240, 240, 240); // Màu nền xám nhạt
+                        cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                        pdfTable.AddCell(cell);
+                    }
+
+                    // Đổ dữ liệu từng dòng vào bảng
+                    foreach (DataGridViewRow row in dgvScores.Rows)
+                    {
+                        if (row.IsNewRow) continue;
+                        foreach (DataGridViewCell cell in row.Cells)
+                        {
+                            string cellValue = cell.Value?.ToString() ?? "";
+                            PdfPCell pdfCell = new PdfPCell(new Phrase(cellValue, fontNormal));
+                            pdfTable.AddCell(pdfCell);
+                        }
+                    }
+                    pdfDoc.Add(pdfTable);
+
+                    // 5. CHÈN FOOTER (NGÀY XUẤT BÁO CÁO)
+                    string currentDate = $"\n\nTP.HCM, ngày {DateTime.Now:dd} tháng {DateTime.Now:MM} năm {DateTime.Now:yyyy}";
+                    Paragraph footer = new Paragraph(currentDate, fontItalic)
+                    {
+                        Alignment = Element.ALIGN_RIGHT
+                    };
+                    pdfDoc.Add(footer);
+
+                    // Đóng file
+                    pdfDoc.Close();
+
+                    MessageBox.Show("Đã xuất file PDF thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi xuất PDF: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void btn_Export_Click(object sender, EventArgs e)
+        {
+            contextMenuStrip1.Show(btn_Export, new Point(0, btn_Export.Height));
+        }
+
+        private void xuấtRaExcelToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Kiểm tra xem bảng có dữ liệu không
+            if (dgvScores.Rows.Count == 0)
+            {
+                MessageBox.Show("Không có dữ liệu để xuất!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Mở hộp thoại chọn nơi lưu file
+            SaveFileDialog sfd = new SaveFileDialog
+            {
+                Filter = "Excel (*.xlsx)|*.xlsx",
+                FileName = $"ThongKeDiem_{_studentMSSV}.xlsx"
+            };
+
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    // [CẬP NHẬT MỚI CHO EPPLUS 8] - Khai báo bản quyền phi thương mại
+                    ExcelPackage.License.SetNonCommercialPersonal("SinhVienHCMUTE");
+
+                    using (ExcelPackage excel = new ExcelPackage())
+                    {
+                        // Tạo một sheet mới
+                        var sheet = excel.Workbook.Worksheets.Add("Thống Kê Điểm");
+
+                        // ==========================================
+                        // PHẦN 1: ĐỔ DỮ LIỆU TỪ BẢNG VÀO EXCEL
+                        // ==========================================
+
+                        // 1.1 Tạo dòng Tiêu đề cột
+                        for (int j = 0; j < dgvScores.Columns.Count; j++)
+                        {
+                            sheet.Cells[1, j + 1].Value = dgvScores.Columns[j].HeaderText;
+                            sheet.Cells[1, j + 1].Style.Font.Bold = true; // In đậm
+                            sheet.Cells[1, j + 1].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                            sheet.Cells[1, j + 1].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightBlue); // Đổ nền xanh
+                        }
+
+                        // 1.2 Đổ dữ liệu từng dòng
+                        int rowExcel = 2; // Dữ liệu bắt đầu từ dòng 2
+                        foreach (DataGridViewRow row in dgvScores.Rows)
+                        {
+                            if (row.IsNewRow) continue;
+
+                            for (int j = 0; j < dgvScores.Columns.Count; j++)
+                            {
+                                string cellValue = row.Cells[j].Value?.ToString() ?? "";
+
+                                // Để vẽ được biểu đồ, cột Điểm TK phải được ép kiểu về dạng số (double)
+                                if (dgvScores.Columns[j].Name == "DiemTK")
+                                {
+                                    if (double.TryParse(cellValue, out double diem))
+                                        sheet.Cells[rowExcel, j + 1].Value = diem;
+                                    else
+                                        sheet.Cells[rowExcel, j + 1].Value = cellValue;
+                                }
+                                else
+                                {
+                                    sheet.Cells[rowExcel, j + 1].Value = cellValue;
+                                }
+                            }
+                            rowExcel++;
+                        }
+
+                        // Tự động dãn độ rộng các cột cho đẹp
+                        sheet.Cells[sheet.Dimension.Address].AutoFitColumns();
+
+
+                        // ==========================================
+                        // PHẦN 2: TỰ ĐỘNG VẼ BIỂU ĐỒ CỘT (CHART)
+                        // ==========================================
+
+                        int lastDataRow = rowExcel - 1;
+
+                        // Tìm vị trí của cột "Tên môn học" (trục X) và "Điểm TK" (trục Y)
+                        int tenMhColIndex = dgvScores.Columns["course_name"].Index + 1;
+                        int diemTkColIndex = dgvScores.Columns["DiemTK"].Index + 1;
+
+                        // Khởi tạo một biểu đồ cột (Column Clustered)
+                        var chart = sheet.Drawings.AddChart("ChartDiem", eChartType.ColumnClustered);
+                        chart.Title.Text = $"Biểu đồ Thống kê Điểm - {_studentName}";
+
+                        // Đặt biểu đồ nằm ngay bên phải bảng dữ liệu
+                        chart.SetPosition(1, 0, dgvScores.Columns.Count + 2, 0);
+                        chart.SetSize(600, 400); // Kích thước: Rộng 600px, Cao 400px
+
+                        // Cấp dữ liệu cho biểu đồ: Series.Add(Vùng_Dữ_Liệu_Điểm, Vùng_Dữ_Liệu_Tên_Môn)
+                        var serie = chart.Series.Add(
+                            ExcelRange.GetAddress(2, diemTkColIndex, lastDataRow, diemTkColIndex),
+                            ExcelRange.GetAddress(2, tenMhColIndex, lastDataRow, tenMhColIndex)
+                        );
+                        serie.Header = "Điểm Tổng Kết";
+
+                        // ==========================================
+                        // LƯU FILE
+                        // ==========================================
+                        FileInfo excelFile = new FileInfo(sfd.FileName);
+                        excel.SaveAs(excelFile);
+
+                        MessageBox.Show("Đã xuất file Excel và vẽ biểu đồ thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi xuất Excel: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
     }

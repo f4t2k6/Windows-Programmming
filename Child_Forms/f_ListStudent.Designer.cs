@@ -28,6 +28,7 @@
             cboGenderFilter = new ComboBox();
             lblGenderFilter = new Label();
             lb_Notification = new Label();
+            btn_ExportExcelStudent = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvStudents).BeginInit();
             SuspendLayout();
             // 
@@ -157,12 +158,24 @@
             lb_Notification.Text = "Nhấn đúp để thay đổi thông tin sinh viên";
             lb_Notification.Click += lb_Notification_Click;
             // 
+            // btn_ExportExcelStudent
+            // 
+            btn_ExportExcelStudent.BackColor = SystemColors.Info;
+            btn_ExportExcelStudent.Location = new Point(653, 127);
+            btn_ExportExcelStudent.Name = "btn_ExportExcelStudent";
+            btn_ExportExcelStudent.Size = new Size(157, 43);
+            btn_ExportExcelStudent.TabIndex = 10;
+            btn_ExportExcelStudent.Text = "Xuất ra pdf";
+            btn_ExportExcelStudent.UseVisualStyleBackColor = false;
+            btn_ExportExcelStudent.Click += btn_ExportExcelStudent_Click;
+            // 
             // f_ListStudent
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaption;
             ClientSize = new Size(1027, 628);
+            Controls.Add(btn_ExportExcelStudent);
             Controls.Add(lb_Notification);
             Controls.Add(lblCurrentUser);
             Controls.Add(txtSearch);
@@ -196,5 +209,6 @@
         private System.Windows.Forms.Label lblGenderFilter;
         private System.Windows.Forms.Button btnRefresh;
         private Label lb_Notification;
+        private Button btn_ExportExcelStudent;
     }
 }
