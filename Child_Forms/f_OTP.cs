@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Mail;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ProjectMonHoc
@@ -38,7 +39,7 @@ namespace ProjectMonHoc
             return maskedName + "@" + parts[1];
         }
 
-        private void f_OTP_Load(object sender, EventArgs e)
+        private async void f_OTP_Load(object sender, EventArgs e)
         {
             // Định dạng hiển thị chuỗi thông báo email đích cụ thể (Đã áp dụng che giấu Email)
             if (!string.IsNullOrEmpty(to))
@@ -46,27 +47,27 @@ namespace ProjectMonHoc
                 lbl_Info.Text = $"Mã xác thực đã được gửi đến email:\n{MaskEmail(to)}";
             }
 
-            // Tự động sinh mã và gửi email ngay khi form được mở lên
-            GenerateAndSendOTP();
+            // Gửi bất đồng bộ -> không làm đơ UI khi mở form
+            await GenerateAndSendOTPAsync();
         }
 
         // =========================================================
         // LOGIC SINH MÃ VÀ GỬI EMAIL QUA SMTP
         // =========================================================
-        private void GenerateAndSendOTP()
+        private async Task GenerateAndSendOTPAsync()
         {
+            btn_Verify.Enabled = false;
+            btn_Resend.Enabled = false;
+            Cursor = Cursors.WaitCursor;
+
             try
             {
-                // 1. Sinh ngẫu nhiên số có 6 chữ số từ 100000 đến 999999
                 Random rand = new Random();
                 generatedOTP = rand.Next(100000, 999999).ToString();
-
-                // [NÂNG CAO] Lưu lại thời gian bắt đầu sinh mã OTP
                 otpCreationTime = DateTime.Now;
 
-                // 2. Cấu hình nội dung thư điện tử gửi đi
-                string fromEmail = "huyphat06112006@gmail.com"; // Thay bằng Email Admin của bạn
-                string appPassword = "rqer rsck gmnp aksu\r\n"; // Thay bằng Mật khẩu ứng dụng (App Password)
+                string fromEmail = "huyphat06112006@gmail.com";
+                string appPassword = "rqer rsck gmnp aksu\r\n";
 
                 MailMessage mail = new MailMessage();
                 mail.From = new MailAddress(fromEmail, "HỆ THỐNG QUẢN LÝ SINH VIÊN");
@@ -76,19 +77,24 @@ namespace ProjectMonHoc
                             "Mã này có hiệu lực trong vòng 5 phút. Vui lòng không chia sẻ mã này cho bất kỳ ai.\n\n" +
                             "Trân trọng,\nBan Quản Trị Hệ Thống.";
 
-                // 3. Cấu hình Client SMTP kết nối Server (Ví dụ cấu hình của Gmail)
-                SmtpClient smtp = new SmtpClient("smtp.gmail.com");
+                using SmtpClient smtp = new SmtpClient("smtp.gmail.com");
                 smtp.Port = 587;
                 smtp.Credentials = new NetworkCredential(fromEmail, appPassword);
                 smtp.EnableSsl = true;
 
-                // Tiến hành gửi ngầm tránh làm đơ giao diện
-                smtp.Send(mail);
+                // Điểm mấu chốt: SendMailAsync KHÔNG block UI thread
+                await smtp.SendMailAsync(mail);
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Không thể gửi mã OTP qua email!\nChi tiết lỗi: " + ex.Message,
                     "Lỗi Gửi Email", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Cursor = Cursors.Default;
+                btn_Verify.Enabled = true;
+                btn_Resend.Enabled = true;
             }
         }
 
@@ -122,12 +128,26 @@ namespace ProjectMonHoc
                 MessageBox.Show("Xác thực email thành công!", "OTP Hợp Lệ",
                                 MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                // ✅ Set DialogResult.OK → f_Register.FormClosed sẽ nhận được tín hiệu này
-                //    và tự xử lý lưu DB tuỳ theo role (Student → login, HR → register_HR)
-                this.DialogResult = DialogResult.OK;
+                // ✅ f_OTP LINH ĐỘNG giữa 2 luồng sử dụng:
+                //    - Luồng ĐĂNG KÝ (f_Register): không gán onVerifySuccess
+                //      -> set DialogResult.OK rồi Close(), f_Register tự xử lý qua FormClosed.
+                //    - Luồng QUÊN MẬT KHẨU (f_ForgetPass): có gán onVerifySuccess
+                //      -> gọi thẳng callback để nhảy sang f_ResetPass, không qua DialogResult/FormClosed,
+                //         tránh bị f_ForgetPass.FormClosed hiểu nhầm là "Hủy" và quay lại chính nó.
+                if (onVerifySuccess != null)
+                {
+                    onVerifySuccess.Invoke(to, targetRole);
+                    this.Close();
+                }
+                else
+                {
+                    // ✅ Set DialogResult.OK → f_Register.FormClosed sẽ nhận được tín hiệu này
+                    //    và tự xử lý lưu DB tuỳ theo role (Student → login, HR → register_HR)
+                    this.DialogResult = DialogResult.OK;
 
-                // ✅ Đóng form OTP — kích hoạt sự kiện FormClosed bên f_Register
-                this.Close();
+                    // ✅ Đóng form OTP — kích hoạt sự kiện FormClosed bên f_Register
+                    this.Close();
+                }
             }
             else
             {
@@ -141,17 +161,11 @@ namespace ProjectMonHoc
         // =========================================================
         // SỰ KIỆN NÚT GỬI LẠI MÃ (RESEND)
         // =========================================================
-        private void btn_Resend_Click(object sender, EventArgs e)
+        private async void btn_Resend_Click(object sender, EventArgs e)
         {
-            btn_Resend.Enabled = false;
-            Cursor = Cursors.WaitCursor;
-
-            // Gọi lại hàm này sẽ tự động reset mã mới và thời gian (otpCreationTime) mới
-            GenerateAndSendOTP();
-
-            Cursor = Cursors.Default;
-            btn_Resend.Enabled = true;
-            MessageBox.Show("Một mã OTP mới đã được gửi lại vào email của bạn! Mã có hiệu lực trong 5 phút.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            await GenerateAndSendOTPAsync();
+            MessageBox.Show("Một mã OTP mới đã được gửi lại vào email của bạn! Mã có hiệu lực trong 5 phút.",
+                "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         // Chặn người dùng nhập chữ vào ô OTP (chỉ chấp nhận ký tự số và phím điều khiển)

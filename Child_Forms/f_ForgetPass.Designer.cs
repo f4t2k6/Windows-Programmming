@@ -34,32 +34,31 @@
             // lbl_Email_FPass
             // 
             lbl_Email_FPass.AutoSize = true;
-            lbl_Email_FPass.Font = new Font("Segoe UI", 11F);
+            lbl_Email_FPass.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lbl_Email_FPass.ForeColor = SystemColors.GrayText;
-            lbl_Email_FPass.Location = new Point(92, 242);
+            lbl_Email_FPass.Location = new Point(44, 231);
             lbl_Email_FPass.Name = "lbl_Email_FPass";
-            lbl_Email_FPass.Size = new Size(62, 25);
+            lbl_Email_FPass.Size = new Size(55, 23);
             lbl_Email_FPass.TabIndex = 1;
             lbl_Email_FPass.Text = "Email:";
             // 
             // txb_Email
             // 
-            txb_Email.Font = new Font("Segoe UI", 10F);
-            txb_Email.Location = new Point(185, 241);
+            txb_Email.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txb_Email.Location = new Point(44, 257);
             txb_Email.Name = "txb_Email";
-            txb_Email.Size = new Size(320, 30);
+            txb_Email.Size = new Size(409, 34);
             txb_Email.TabIndex = 2;
             txb_Email.TextChanged += txb_Email_TextChanged;
             // 
             // btn_SendOTP
             // 
-            btn_SendOTP.BackColor = Color.MediumBlue;
+            btn_SendOTP.BackColor = Color.SteelBlue;
             btn_SendOTP.Cursor = Cursors.Hand;
             btn_SendOTP.FlatAppearance.BorderSize = 0;
-            btn_SendOTP.FlatStyle = FlatStyle.Flat;
-            btn_SendOTP.Font = new Font("Segoe UI", 15F, FontStyle.Bold);
+            btn_SendOTP.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
             btn_SendOTP.ForeColor = Color.White;
-            btn_SendOTP.Location = new Point(92, 319);
+            btn_SendOTP.Location = new Point(44, 314);
             btn_SendOTP.Name = "btn_SendOTP";
             btn_SendOTP.Size = new Size(156, 70);
             btn_SendOTP.TabIndex = 3;
@@ -72,10 +71,9 @@
             btn_Cancel_ForgetPass.BackColor = Color.IndianRed;
             btn_Cancel_ForgetPass.Cursor = Cursors.Hand;
             btn_Cancel_ForgetPass.FlatAppearance.BorderSize = 0;
-            btn_Cancel_ForgetPass.FlatStyle = FlatStyle.Flat;
-            btn_Cancel_ForgetPass.Font = new Font("Segoe UI", 15F, FontStyle.Bold);
+            btn_Cancel_ForgetPass.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
             btn_Cancel_ForgetPass.ForeColor = Color.White;
-            btn_Cancel_ForgetPass.Location = new Point(351, 319);
+            btn_Cancel_ForgetPass.Location = new Point(299, 314);
             btn_Cancel_ForgetPass.Name = "btn_Cancel_ForgetPass";
             btn_Cancel_ForgetPass.Size = new Size(154, 70);
             btn_Cancel_ForgetPass.TabIndex = 4;
@@ -86,11 +84,11 @@
             // lbl_Title
             // 
             lbl_Title.BackColor = Color.Transparent;
-            lbl_Title.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
+            lbl_Title.Font = new Font("Segoe UI", 19.8000011F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lbl_Title.ForeColor = Color.SteelBlue;
-            lbl_Title.Location = new Point(57, 31);
+            lbl_Title.Location = new Point(12, 9);
             lbl_Title.Name = "lbl_Title";
-            lbl_Title.Size = new Size(524, 119);
+            lbl_Title.Size = new Size(476, 119);
             lbl_Title.TabIndex = 3;
             lbl_Title.Text = "KHÔI PHỤC MẬT KHẨU\r\nSTUDENT";
             lbl_Title.TextAlign = ContentAlignment.MiddleCenter;
@@ -98,18 +96,18 @@
             // 
             // llbl_Register
             // 
-            llbl_Register.AutoSize = true;
             llbl_Register.BackColor = Color.White;
-            llbl_Register.Font = new Font("Segoe UI", 12F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            llbl_Register.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             llbl_Register.ForeColor = Color.DimGray;
             llbl_Register.LinkBehavior = LinkBehavior.NeverUnderline;
             llbl_Register.LinkColor = Color.DimGray;
-            llbl_Register.Location = new Point(167, 165);
+            llbl_Register.Location = new Point(12, 162);
             llbl_Register.Name = "llbl_Register";
-            llbl_Register.Size = new Size(303, 28);
+            llbl_Register.Size = new Size(476, 28);
             llbl_Register.TabIndex = 8;
             llbl_Register.TabStop = true;
             llbl_Register.Text = "Nhập email để xác thực qua OTP";
+            llbl_Register.TextAlign = ContentAlignment.MiddleCenter;
             llbl_Register.LinkClicked += llbl_Register_LinkClicked;
             // 
             // f_ForgetPass
@@ -117,14 +115,16 @@
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(622, 673);
+            ClientSize = new Size(500, 643);
             Controls.Add(llbl_Register);
             Controls.Add(lbl_Title);
             Controls.Add(btn_Cancel_ForgetPass);
             Controls.Add(btn_SendOTP);
             Controls.Add(txb_Email);
             Controls.Add(lbl_Email_FPass);
+            FormBorderStyle = FormBorderStyle.None;
             Name = "f_ForgetPass";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Quên Mật Khẩu";
             Load += f_ForgetPass_Load;
             ResumeLayout(false);

@@ -14,7 +14,7 @@ namespace ProjectMonHoc
     public partial class f_Register : Form
     {
         // Biến nhận giá trị position truyền từ f_Login sang (1 = Student, 2 = HR)
-        
+
         private f_Login loginForm;
         private string savedMSSV = "";
         private string savedUsername = "";
@@ -26,12 +26,31 @@ namespace ProjectMonHoc
         private int position;
         public Action? onDone { get; set; }
         private bool _registrationDone = false;
+        private bool _hasPendingRestore = false;
 
         public f_Register(int rolePosition, f_Login loginForm)
         {
             InitializeComponent();
             this.position = rolePosition;
             this.loginForm = loginForm;
+        }
+
+        // =========================================================
+        // KHÔI PHỤC DỮ LIỆU ĐÃ NHẬP (khi người dùng nhấn Hủy ở f_OTP
+        // và quay lại f_Register) — gọi hàm này TRƯỚC khi form được
+        // hiển thị (trước OpenChildForm), để các TextBox không bị trống.
+        // =========================================================
+        public void RestoreFormData(string mssv, string username, string password,
+                                     string fname, string lname, string email, Image? image)
+        {
+            savedMSSV = mssv;
+            savedUsername = username;
+            savedPassword = password;
+            savedFname = fname;
+            savedLname = lname;
+            savedEmail = email;
+            savedImage = image;
+            _hasPendingRestore = true;
         }
 
         private void f_Register_Load(object sender, EventArgs e)
@@ -44,6 +63,28 @@ namespace ProjectMonHoc
                 lbl_Header.Text = "ĐĂNG KÝ TÀI KHOẢN HR";
             else
                 lbl_Header.Text = "ĐĂNG KÝ TÀI KHOẢN STUDENT";
+
+            // Mặc định cả 2 ô mật khẩu đang ẩn -> icon hiển thị "eye_open" (gợi ý bấm để xem)
+            ptb_ShowPass.Image = Properties.Resources.eye_open;
+            ptb_ShowConfirmPass.Image = Properties.Resources.eye_open;
+
+            // ✅ Nếu đây là form được mở lại sau khi người dùng nhấn "Hủy" ở f_OTP,
+            //    điền lại toàn bộ dữ liệu đã nhập trước đó để người dùng không phải nhập lại từ đầu.
+            if (_hasPendingRestore)
+            {
+                txb_MSGV.Text = savedMSSV;
+                txb_User.Text = savedUsername;
+                txb_Pass.Text = savedPassword;
+                txb_ConfirmPass.Text = savedPassword;
+                txb_Fname.Text = savedFname;
+                txb_Lname.Text = savedLname;
+                txb_Email.Text = savedEmail;
+                if (savedImage != null)
+                    ptb_Picture.Image = savedImage;
+
+                UpdatePassMatchStatus();
+                _hasPendingRestore = false;
+            }
         }
 
         // =========================================================
@@ -109,14 +150,22 @@ namespace ProjectMonHoc
                 }
                 else
                 {
-                    // ← SỬA: Tạo instance f_Register mới thay vì dùng this đã bị disposed
-                    f_Register newRegister = new f_Register(position, loginForm);
-                    newRegister.onDone = onDone;
-                    loginForm.OpenChildForm(newRegister, loginForm.pnl_login);
+                    // ✅ Người dùng nhấn Hủy ở f_OTP -> quay lại f_Register
+                    //    Tạo instance mới (vì form cũ đã bị disposed khi chuyển panel)
+                    //    nhưng KHÔI PHỤC lại toàn bộ dữ liệu đã nhập trước đó
+                    //    bằng cách truyền các giá trị đã lưu (savedXXX) qua constructor.
+                    f_Register newRegister = new f_Register(position, loginForm)
+                    {
+                        onDone = onDone
+                    };
+                    newRegister.RestoreFormData(savedMSSV, savedUsername, savedPassword,
+                                                 savedFname, savedLname, savedEmail, savedImage);
+
+                    loginForm.OpenChildForm(newRegister, loginForm.LoginPanel);
                 }
             };
 
-            loginForm.OpenChildForm(otp, loginForm.pnl_login);
+            loginForm.OpenChildForm(otp, loginForm.LoginPanel);
         }
 
         // =========================================================
@@ -327,34 +376,64 @@ namespace ProjectMonHoc
         // Sự kiện TextChanged cho ô Confirm Password (Xác nhận realtime)
         private void txb_ConfirmPass_TextChanged(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(txb_ConfirmPass.Text))
-            {
-                lbl_PassStatus.Text = "";
-                return;
-            }
-
-            if (txb_ConfirmPass.Text == txb_Pass.Text)
-            {
-                lbl_PassStatus.Text = "Mật khẩu khớp!";
-                lbl_PassStatus.ForeColor = Color.Green;
-            }
-            else
-            {
-                lbl_PassStatus.Text = "Mật khẩu chưa khớp!";
-                lbl_PassStatus.ForeColor = Color.Red;
-            }
+            UpdatePassMatchStatus();
         }
 
         private void txb_Fname_TextChanged(object sender, EventArgs e) { }
-        private void txb_Pass_TextChanged(object sender, EventArgs e) { }
+        private void txb_Pass_TextChanged(object sender, EventArgs e)
+        {
+            UpdatePassMatchStatus();
+        }
         private void textBox1_TextChanged(object sender, EventArgs e) { }
+
+        // Cập nhật dấu tích xanh (khớp) hoặc dấu X đỏ (chưa khớp) kế bên ô Nhập lại mật khẩu
+        private void UpdatePassMatchStatus()
+        {
+            if (string.IsNullOrEmpty(txb_ConfirmPass.Text))
+            {
+                lbl_PassStatus.Visible = false;
+                return;
+            }
+
+            lbl_PassStatus.Visible = true;
+            if (txb_ConfirmPass.Text == txb_Pass.Text)
+            {
+                lbl_PassStatus.Text = "✓";
+                lbl_PassStatus.ForeColor = Color.SeaGreen;
+            }
+            else
+            {
+                lbl_PassStatus.Text = "✗";
+                lbl_PassStatus.ForeColor = Color.IndianRed;
+            }
+        }
+
+        private void ptb_ShowPass_Click(object sender, EventArgs e)
+        {
+            if (txb_Pass.PasswordChar == '●')
+            {
+                txb_Pass.PasswordChar = '\0';
+                ptb_ShowPass.Image = Properties.Resources.eye_close;
+            }
+            else
+            {
+                txb_Pass.PasswordChar = '●';
+                ptb_ShowPass.Image = Properties.Resources.eye_open;
+            }
+        }
 
         private void ptb_ShowConfirmPass_Click(object sender, EventArgs e)
         {
             if (txb_ConfirmPass.PasswordChar == '●')
+            {
                 txb_ConfirmPass.PasswordChar = '\0';
+                ptb_ShowConfirmPass.Image = Properties.Resources.eye_close;
+            }
             else
+            {
                 txb_ConfirmPass.PasswordChar = '●';
+                ptb_ShowConfirmPass.Image = Properties.Resources.eye_open;
+            }
         }
 
         private void txb_MSGV_KeyPress(object sender, KeyPressEventArgs e)

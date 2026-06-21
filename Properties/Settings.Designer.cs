@@ -46,5 +46,29 @@ namespace ProjectMonHoc.Properties {
                 this["SavedPassword"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string SavedRole {
+            get {
+                return ((string)(this["SavedRole"]));
+            }
+            set {
+                this["SavedRole"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RememberLogin {
+            get {
+                return ((bool)(this["RememberLogin"]));
+            }
+            set {
+                this["RememberLogin"] = value;
+            }
+        }
     }
 }

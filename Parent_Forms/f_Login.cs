@@ -1,61 +1,87 @@
 ﻿using Microsoft.Data.SqlClient;
+using ProjectMonHoc;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
+using System.Drawing;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ProjectMonHoc
 {
-    //Bỏ lỗi CA1416
-    [System.Runtime.Versioning.SupportedOSPlatform("windows")]
-
     public partial class f_Login : Form
     {
         private int position;
+        private Form? activeChildForm = null;
+        public Panel LoginPanel
+        {
+            get { return panel_Login; }
+        }
+
+
 
         public f_Login()
         {
             InitializeComponent();
         }
 
-        // Tải lại tên đăng nhập đã ghi nhớ (nếu có) khi form load
         private void f_Login_Load(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(Properties.Settings.Default.SavedUsername))
+            // Mặc định mật khẩu đang ẩn -> icon hiển thị "eye_open" (gợi ý bấm để xem)
+            ptb_ShowPass.Image = Properties.Resources.eye_open;
+
+            if (Properties.Settings.Default.RememberLogin
+                && !string.IsNullOrEmpty(Properties.Settings.Default.SavedUsername))
             {
-                txb_User.Text = Properties.Settings.Default.SavedUsername;
-                txb_Pass.Text = Properties.Settings.Default.SavedPassword;
-                chk_Remember.Checked = true;
+                textBox_Taikhoan.Text = Properties.Settings.Default.SavedUsername;
+                textBox_Matkhau.Text = Properties.Settings.Default.SavedPassword;
+                checkBox_Ghinhodangnhap.Checked = true;
+                radioButton_HR.Checked = (Properties.Settings.Default.SavedRole == "HR");
+            }
+            else
+            {
+                checkBox_Ghinhodangnhap.Checked = false;
             }
         }
 
-        // Hàm băm mật khẩu SHA-256 chuyển thành chuỗi Hex (64 ký tự)
-        private string ComputeSHA256(string input)
+        private void picturebox_Background_Click(object sender, EventArgs e)
         {
-            using (SHA256 sha256 = SHA256.Create())
+
+        }
+
+        private void label_Matkhau_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        // Bật/tắt hiển thị mật khẩu (giống chức năng "con mắt" ở f_Register)
+        private void ptb_ShowPass_Click(object sender, EventArgs e)
+        {
+            if (textBox_Matkhau.PasswordChar == '●')
             {
-                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(input));
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < bytes.Length; i++)
-                {
-                    builder.Append(bytes[i].ToString("x2"));
-                }
-                return builder.ToString();
+                textBox_Matkhau.PasswordChar = '\0';
+                ptb_ShowPass.Image = Properties.Resources.eye_close;
+            }
+            else
+            {
+                textBox_Matkhau.PasswordChar = '●';
+                ptb_ShowPass.Image = Properties.Resources.eye_open;
             }
         }
 
 
-        // =========================================================
-        // ĐĂNG NHẬP
-        // =========================================================
-        private void btn_Login_Click(object sender, EventArgs e)
+        private void button_Dangnhap_Click(object sender, EventArgs e)
         {
             if (!ValidateInputs()) return;
 
-            position = rdb_HR.Checked ? 2 : 1;
+            position = radioButton_HR.Checked ? 2 : 1;
             string roleStr = (position == 2) ? "HR" : "Student";
-            string username = txb_User.Text.Trim();
-            string inputPasswordHash = ComputeSHA256(txb_Pass.Text); // Băm mật khẩu nhập vào
+            string username = textBox_Taikhoan.Text.Trim();
+            string inputPasswordHash = ComputeSHA256(textBox_Matkhau.Text); // Băm mật khẩu nhập vào
 
             MY_DB my_db = new MY_DB();
 
@@ -108,21 +134,24 @@ namespace ProjectMonHoc
                         );
 
                         // Bước 3: Xử lý chức năng Remember Me
-                        if (chk_Remember.Checked)
+                        if (checkBox_Ghinhodangnhap.Checked)
                         {
+                            Properties.Settings.Default.RememberLogin = true;
                             Properties.Settings.Default.SavedUsername = username;
-                            Properties.Settings.Default.SavedPassword = txb_Pass.Text;   // khi checked
-                            
+                            Properties.Settings.Default.SavedPassword = textBox_Matkhau.Text;   // khi checked
+                            Properties.Settings.Default.SavedRole = roleStr;                    // lưu role đã chọn (Student/HR)
                         }
                         else
                         {
+                            Properties.Settings.Default.RememberLogin = false;
                             Properties.Settings.Default.SavedUsername = string.Empty;
                             Properties.Settings.Default.SavedPassword = string.Empty;    // khi unchecked
+                            Properties.Settings.Default.SavedRole = string.Empty;
                         }
                         Properties.Settings.Default.Save(); // Lưu lại thay đổi vào file cấu hình
 
                         // =========================================================
-                        // BƯỚC 4: LOGIC ĐIỀU HƯỚNG THEO ROLE (THAY THẾ DialogResult.OK)
+                        // BƯỚC 4: LOGIC ĐIỀU HƯỚNG THEO ROLE
                         // =========================================================
                         this.Hide(); // Ẩn form đăng nhập
 
@@ -135,7 +164,7 @@ namespace ProjectMonHoc
                         else if (roleStr == "HR")
                         {
                             // Kiểm tra tài khoản Admin mặc định (mật khẩu gốc nhập vào là 12345)
-                            if (username == "Admin" && txb_Pass.Text == "12345")
+                            if (username == "Admin" && textBox_Matkhau.Text == "12345")
                             {
                                 MessageBox.Show("Chào mừng Quản trị viên (Admin) hệ thống!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                 f_MainAdmin formAdmin = new f_MainAdmin();
@@ -150,9 +179,8 @@ namespace ProjectMonHoc
                             }
                         }
 
-                        // Sau khi đóng Form chính (hoặc Form HR/Student), hiển thị lại Form Login 
+                        // Sau khi đóng Form chính (hoặc Form HR/Student), hiển thị lại Form Login
                         // để người dùng có thể đăng nhập tài khoản khác (Tương đương tính năng Đăng xuất)
-                        // Nếu muốn thoát hẳn app khi đóng form chính, đổi this.Show() thành Application.Exit()
                         this.Show();
                     }
                     else
@@ -171,7 +199,7 @@ namespace ProjectMonHoc
                         }
                         else
                         {
-                            errorProvider1.SetError(txb_Pass, $"Sai mật khẩu! Bạn còn {remainingAttempts} lần thử.");
+                            errorProvider_Baoloi.SetError(textBox_Matkhau, $"Sai mật khẩu! Bạn còn {remainingAttempts} lần thử.");
                             MessageBox.Show($"Sai tên đăng nhập hoặc mật khẩu! Bạn còn {remainingAttempts} lần thử đăng nhập hợp lệ.",
                                 "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
@@ -198,7 +226,7 @@ namespace ProjectMonHoc
                     }
 
                     // Không tìm thấy ở bất kỳ đâu -> sai thông tin
-                    errorProvider1.SetError(txb_Pass, "Sai tên đăng nhập hoặc mật khẩu!");
+                    errorProvider_Baoloi.SetError(textBox_Matkhau, "Sai tên đăng nhập hoặc mật khẩu!");
                     MessageBox.Show("Sai tên đăng nhập hoặc mật khẩu!", "Thông Báo",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -213,68 +241,130 @@ namespace ProjectMonHoc
             }
         }
 
+        private void panel_Login_Paint(object sender, PaintEventArgs e)
+        {
 
-        // =========================================================
-        // KIỂM TRA VALIDATION CỦA INPUT
-        // =========================================================
+        }
+
+        private void label_Dangnhap_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void radioButton_Sinhvien_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void radioButton_HR_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label_Tendangnhap_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox_Taikhoan_TextChanged(object sender, EventArgs e)
+        {
+            errorProvider_Baoloi.SetError(textBox_Taikhoan,
+            textBox_Taikhoan.Text.Trim() == "" ? "Vui lòng nhập tài khoản!" : "");
+        }
+
+        private void textBox_Matkhau_TextChanged(object sender, EventArgs e)
+        {
+            errorProvider_Baoloi.SetError(textBox_Matkhau,
+            textBox_Matkhau.Text == "" ? "Vui lòng nhập mật khẩu!" : "");
+        }
+
+        private void checkBox_Ghinhodangnhap_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!checkBox_Ghinhodangnhap.Checked)
+            {
+                Properties.Settings.Default.RememberLogin = false;
+                Properties.Settings.Default.SavedUsername = string.Empty;
+                Properties.Settings.Default.SavedPassword = string.Empty;
+                Properties.Settings.Default.SavedRole = string.Empty;
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        private void llbl_Dangky_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            int currentRolePosition = radioButton_HR.Checked ? 2 : 1;
+            f_Register registerForm = new f_Register(currentRolePosition, this);
+
+            registerForm.onDone = () => RestoreLoginPanel();
+
+            OpenChildForm(registerForm, panel_Login);
+        }
+
+        private void llbl_QuenMK_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            int currentRole = radioButton_HR.Checked ? 2 : 1;
+
+            f_ForgetPass forgetPassForm = new f_ForgetPass(currentRole, this);
+            forgetPassForm.onBackToLogin = () => RestoreLoginPanel();
+
+            OpenChildForm(forgetPassForm, panel_Login);
+        }
+
+        private void button_Thoat_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+
+
+        //==============================
+        // CÁC HÀM HỖ TRỢ
+        //==============================
+
+        // Băm mật khẩu SHA-256
+        private string ComputeSHA256(string input)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(input));
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                return builder.ToString();
+            }
+        }
+
+        // Kiểm tra input trắng của Tài khoản và Mật khẩu
         private bool ValidateInputs()
         {
             bool valid = true;
 
-            if (string.IsNullOrWhiteSpace(txb_User.Text))
+            if (string.IsNullOrWhiteSpace(textBox_Taikhoan.Text))
             {
-                errorProvider1.SetError(txb_User, "Vui lòng nhập tài khoản!");
+                errorProvider_Baoloi.SetError(textBox_Taikhoan, "Vui lòng nhập tài khoản!");
                 valid = false;
             }
 
-            if (string.IsNullOrWhiteSpace(txb_Pass.Text))
+            if (string.IsNullOrWhiteSpace(textBox_Matkhau.Text))
             {
-                errorProvider1.SetError(txb_Pass, "Vui lòng nhập mật khẩu!");
+                errorProvider_Baoloi.SetError(textBox_Matkhau, "Vui lòng nhập mật khẩu!");
                 valid = false;
             }
 
             return valid;
         }
 
-        private void txb_User_TextChanged(object sender, EventArgs e)
-        {
-            errorProvider1.SetError(txb_User,
-                txb_User.Text.Trim() == "" ? "Vui lòng nhập tài khoản!" : "");
-        }
-
-        private void txb_Pass_TextChanged(object sender, EventArgs e)
-        {
-            errorProvider1.SetError(txb_Pass,
-                txb_Pass.Text == "" ? "Vui lòng nhập mật khẩu!" : "");
-        }
-
-
-        // =========================================================
-        // NÚT HỦY LOGIN - THOÁT CHƯƠNG TRÌNH
-        // =========================================================
-        private void btn_Cancel_Login_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
-
-        // =========================================================
-        // CÁC HÀM HELPERS
-        // =========================================================
-        // Thêm field vào đầu class f_Login
-        private Form? activeChildForm = null;
-
-        // Hàm OpenChildForm (thêm vào class f_Login)
+        // Mở form con trong panel_Login
         internal void OpenChildForm(Form childForm, Panel targetPanel)
         {
             // Chỉ đóng form cũ nếu nó KHÁC với form mới đang được mở
-            // (tránh dispose chính form đang gọi hàm này)
             if (activeChildForm != null && activeChildForm != childForm)
             {
                 Form old = activeChildForm;
                 activeChildForm = null;
                 old.Close();
-                // KHÔNG gọi Dispose() thủ công — Close() + GC tự xử lý
             }
 
             activeChildForm = childForm;
@@ -283,7 +373,6 @@ namespace ProjectMonHoc
             childForm.FormBorderStyle = FormBorderStyle.None;
             childForm.Dock = DockStyle.Fill;
 
-            // Ẩn các control gốc của panel (chỉ ẩn control trực tiếp, không ảnh hưởng form con)
             foreach (Control ctrl in targetPanel.Controls)
             {
                 if (ctrl != childForm)
@@ -296,10 +385,9 @@ namespace ProjectMonHoc
             childForm.Show();
         }
 
-        // Hàm khôi phục pnl_login về trạng thái gốc
+        // Khôi phục panel_Login về trạng thái gốc
         internal void RestoreLoginPanel()
         {
-            // Đóng và dọn form con hiện tại nếu còn tồn tại
             if (activeChildForm != null)
             {
                 var old = activeChildForm;
@@ -308,64 +396,16 @@ namespace ProjectMonHoc
                     old.Close();
             }
 
-            // Xóa tất cả form con khỏi panel (giữ lại các control gốc)
-            var toRemove = pnl_login.Controls
+            var toRemove = panel_Login.Controls
                 .OfType<Form>()
                 .ToList();
             foreach (var f in toRemove)
-                pnl_login.Controls.Remove(f);
+                panel_Login.Controls.Remove(f);
 
-            // Hiện lại các control gốc
-            foreach (Control ctrl in pnl_login.Controls)
+            foreach (Control ctrl in panel_Login.Controls)
                 ctrl.Visible = true;
         }
 
 
-        // =========================================================
-        // NÚT ĐĂNG KÍ TÀI KHOẢN - CHUYỂN PANEL SANG F_REGISTER
-        // =========================================================
-        private void llbl_Register_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            int currentRolePosition = rdb_HR.Checked ? 2 : 1;
-            f_Register registerForm = new f_Register(currentRolePosition, this);
-
-            // Gán callback trực tiếp — chắc chắn được gọi dù f_OTP đang active
-            registerForm.onDone = () => RestoreLoginPanel();
-
-            OpenChildForm(registerForm, pnl_login);
-        }
-
-        private void llb_HCMUTE_name_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        // =========================================================
-        // NÚT QUÊN MẬT KHẨU - CHUYỂN PANEL SANG F_FORGETPASS
-        // =========================================================
-        private void llbl_ForgetPass_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            // Lấy Role hiện tại dựa trên RadioButton (1 = Student, 2 = HR)
-            int currentRole = rdb_HR.Checked ? 2 : 1;
-
-            // Khởi tạo f_ForgetPass
-            f_ForgetPass forgetPassForm = new f_ForgetPass(currentRole, this);
-
-            // Thiết lập hành động khi nhấn 'Hủy' ở ForgetPass -> Quay về giao diện Login gốc
-            forgetPassForm.onBackToLogin = () => RestoreLoginPanel();
-
-            // Đưa f_ForgetPass vào panel pnl_login
-            OpenChildForm(forgetPassForm, pnl_login);
-        }
-
-        private void pic_HCMUTE_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void chk_Remember_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }

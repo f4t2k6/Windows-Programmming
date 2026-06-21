@@ -114,5 +114,10 @@ namespace ProjectMonHoc
         {
             OpenChildForm(new f_Contact(Globals.GlobalUserId), pnl_content_MainHR);
         }
+
+        private void pictureBox_Quanlylophoc_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

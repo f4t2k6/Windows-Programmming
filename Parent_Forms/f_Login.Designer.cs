@@ -1,336 +1,327 @@
-﻿namespace ProjectMonHoc
+﻿using System.Windows.Forms;
+
+namespace ProjectMonHoc
 {
     partial class f_Login
     {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
+            {
                 components.Dispose();
+            }
             base.Dispose(disposing);
         }
 
         #region Windows Form Designer generated code
 
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(f_Login));
-            lbl_Title = new Label();
-            lbl_User = new Label();
-            lbl_Pass = new Label();
-            lbl_Role = new Label();
-            txb_User = new TextBox();
-            txb_Pass = new TextBox();
-            rdb_Student = new RadioButton();
-            rdb_HR = new RadioButton();
-            chk_Remember = new CheckBox();
-            btn_Login = new Button();
-            btn_Cancel_Login = new Button();
-            errorProvider1 = new ErrorProvider(components);
-            label1 = new Label();
-            pnl_login = new Panel();
-            llbl_ForgetPass = new LinkLabel();
-            llbl_Register = new LinkLabel();
-            lb_HCMUTE_name = new Label();
-            pic_HCMUTE = new PictureBox();
-            pictureBox1 = new PictureBox();
-            ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
-            pnl_login.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pic_HCMUTE).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            picturebox_Background = new PictureBox();
+            panel_Login = new Panel();
+            llbl_QuenMK = new LinkLabel();
+            button_Thoat = new Button();
+            llbl_Dangky = new LinkLabel();
+            label_Line = new Label();
+            checkBox_Ghinhodangnhap = new CheckBox();
+            radioButton_Sinhvien = new RadioButton();
+            radioButton_HR = new RadioButton();
+            button_Dangnhap = new Button();
+            textBox_Matkhau = new TextBox();
+            ptb_ShowPass = new PictureBox();
+            textBox_Taikhoan = new TextBox();
+            label_Matkhau = new Label();
+            label_Tendangnhap = new Label();
+            label_Dangnhap = new Label();
+            errorProvider_Baoloi = new ErrorProvider(components);
+            ((System.ComponentModel.ISupportInitialize)picturebox_Background).BeginInit();
+            panel_Login.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)ptb_ShowPass).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)errorProvider_Baoloi).BeginInit();
             SuspendLayout();
             // 
-            // lbl_Title
+            // picturebox_Background
             // 
-            lbl_Title.BackColor = Color.Transparent;
-            lbl_Title.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
-            lbl_Title.ForeColor = Color.SteelBlue;
-            lbl_Title.Location = new Point(57, 75);
-            lbl_Title.Name = "lbl_Title";
-            lbl_Title.Size = new Size(524, 54);
-            lbl_Title.TabIndex = 0;
-            lbl_Title.Text = "ĐĂNG NHẬP HỆ THỐNG";
-            lbl_Title.TextAlign = ContentAlignment.MiddleCenter;
+            picturebox_Background.Image = Properties.Resources.f_Login_BackGround;
+            picturebox_Background.Location = new Point(0, 0);
+            picturebox_Background.Margin = new Padding(4);
+            picturebox_Background.Name = "picturebox_Background";
+            picturebox_Background.Size = new Size(1922, 1081);
+            picturebox_Background.SizeMode = PictureBoxSizeMode.Zoom;
+            picturebox_Background.TabIndex = 0;
+            picturebox_Background.TabStop = false;
+            picturebox_Background.Click += picturebox_Background_Click;
             // 
-            // lbl_User
+            // panel_Login
             // 
-            lbl_User.AutoSize = true;
-            lbl_User.BackColor = Color.White;
-            lbl_User.Font = new Font("Segoe UI", 13F);
-            lbl_User.ForeColor = SystemColors.GrayText;
-            lbl_User.Location = new Point(58, 227);
-            lbl_User.Name = "lbl_User";
-            lbl_User.Size = new Size(109, 30);
-            lbl_User.TabIndex = 2;
-            lbl_User.Text = "Tài khoản:";
+            panel_Login.BackColor = Color.White;
+            panel_Login.BorderStyle = BorderStyle.FixedSingle;
+            panel_Login.Controls.Add(llbl_QuenMK);
+            panel_Login.Controls.Add(button_Thoat);
+            panel_Login.Controls.Add(llbl_Dangky);
+            panel_Login.Controls.Add(label_Line);
+            panel_Login.Controls.Add(checkBox_Ghinhodangnhap);
+            panel_Login.Controls.Add(radioButton_Sinhvien);
+            panel_Login.Controls.Add(radioButton_HR);
+            panel_Login.Controls.Add(button_Dangnhap);
+            panel_Login.Controls.Add(textBox_Matkhau);
+            panel_Login.Controls.Add(ptb_ShowPass);
+            panel_Login.Controls.Add(textBox_Taikhoan);
+            panel_Login.Controls.Add(label_Matkhau);
+            panel_Login.Controls.Add(label_Tendangnhap);
+            panel_Login.Controls.Add(label_Dangnhap);
+            panel_Login.Location = new Point(712, 255);
+            panel_Login.Margin = new Padding(4);
+            panel_Login.Name = "panel_Login";
+            panel_Login.Size = new Size(500, 643);
+            panel_Login.TabIndex = 1;
+            panel_Login.Paint += panel_Login_Paint;
             // 
-            // lbl_Pass
+            // llbl_QuenMK
             // 
-            lbl_Pass.AutoSize = true;
-            lbl_Pass.BackColor = Color.White;
-            lbl_Pass.Font = new Font("Segoe UI", 13F);
-            lbl_Pass.ForeColor = SystemColors.GrayText;
-            lbl_Pass.Location = new Point(57, 296);
-            lbl_Pass.Name = "lbl_Pass";
-            lbl_Pass.Size = new Size(108, 30);
-            lbl_Pass.TabIndex = 3;
-            lbl_Pass.Text = "Mật khẩu:";
+            llbl_QuenMK.AutoSize = true;
+            llbl_QuenMK.BackColor = Color.Transparent;
+            llbl_QuenMK.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            llbl_QuenMK.ForeColor = SystemColors.ControlLight;
+            llbl_QuenMK.LinkBehavior = LinkBehavior.NeverUnderline;
+            llbl_QuenMK.LinkColor = Color.DimGray;
+            llbl_QuenMK.Location = new Point(319, 479);
+            llbl_QuenMK.Margin = new Padding(4, 0, 4, 0);
+            llbl_QuenMK.Name = "llbl_QuenMK";
+            llbl_QuenMK.Size = new Size(154, 28);
+            llbl_QuenMK.TabIndex = 10;
+            llbl_QuenMK.TabStop = true;
+            llbl_QuenMK.Text = "Quên mật khẩu?";
+            llbl_QuenMK.LinkClicked += llbl_QuenMK_LinkClicked;
             // 
-            // lbl_Role
+            // button_Thoat
             // 
-            lbl_Role.AutoSize = true;
-            lbl_Role.Font = new Font("Segoe UI", 13F);
-            lbl_Role.ForeColor = SystemColors.GrayText;
-            lbl_Role.Location = new Point(57, 171);
-            lbl_Role.Name = "lbl_Role";
-            lbl_Role.Size = new Size(80, 30);
-            lbl_Role.TabIndex = 1;
-            lbl_Role.Text = "Vai trò:";
+            button_Thoat.BackColor = Color.IndianRed;
+            button_Thoat.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button_Thoat.ForeColor = Color.White;
+            button_Thoat.Location = new Point(21, 542);
+            button_Thoat.Margin = new Padding(4);
+            button_Thoat.Name = "button_Thoat";
+            button_Thoat.Size = new Size(452, 68);
+            button_Thoat.TabIndex = 9;
+            button_Thoat.Text = "Thoát";
+            button_Thoat.UseVisualStyleBackColor = false;
+            button_Thoat.Click += button_Thoat_Click;
             // 
-            // txb_User
+            // llbl_Dangky
             // 
-            txb_User.BackColor = Color.White;
-            txb_User.BorderStyle = BorderStyle.FixedSingle;
-            txb_User.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txb_User.ForeColor = Color.Black;
-            txb_User.Location = new Point(204, 226);
-            txb_User.Name = "txb_User";
-            txb_User.Size = new Size(220, 34);
-            txb_User.TabIndex = 2;
-            txb_User.TextChanged += txb_User_TextChanged;
+            llbl_Dangky.AutoSize = true;
+            llbl_Dangky.BackColor = Color.White;
+            llbl_Dangky.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            llbl_Dangky.ForeColor = SystemColors.ActiveBorder;
+            llbl_Dangky.LinkBehavior = LinkBehavior.NeverUnderline;
+            llbl_Dangky.LinkColor = Color.DimGray;
+            llbl_Dangky.Location = new Point(20, 479);
+            llbl_Dangky.Margin = new Padding(4, 0, 4, 0);
+            llbl_Dangky.Name = "llbl_Dangky";
+            llbl_Dangky.Size = new Size(179, 28);
+            llbl_Dangky.TabIndex = 9;
+            llbl_Dangky.TabStop = true;
+            llbl_Dangky.Text = "Đăng ký tài khoản?";
+            llbl_Dangky.LinkClicked += llbl_Dangky_LinkClicked;
             // 
-            // txb_Pass
+            // label_Line
             // 
-            txb_Pass.BackColor = Color.White;
-            txb_Pass.BorderStyle = BorderStyle.FixedSingle;
-            txb_Pass.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txb_Pass.ForeColor = Color.Black;
-            txb_Pass.Location = new Point(204, 295);
-            txb_Pass.Name = "txb_Pass";
-            txb_Pass.PasswordChar = '●';
-            txb_Pass.Size = new Size(220, 34);
-            txb_Pass.TabIndex = 3;
-            txb_Pass.TextChanged += txb_Pass_TextChanged;
+            label_Line.BackColor = Color.DimGray;
+            label_Line.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label_Line.ForeColor = Color.DimGray;
+            label_Line.Location = new Point(21, 450);
+            label_Line.Margin = new Padding(4, 0, 4, 0);
+            label_Line.Name = "label_Line";
+            label_Line.Size = new Size(452, 1);
+            label_Line.TabIndex = 8;
             // 
-            // rdb_Student
+            // checkBox_Ghinhodangnhap
             // 
-            rdb_Student.AutoSize = true;
-            rdb_Student.Checked = true;
-            rdb_Student.Font = new Font("Segoe UI Semibold", 13.2000008F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            rdb_Student.ForeColor = Color.Black;
-            rdb_Student.Location = new Point(204, 169);
-            rdb_Student.Name = "rdb_Student";
-            rdb_Student.Size = new Size(115, 35);
-            rdb_Student.TabIndex = 0;
-            rdb_Student.TabStop = true;
-            rdb_Student.Text = "Student";
+            checkBox_Ghinhodangnhap.AutoSize = true;
+            checkBox_Ghinhodangnhap.BackColor = Color.White;
+            checkBox_Ghinhodangnhap.Font = new Font("Segoe UI", 9.75F);
+            checkBox_Ghinhodangnhap.ForeColor = SystemColors.GrayText;
+            checkBox_Ghinhodangnhap.Location = new Point(24, 324);
+            checkBox_Ghinhodangnhap.Margin = new Padding(4, 2, 4, 2);
+            checkBox_Ghinhodangnhap.Name = "checkBox_Ghinhodangnhap";
+            checkBox_Ghinhodangnhap.Size = new Size(181, 27);
+            checkBox_Ghinhodangnhap.TabIndex = 7;
+            checkBox_Ghinhodangnhap.Text = "Ghi nhớ đăng nhập";
+            checkBox_Ghinhodangnhap.UseVisualStyleBackColor = false;
+            checkBox_Ghinhodangnhap.CheckedChanged += checkBox_Ghinhodangnhap_CheckedChanged;
             // 
-            // rdb_HR
+            // radioButton_Sinhvien
             // 
-            rdb_HR.AutoSize = true;
-            rdb_HR.Font = new Font("Segoe UI Semibold", 13.2000008F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            rdb_HR.ForeColor = Color.Black;
-            rdb_HR.Location = new Point(390, 169);
-            rdb_HR.Name = "rdb_HR";
-            rdb_HR.Size = new Size(66, 35);
-            rdb_HR.TabIndex = 1;
-            rdb_HR.Text = "HR";
+            radioButton_Sinhvien.AutoSize = true;
+            radioButton_Sinhvien.Checked = true;
+            radioButton_Sinhvien.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            radioButton_Sinhvien.ForeColor = Color.Black;
+            radioButton_Sinhvien.Location = new Point(21, 95);
+            radioButton_Sinhvien.Margin = new Padding(4, 2, 4, 2);
+            radioButton_Sinhvien.Name = "radioButton_Sinhvien";
+            radioButton_Sinhvien.Size = new Size(139, 36);
+            radioButton_Sinhvien.TabIndex = 2;
+            radioButton_Sinhvien.TabStop = true;
+            radioButton_Sinhvien.Text = "Sinh viên";
+            radioButton_Sinhvien.CheckedChanged += radioButton_Sinhvien_CheckedChanged;
             // 
-            // chk_Remember
+            // radioButton_HR
             // 
-            chk_Remember.AutoSize = true;
-            chk_Remember.BackColor = Color.White;
-            chk_Remember.Font = new Font("Segoe UI", 12F);
-            chk_Remember.ForeColor = SystemColors.GrayText;
-            chk_Remember.Location = new Point(83, 365);
-            chk_Remember.Name = "chk_Remember";
-            chk_Remember.Size = new Size(202, 32);
-            chk_Remember.TabIndex = 4;
-            chk_Remember.Text = "Ghi nhớ đăng nhập";
-            chk_Remember.UseVisualStyleBackColor = false;
-            chk_Remember.CheckedChanged += chk_Remember_CheckedChanged;
+            radioButton_HR.AutoSize = true;
+            radioButton_HR.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            radioButton_HR.ForeColor = Color.Black;
+            radioButton_HR.Location = new Point(396, 95);
+            radioButton_HR.Margin = new Padding(4, 2, 4, 2);
+            radioButton_HR.Name = "radioButton_HR";
+            radioButton_HR.Size = new Size(69, 36);
+            radioButton_HR.TabIndex = 3;
+            radioButton_HR.Text = "HR";
+            radioButton_HR.CheckedChanged += radioButton_HR_CheckedChanged;
             // 
-            // btn_Login
+            // button_Dangnhap
             // 
-            btn_Login.BackColor = Color.YellowGreen;
-            btn_Login.FlatAppearance.BorderSize = 0;
-            btn_Login.FlatStyle = FlatStyle.Flat;
-            btn_Login.Font = new Font("Segoe UI", 15F, FontStyle.Bold);
-            btn_Login.ForeColor = Color.White;
-            btn_Login.Location = new Point(93, 429);
-            btn_Login.Name = "btn_Login";
-            btn_Login.Size = new Size(154, 70);
-            btn_Login.TabIndex = 5;
-            btn_Login.Text = "Đăng nhập";
-            btn_Login.UseVisualStyleBackColor = false;
-            btn_Login.Click += btn_Login_Click;
+            button_Dangnhap.BackColor = Color.SteelBlue;
+            button_Dangnhap.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button_Dangnhap.ForeColor = Color.White;
+            button_Dangnhap.Location = new Point(21, 366);
+            button_Dangnhap.Margin = new Padding(4);
+            button_Dangnhap.Name = "button_Dangnhap";
+            button_Dangnhap.Size = new Size(452, 68);
+            button_Dangnhap.TabIndex = 6;
+            button_Dangnhap.Text = "Đăng nhập";
+            button_Dangnhap.UseVisualStyleBackColor = false;
+            button_Dangnhap.Click += button_Dangnhap_Click;
             // 
-            // btn_Cancel_Login
+            // textBox_Matkhau
             // 
-            btn_Cancel_Login.BackColor = Color.IndianRed;
-            btn_Cancel_Login.FlatAppearance.BorderSize = 0;
-            btn_Cancel_Login.FlatStyle = FlatStyle.Flat;
-            btn_Cancel_Login.Font = new Font("Segoe UI", 15F, FontStyle.Bold);
-            btn_Cancel_Login.ForeColor = Color.White;
-            btn_Cancel_Login.Location = new Point(364, 429);
-            btn_Cancel_Login.Name = "btn_Cancel_Login";
-            btn_Cancel_Login.Size = new Size(154, 70);
-            btn_Cancel_Login.TabIndex = 6;
-            btn_Cancel_Login.Text = "Thoát";
-            btn_Cancel_Login.UseVisualStyleBackColor = false;
-            btn_Cancel_Login.Click += btn_Cancel_Login_Click;
+            textBox_Matkhau.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBox_Matkhau.Location = new Point(21, 278);
+            textBox_Matkhau.Margin = new Padding(4);
+            textBox_Matkhau.Name = "textBox_Matkhau";
+            textBox_Matkhau.PasswordChar = '●';
+            textBox_Matkhau.Size = new Size(402, 34);
+            textBox_Matkhau.TabIndex = 5;
+            textBox_Matkhau.TextChanged += textBox_Matkhau_TextChanged;
             // 
-            // errorProvider1
+            // ptb_ShowPass
             // 
-            errorProvider1.ContainerControl = this;
+            ptb_ShowPass.Cursor = Cursors.Hand;
+            ptb_ShowPass.Location = new Point(431, 278);
+            ptb_ShowPass.Margin = new Padding(4);
+            ptb_ShowPass.Name = "ptb_ShowPass";
+            ptb_ShowPass.Size = new Size(34, 34);
+            ptb_ShowPass.SizeMode = PictureBoxSizeMode.Zoom;
+            ptb_ShowPass.TabIndex = 11;
+            ptb_ShowPass.TabStop = false;
+            ptb_ShowPass.Click += ptb_ShowPass_Click;
             // 
-            // label1
+            // textBox_Taikhoan
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(553, 202);
-            label1.Name = "label1";
-            label1.Size = new Size(0, 20);
-            label1.TabIndex = 8;
+            textBox_Taikhoan.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            textBox_Taikhoan.Location = new Point(21, 180);
+            textBox_Taikhoan.Margin = new Padding(4);
+            textBox_Taikhoan.Name = "textBox_Taikhoan";
+            textBox_Taikhoan.Size = new Size(444, 34);
+            textBox_Taikhoan.TabIndex = 4;
+            textBox_Taikhoan.TextChanged += textBox_Taikhoan_TextChanged;
             // 
-            // pnl_login
+            // label_Matkhau
             // 
-            pnl_login.BackColor = Color.White;
-            pnl_login.Controls.Add(llbl_ForgetPass);
-            pnl_login.Controls.Add(lbl_Role);
-            pnl_login.Controls.Add(lbl_Title);
-            pnl_login.Controls.Add(btn_Cancel_Login);
-            pnl_login.Controls.Add(btn_Login);
-            pnl_login.Controls.Add(llbl_Register);
-            pnl_login.Controls.Add(rdb_Student);
-            pnl_login.Controls.Add(chk_Remember);
-            pnl_login.Controls.Add(txb_Pass);
-            pnl_login.Controls.Add(lbl_Pass);
-            pnl_login.Controls.Add(txb_User);
-            pnl_login.Controls.Add(lbl_User);
-            pnl_login.Controls.Add(rdb_HR);
-            pnl_login.Location = new Point(640, 0);
-            pnl_login.Name = "pnl_login";
-            pnl_login.Size = new Size(640, 720);
-            pnl_login.TabIndex = 9;
+            label_Matkhau.AutoSize = true;
+            label_Matkhau.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label_Matkhau.ForeColor = Color.DimGray;
+            label_Matkhau.Location = new Point(21, 252);
+            label_Matkhau.Margin = new Padding(4, 0, 4, 0);
+            label_Matkhau.Name = "label_Matkhau";
+            label_Matkhau.Size = new Size(82, 23);
+            label_Matkhau.TabIndex = 2;
+            label_Matkhau.Text = "Mật khẩu";
+            label_Matkhau.Click += label_Matkhau_Click;
             // 
-            // llbl_ForgetPass
+            // label_Tendangnhap
             // 
-            llbl_ForgetPass.AutoSize = true;
-            llbl_ForgetPass.BackColor = Color.Transparent;
-            llbl_ForgetPass.Font = new Font("Segoe UI", 12F, FontStyle.Italic, GraphicsUnit.Point, 0);
-            llbl_ForgetPass.ForeColor = SystemColors.ControlLight;
-            llbl_ForgetPass.LinkBehavior = LinkBehavior.NeverUnderline;
-            llbl_ForgetPass.LinkColor = Color.DimGray;
-            llbl_ForgetPass.Location = new Point(83, 519);
-            llbl_ForgetPass.Name = "llbl_ForgetPass";
-            llbl_ForgetPass.Size = new Size(157, 28);
-            llbl_ForgetPass.TabIndex = 8;
-            llbl_ForgetPass.TabStop = true;
-            llbl_ForgetPass.Text = "Quên mật khẩu?";
-            llbl_ForgetPass.LinkClicked += llbl_ForgetPass_LinkClicked;
+            label_Tendangnhap.AutoSize = true;
+            label_Tendangnhap.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label_Tendangnhap.ForeColor = Color.DimGray;
+            label_Tendangnhap.Location = new Point(21, 155);
+            label_Tendangnhap.Margin = new Padding(4, 0, 4, 0);
+            label_Tendangnhap.Name = "label_Tendangnhap";
+            label_Tendangnhap.Size = new Size(124, 23);
+            label_Tendangnhap.TabIndex = 1;
+            label_Tendangnhap.Text = "Tên đăng nhập";
+            label_Tendangnhap.Click += label_Tendangnhap_Click;
             // 
-            // llbl_Register
+            // label_Dangnhap
             // 
-            llbl_Register.AutoSize = true;
-            llbl_Register.BackColor = Color.White;
-            llbl_Register.Font = new Font("Segoe UI", 12F, FontStyle.Italic, GraphicsUnit.Point, 0);
-            llbl_Register.ForeColor = SystemColors.ActiveBorder;
-            llbl_Register.LinkBehavior = LinkBehavior.NeverUnderline;
-            llbl_Register.LinkColor = Color.DimGray;
-            llbl_Register.Location = new Point(364, 366);
-            llbl_Register.Name = "llbl_Register";
-            llbl_Register.Size = new Size(182, 28);
-            llbl_Register.TabIndex = 7;
-            llbl_Register.TabStop = true;
-            llbl_Register.Text = "Đăng ký tài khoản?";
-            llbl_Register.LinkClicked += llbl_Register_LinkClicked;
+            label_Dangnhap.AutoSize = true;
+            label_Dangnhap.Font = new Font("Segoe UI", 24F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label_Dangnhap.ForeColor = Color.SteelBlue;
+            label_Dangnhap.Location = new Point(21, 20);
+            label_Dangnhap.Margin = new Padding(4, 0, 4, 0);
+            label_Dangnhap.Name = "label_Dangnhap";
+            label_Dangnhap.Size = new Size(268, 54);
+            label_Dangnhap.TabIndex = 0;
+            label_Dangnhap.Text = "ĐĂNG NHẬP";
+            label_Dangnhap.Click += label_Dangnhap_Click;
             // 
-            // lb_HCMUTE_name
+            // errorProvider_Baoloi
             // 
-            lb_HCMUTE_name.BackColor = Color.Transparent;
-            lb_HCMUTE_name.Font = new Font("Calibri", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lb_HCMUTE_name.ForeColor = Color.Black;
-            lb_HCMUTE_name.Location = new Point(92, 9);
-            lb_HCMUTE_name.Name = "lb_HCMUTE_name";
-            lb_HCMUTE_name.Size = new Size(542, 89);
-            lb_HCMUTE_name.TabIndex = 10;
-            lb_HCMUTE_name.Text = "TRƯỜNG ĐẠI HỌC CÔNG NGHỆ KỸ THUẬT\r\nTP.HCM";
-            lb_HCMUTE_name.TextAlign = ContentAlignment.MiddleCenter;
-            lb_HCMUTE_name.Click += llb_HCMUTE_name_Click;
-            // 
-            // pic_HCMUTE
-            // 
-            pic_HCMUTE.BackColor = Color.Transparent;
-            pic_HCMUTE.Image = Properties.Resources.hcmute_bg;
-            pic_HCMUTE.Location = new Point(0, 0);
-            pic_HCMUTE.Name = "pic_HCMUTE";
-            pic_HCMUTE.Size = new Size(111, 143);
-            pic_HCMUTE.SizeMode = PictureBoxSizeMode.Zoom;
-            pic_HCMUTE.TabIndex = 11;
-            pic_HCMUTE.TabStop = false;
-            pic_HCMUTE.Click += pic_HCMUTE_Click;
-            // 
-            // pictureBox1
-            // 
-            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(0, 0);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(640, 720);
-            pictureBox1.SizeMode = PictureBoxSizeMode.CenterImage;
-            pictureBox1.TabIndex = 12;
-            pictureBox1.TabStop = false;
+            errorProvider_Baoloi.ContainerControl = this;
             // 
             // f_Login
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
-            AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.AliceBlue;
-            BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
-            BackgroundImageLayout = ImageLayout.None;
-            ClientSize = new Size(1280, 720);
-            Controls.Add(pic_HCMUTE);
-            Controls.Add(lb_HCMUTE_name);
-            Controls.Add(pnl_login);
-            Controls.Add(label1);
-            Controls.Add(pictureBox1);
-            FormBorderStyle = FormBorderStyle.FixedSingle;
-            MaximizeBox = false;
+            AutoScaleDimensions = new SizeF(120F, 120F);
+            AutoScaleMode = AutoScaleMode.Dpi;
+            ClientSize = new Size(1902, 1032);
+            Controls.Add(panel_Login);
+            Controls.Add(picturebox_Background);
+            Margin = new Padding(4);
             Name = "f_Login";
-            RightToLeft = RightToLeft.No;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "UTEID";
+            WindowState = FormWindowState.Maximized;
             Load += f_Login_Load;
-            ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
-            pnl_login.ResumeLayout(false);
-            pnl_login.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pic_HCMUTE).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)picturebox_Background).EndInit();
+            panel_Login.ResumeLayout(false);
+            panel_Login.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)ptb_ShowPass).EndInit();
+            ((System.ComponentModel.ISupportInitialize)errorProvider_Baoloi).EndInit();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
 
-        private Label lbl_Title;
-        private Label lbl_User;
-        private Label lbl_Pass;
-        private Label lbl_Role;
-        private TextBox txb_User;
-        private TextBox txb_Pass;
-        private RadioButton rdb_Student;
-        private RadioButton rdb_HR;
-        private CheckBox chk_Remember;
-        private Button btn_Login;
-        private Button btn_Cancel_Login;
-        private ErrorProvider errorProvider1;
-        internal Panel pnl_login;
-        private Label label1;
-        private Label lb_HCMUTE_name;
-        private PictureBox pic_HCMUTE;
-        private PictureBox pictureBox1;
-        private LinkLabel llbl_ForgetPass;
-        private LinkLabel llbl_Register;
+        private PictureBox picturebox_Background;
+        private Panel panel_Login;
+        private Label label_Tendangnhap;
+        private Label label_Dangnhap;
+        private Label label_Matkhau;
+        private TextBox textBox_Matkhau;
+        private PictureBox ptb_ShowPass;
+        private TextBox textBox_Taikhoan;
+        private RadioButton radioButton_Sinhvien;
+        private RadioButton radioButton_HR;
+        private Button button_Dangnhap;
+        private CheckBox checkBox_Ghinhodangnhap;
+        private Label label_Line;
+        private Button button_Thoat;
+        private LinkLabel llbl_QuenMK;
+        private LinkLabel llbl_Dangky;
+        private ErrorProvider errorProvider_Baoloi;
     }
 }

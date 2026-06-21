@@ -73,30 +73,42 @@ namespace ProjectMonHoc
                     frmOTP.to = emailInput;
                     frmOTP.targetRole = targetRole;
 
+                    bool resetFlowStarted = false;
+
                     // THUẬN: Nếu OTP xác thực THÀNH CÔNG -> Chuyển sang ResetPass
                     frmOTP.onVerifySuccess = (email, role) => {
+                        resetFlowStarted = true;
+
                         f_ResetPass frmReset = new f_ResetPass(email, role, loginForm);
 
                         // ResetPass thành công hoặc bấm hủy ở ResetPass -> Về thẳng Login gốc
                         frmReset.onDone = () => loginForm.RestoreLoginPanel();
 
-                        loginForm.OpenChildForm(frmReset, loginForm.pnl_login);
+                        loginForm.OpenChildForm(frmReset, loginForm.LoginPanel);
                     };
 
-                    // NGHỊCH: SỬA TẠI ĐÂY - Nếu OTP bấm 'Hủy' -> Tạo mới f_ForgetPass thay vì dùng 'this' đã bị đóng
-                    frmOTP.onBackToForget = () => {
-                        // Khởi tạo một thực thể mới tinh để nạp vào panel
+                    // ✅ SỬA LỖI MÀN HÌNH TRẮNG: dùng FormClosed thay vì onBackToForget,
+                    // vì f_OTP chỉ Close() khi bấm Hủy mà KHÔNG gọi onBackToForget,
+                    // khiến panel_Login không có form nào được nạp lại -> trắng trơn.
+                    // FormClosed luôn được kích hoạt bất kể đóng bằng cách nào, nên đáng tin cậy hơn.
+                    frmOTP.FormClosed += (s, args) =>
+                    {
+                        // Nếu đã xác thực thành công và chuyển sang ResetPass rồi thì không xử lý gì thêm
+                        if (resetFlowStarted) return;
+
+                        // NGHỊCH: Bấm 'Hủy' (hoặc đóng form bằng cách khác) -> quay lại f_ForgetPass
+                        // Khởi tạo một thực thể mới tinh để nạp vào panel (vì instance cũ đã bị đóng)
                         f_ForgetPass newForgetPass = new f_ForgetPass(this.rolePosition, this.loginForm);
 
                         // Gán lại callback nút hủy cho thực thể mới này để nó có thể quay về Login tiếp
                         newForgetPass.onBackToLogin = () => loginForm.RestoreLoginPanel();
 
-                        // Mở form mới lên panel, form OTP cũ sẽ tự động được thu dọn gọn gàng
-                        loginForm.OpenChildForm(newForgetPass, loginForm.pnl_login);
+                        // Mở form mới lên panel
+                        loginForm.OpenChildForm(newForgetPass, loginForm.LoginPanel);
                     };
 
                     // Đẩy f_OTP lên panel (bước này sẽ tự động giải phóng f_ForgetPass hiện tại)
-                    loginForm.OpenChildForm(frmOTP, loginForm.pnl_login);
+                    loginForm.OpenChildForm(frmOTP, loginForm.LoginPanel);
                 }
                 else
                 {

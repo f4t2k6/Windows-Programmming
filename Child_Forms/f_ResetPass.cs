@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Drawing;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -103,7 +104,9 @@ namespace ProjectMonHoc
 
         private void f_ResetPass_Load(object sender, EventArgs e)
         {
-
+            // Mặc định cả 2 ô mật khẩu đang ẩn -> icon hiển thị "eye_open" (gợi ý bấm để xem) — giống y f_Register
+            ptb_ShowNewPass.Image = Properties.Resources.eye_open;
+            ptb_ShowConfirmPass.Image = Properties.Resources.eye_open;
         }
 
         private void lbl_ResetPass_Click(object sender, EventArgs e)
@@ -113,7 +116,65 @@ namespace ProjectMonHoc
 
         private void txb_NewPass_TextChanged(object sender, EventArgs e)
         {
+            UpdatePassMatchStatus();
+        }
 
+        // Sự kiện TextChanged cho ô Nhập lại mật khẩu (Xác nhận realtime) — giống y f_Register
+        private void txb_ConfirmPass_TextChanged(object sender, EventArgs e)
+        {
+            UpdatePassMatchStatus();
+        }
+
+        // Cập nhật dấu tích xanh (khớp) hoặc dấu X đỏ (chưa khớp) kế bên ô Nhập lại mật khẩu
+        private void UpdatePassMatchStatus()
+        {
+            if (string.IsNullOrEmpty(txb_ConfirmPass.Text))
+            {
+                lbl_PassStatus.Visible = false;
+                return;
+            }
+
+            lbl_PassStatus.Visible = true;
+            if (txb_ConfirmPass.Text == txb_NewPass.Text)
+            {
+                lbl_PassStatus.Text = "✓";
+                lbl_PassStatus.ForeColor = Color.SeaGreen;
+            }
+            else
+            {
+                lbl_PassStatus.Text = "✗";
+                lbl_PassStatus.ForeColor = Color.IndianRed;
+            }
+        }
+
+        // Bật/tắt hiển thị mật khẩu mới (con mắt) — giống y f_Register
+        private void ptb_ShowNewPass_Click(object sender, EventArgs e)
+        {
+            if (txb_NewPass.PasswordChar == '●')
+            {
+                txb_NewPass.PasswordChar = '\0';
+                ptb_ShowNewPass.Image = Properties.Resources.eye_close;
+            }
+            else
+            {
+                txb_NewPass.PasswordChar = '●';
+                ptb_ShowNewPass.Image = Properties.Resources.eye_open;
+            }
+        }
+
+        // Bật/tắt hiển thị ô nhập lại mật khẩu (con mắt) — giống y f_Register
+        private void ptb_ShowConfirmPass_Click(object sender, EventArgs e)
+        {
+            if (txb_ConfirmPass.PasswordChar == '●')
+            {
+                txb_ConfirmPass.PasswordChar = '\0';
+                ptb_ShowConfirmPass.Image = Properties.Resources.eye_close;
+            }
+            else
+            {
+                txb_ConfirmPass.PasswordChar = '●';
+                ptb_ShowConfirmPass.Image = Properties.Resources.eye_open;
+            }
         }
 
         private void lbl_NewPass_Reset_Click(object sender, EventArgs e)

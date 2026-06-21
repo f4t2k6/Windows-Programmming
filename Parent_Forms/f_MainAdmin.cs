@@ -40,22 +40,22 @@ namespace ProjectMonHoc
         private void btn_letter_MainAdmin_Click(object sender, EventArgs e)
         {
             // MỚI: mở hộp thư yêu cầu in giấy SV
-            OpenChildForm(new f_AdminRequests(), panel4);
+            OpenChildForm(new f_AdminRequests(), panel_Content);
         }
 
         private void btn_ListStudent_Click(object sender, EventArgs e)
         {
-            OpenChildForm(new f_ListStudent(), panel4);
+            OpenChildForm(new f_ListStudent(), panel_Content);
         }
 
         private void btn_ManageCourse_Click(object sender, EventArgs e)
         {
-            OpenChildForm(new f_ManageCourse(), panel4);
+            OpenChildForm(new f_ManageCourse(), panel_Content);
         }
 
         private void btn_ListScore_Click(object sender, EventArgs e)
         {
-            OpenChildForm(new f_ListScore(-1, ""), panel4);
+            OpenChildForm(new f_ListScore(-1, ""), panel_Content);
         }
 
         private void btn_Logout_MainAdmin_Click(object sender, EventArgs e)
@@ -69,10 +69,20 @@ namespace ProjectMonHoc
 
         private void button_Chart_Click(object sender, EventArgs e)
         {
-            OpenChildForm(new FormThongKe(), panel4);
+            OpenChildForm(new FormThongKe(), panel_Content);
         }
 
         private void panel2_Paint(object sender, PaintEventArgs e) { }
-        private void panel4_Paint(object sender, PaintEventArgs e) { }
+        private void panel_Content_Paint(object sender, PaintEventArgs e) { }
+
+        private void pnl_Sidebar_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
