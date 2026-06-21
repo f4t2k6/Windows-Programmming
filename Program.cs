@@ -13,7 +13,7 @@ namespace ProjectMonHoc
             f_Login loginForm = new f_Login();
             if (loginForm.ShowDialog() == DialogResult.OK)
             {
-                Application.Run(new f_ManageCourse());
+                Application.Run(new f_Login());
             }
 
         }

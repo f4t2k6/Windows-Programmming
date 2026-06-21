@@ -48,16 +48,16 @@
             tabDangKy = new TabPage();
             pnlChartDangKy = new Panel();
             tabGioiTinh = new TabPage();
-            panel_Total = new Panel();
-            lb_Total = new Label();
-            panel_Male = new Panel();
-            lb_Male = new Label();
-            panel_Female = new Panel();
-            lb_Female = new Label();
+            pnlNamNhapHoc = new Panel();
+            pnlPieGioiTinh = new Panel();
             panel_Other = new Panel();
             lb_Other = new Label();
-            pnlPieGioiTinh = new Panel();
-            pnlNamNhapHoc = new Panel();
+            panel_Female = new Panel();
+            lb_Female = new Label();
+            panel_Male = new Panel();
+            lb_Male = new Label();
+            panel_Total = new Panel();
+            lb_Total = new Label();
             lblChartTitle = new Label();
             pnlHeader.SuspendLayout();
             pnlCards.SuspendLayout();
@@ -72,12 +72,10 @@
             tabMonHoc.SuspendLayout();
             tabDangKy.SuspendLayout();
             tabGioiTinh.SuspendLayout();
-            panel_Total.SuspendLayout();
-            panel_Male.SuspendLayout();
-            panel_Female.SuspendLayout();
             panel_Other.SuspendLayout();
-            pnlPieGioiTinh.SuspendLayout();
-            pnlNamNhapHoc.SuspendLayout();
+            panel_Female.SuspendLayout();
+            panel_Male.SuspendLayout();
+            panel_Total.SuspendLayout();
             SuspendLayout();
             // 
             // pnlHeader
@@ -436,6 +434,7 @@
             pnlChartMonHoc.Name = "pnlChartMonHoc";
             pnlChartMonHoc.Size = new Size(987, 359);
             pnlChartMonHoc.TabIndex = 0;
+            pnlChartMonHoc.Paint += pnlChartMonHoc_Paint_1;
             // 
             // tabDangKy
             // 
@@ -472,83 +471,21 @@
             tabGioiTinh.TabIndex = 4;
             tabGioiTinh.Text = "Giới tính";
             // 
-            // panel_Total
+            // pnlNamNhapHoc
             // 
-            panel_Total.BackColor = Color.FromArgb(54, 162, 235);
-            panel_Total.Controls.Add(lb_Total);
-            panel_Total.Cursor = Cursors.Hand;
-            panel_Total.Location = new Point(40, 10);
-            panel_Total.Name = "panel_Total";
-            panel_Total.Size = new Size(180, 65);
-            panel_Total.TabIndex = 0;
-            panel_Total.MouseEnter += panel_Total_MouseEnter;
-            panel_Total.MouseLeave += panel_Total_MouseLeave;
+            pnlNamNhapHoc.BackColor = Color.White;
+            pnlNamNhapHoc.Location = new Point(500, 88);
+            pnlNamNhapHoc.Name = "pnlNamNhapHoc";
+            pnlNamNhapHoc.Size = new Size(470, 255);
+            pnlNamNhapHoc.TabIndex = 5;
             // 
-            // lb_Total
+            // pnlPieGioiTinh
             // 
-            lb_Total.BackColor = Color.FromArgb(54, 162, 235);
-            lb_Total.Dock = DockStyle.Fill;
-            lb_Total.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            lb_Total.ForeColor = Color.White;
-            lb_Total.Name = "lb_Total";
-            lb_Total.Size = new Size(180, 65);
-            lb_Total.TabIndex = 0;
-            lb_Total.Text = "Tổng Sinh Viên : ...";
-            lb_Total.TextAlign = ContentAlignment.MiddleCenter;
-            lb_Total.MouseEnter += panel_Total_MouseEnter;
-            lb_Total.MouseLeave += panel_Total_MouseLeave;
-            // 
-            // panel_Male
-            // 
-            panel_Male.BackColor = Color.FromArgb(75, 192, 192);
-            panel_Male.Controls.Add(lb_Male);
-            panel_Male.Cursor = Cursors.Hand;
-            panel_Male.Location = new Point(240, 10);
-            panel_Male.Name = "panel_Male";
-            panel_Male.Size = new Size(180, 65);
-            panel_Male.TabIndex = 1;
-            panel_Male.MouseEnter += panel_Male_MouseEnter;
-            panel_Male.MouseLeave += panel_Male_MouseLeave;
-            // 
-            // lb_Male
-            // 
-            lb_Male.BackColor = Color.FromArgb(75, 192, 192);
-            lb_Male.Dock = DockStyle.Fill;
-            lb_Male.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            lb_Male.ForeColor = Color.White;
-            lb_Male.Name = "lb_Male";
-            lb_Male.Size = new Size(180, 65);
-            lb_Male.TabIndex = 0;
-            lb_Male.Text = "Nam : ...";
-            lb_Male.TextAlign = ContentAlignment.MiddleCenter;
-            lb_Male.MouseEnter += panel_Male_MouseEnter;
-            lb_Male.MouseLeave += panel_Male_MouseLeave;
-            // 
-            // panel_Female
-            // 
-            panel_Female.BackColor = Color.FromArgb(255, 99, 132);
-            panel_Female.Controls.Add(lb_Female);
-            panel_Female.Cursor = Cursors.Hand;
-            panel_Female.Location = new Point(440, 10);
-            panel_Female.Name = "panel_Female";
-            panel_Female.Size = new Size(180, 65);
-            panel_Female.TabIndex = 2;
-            panel_Female.MouseEnter += panel_Female_MouseEnter;
-            panel_Female.MouseLeave += panel_Female_MouseLeave;
-            // 
-            // lb_Female
-            // 
-            lb_Female.BackColor = Color.FromArgb(255, 99, 132);
-            lb_Female.Dock = DockStyle.Fill;
-            lb_Female.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            lb_Female.ForeColor = Color.White;
-            lb_Female.Name = "lb_Female";
-            lb_Female.Size = new Size(180, 65);
-            lb_Female.TabIndex = 0;
-            lb_Female.Text = "Nữ : ...";
-            lb_Female.TextAlign = ContentAlignment.MiddleCenter;
-            lb_Female.MouseEnter += panel_Female_MouseEnter;
-            lb_Female.MouseLeave += panel_Female_MouseLeave;
+            pnlPieGioiTinh.BackColor = Color.White;
+            pnlPieGioiTinh.Location = new Point(20, 88);
+            pnlPieGioiTinh.Name = "pnlPieGioiTinh";
+            pnlPieGioiTinh.Size = new Size(470, 255);
+            pnlPieGioiTinh.TabIndex = 4;
             // 
             // panel_Other
             // 
@@ -568,6 +505,7 @@
             lb_Other.Dock = DockStyle.Fill;
             lb_Other.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             lb_Other.ForeColor = Color.White;
+            lb_Other.Location = new Point(0, 0);
             lb_Other.Name = "lb_Other";
             lb_Other.Size = new Size(180, 65);
             lb_Other.TabIndex = 0;
@@ -576,21 +514,86 @@
             lb_Other.MouseEnter += panel_Other_MouseEnter;
             lb_Other.MouseLeave += panel_Other_MouseLeave;
             // 
-            // pnlPieGioiTinh
+            // panel_Female
             // 
-            pnlPieGioiTinh.BackColor = Color.White;
-            pnlPieGioiTinh.Location = new Point(20, 88);
-            pnlPieGioiTinh.Name = "pnlPieGioiTinh";
-            pnlPieGioiTinh.Size = new Size(470, 255);
-            pnlPieGioiTinh.TabIndex = 4;
+            panel_Female.BackColor = Color.FromArgb(255, 99, 132);
+            panel_Female.Controls.Add(lb_Female);
+            panel_Female.Cursor = Cursors.Hand;
+            panel_Female.Location = new Point(440, 10);
+            panel_Female.Name = "panel_Female";
+            panel_Female.Size = new Size(180, 65);
+            panel_Female.TabIndex = 2;
+            panel_Female.MouseEnter += panel_Female_MouseEnter;
+            panel_Female.MouseLeave += panel_Female_MouseLeave;
             // 
-            // pnlNamNhapHoc
+            // lb_Female
             // 
-            pnlNamNhapHoc.BackColor = Color.White;
-            pnlNamNhapHoc.Location = new Point(500, 88);
-            pnlNamNhapHoc.Name = "pnlNamNhapHoc";
-            pnlNamNhapHoc.Size = new Size(470, 255);
-            pnlNamNhapHoc.TabIndex = 5;
+            lb_Female.BackColor = Color.FromArgb(255, 99, 132);
+            lb_Female.Dock = DockStyle.Fill;
+            lb_Female.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            lb_Female.ForeColor = Color.White;
+            lb_Female.Location = new Point(0, 0);
+            lb_Female.Name = "lb_Female";
+            lb_Female.Size = new Size(180, 65);
+            lb_Female.TabIndex = 0;
+            lb_Female.Text = "Nữ : ...";
+            lb_Female.TextAlign = ContentAlignment.MiddleCenter;
+            lb_Female.MouseEnter += panel_Female_MouseEnter;
+            lb_Female.MouseLeave += panel_Female_MouseLeave;
+            // 
+            // panel_Male
+            // 
+            panel_Male.BackColor = Color.FromArgb(75, 192, 192);
+            panel_Male.Controls.Add(lb_Male);
+            panel_Male.Cursor = Cursors.Hand;
+            panel_Male.Location = new Point(240, 10);
+            panel_Male.Name = "panel_Male";
+            panel_Male.Size = new Size(180, 65);
+            panel_Male.TabIndex = 1;
+            panel_Male.MouseEnter += panel_Male_MouseEnter;
+            panel_Male.MouseLeave += panel_Male_MouseLeave;
+            // 
+            // lb_Male
+            // 
+            lb_Male.BackColor = Color.FromArgb(75, 192, 192);
+            lb_Male.Dock = DockStyle.Fill;
+            lb_Male.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            lb_Male.ForeColor = Color.White;
+            lb_Male.Location = new Point(0, 0);
+            lb_Male.Name = "lb_Male";
+            lb_Male.Size = new Size(180, 65);
+            lb_Male.TabIndex = 0;
+            lb_Male.Text = "Nam : ...";
+            lb_Male.TextAlign = ContentAlignment.MiddleCenter;
+            lb_Male.MouseEnter += panel_Male_MouseEnter;
+            lb_Male.MouseLeave += panel_Male_MouseLeave;
+            // 
+            // panel_Total
+            // 
+            panel_Total.BackColor = Color.FromArgb(54, 162, 235);
+            panel_Total.Controls.Add(lb_Total);
+            panel_Total.Cursor = Cursors.Hand;
+            panel_Total.Location = new Point(40, 10);
+            panel_Total.Name = "panel_Total";
+            panel_Total.Size = new Size(180, 65);
+            panel_Total.TabIndex = 0;
+            panel_Total.MouseEnter += panel_Total_MouseEnter;
+            panel_Total.MouseLeave += panel_Total_MouseLeave;
+            // 
+            // lb_Total
+            // 
+            lb_Total.BackColor = Color.FromArgb(54, 162, 235);
+            lb_Total.Dock = DockStyle.Fill;
+            lb_Total.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            lb_Total.ForeColor = Color.White;
+            lb_Total.Location = new Point(0, 0);
+            lb_Total.Name = "lb_Total";
+            lb_Total.Size = new Size(180, 65);
+            lb_Total.TabIndex = 0;
+            lb_Total.Text = "Tổng Sinh Viên : ...";
+            lb_Total.TextAlign = ContentAlignment.MiddleCenter;
+            lb_Total.MouseEnter += panel_Total_MouseEnter;
+            lb_Total.MouseLeave += panel_Total_MouseLeave;
             // 
             // lblChartTitle
             // 
@@ -635,12 +638,10 @@
             tabMonHoc.ResumeLayout(false);
             tabDangKy.ResumeLayout(false);
             tabGioiTinh.ResumeLayout(false);
-            panel_Total.ResumeLayout(false);
-            panel_Male.ResumeLayout(false);
-            panel_Female.ResumeLayout(false);
             panel_Other.ResumeLayout(false);
-            pnlPieGioiTinh.ResumeLayout(false);
-            pnlNamNhapHoc.ResumeLayout(false);
+            panel_Female.ResumeLayout(false);
+            panel_Male.ResumeLayout(false);
+            panel_Total.ResumeLayout(false);
             ResumeLayout(false);
         }
 

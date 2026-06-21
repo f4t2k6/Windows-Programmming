@@ -57,6 +57,7 @@ namespace ProjectMonHoc
             dgvScores.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvScores.Size = new Size(1027, 414);
             dgvScores.TabIndex = 0;
+            dgvScores.CellContentClick += dgvScores_CellContentClick;
             // 
             // txtSearch
             // 

@@ -62,7 +62,7 @@ namespace ProjectMonHoc
             MY_DB my_db = new MY_DB();
             try
             {
-                string sql = "SELECT Id, Username, Fname, Lname, Email, Password " +
+                string sql = "SELECT Id, Username, Fname, Lname, Email, Password, Picture " +
                              "FROM register_HR WHERE Status = 0";
                 SqlCommand cmd = new SqlCommand(sql, my_db.conn);
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
@@ -74,13 +74,18 @@ namespace ProjectMonHoc
 
                 foreach (DataRow row in dtHR.Rows)
                 {
+                    byte[]? picture = row["Picture"] == DBNull.Value
+                        ? null
+                        : (byte[])row["Picture"];
+
                     var card = BuildHRCard(
                         Convert.ToInt32(row["Id"]),
                         row["Username"].ToString() ?? "",
                         row["Fname"].ToString() ?? "",
                         row["Lname"].ToString() ?? "",
                         row["Email"].ToString() ?? "",
-                        row["Password"].ToString() ?? "");
+                        row["Password"].ToString() ?? "",
+                        picture);
                     flp_inbox.Controls.Add(card);
                     total++;
                 }
@@ -154,7 +159,7 @@ namespace ProjectMonHoc
         // CARD HR
         // ============================================================
         private Panel BuildHRCard(int id, string username, string fname,
-                                  string lname, string email, string password)
+                                  string lname, string email, string password, byte[]? picture)
         {
             Panel card = MakeCardShell();
 
@@ -176,7 +181,7 @@ namespace ProjectMonHoc
             Button btn_reject = MakeButton("✕  Từ Chối", 110, C_REJECT_BG, C_REJECT_FG,
                 Color.FromArgb(254, 202, 202));
 
-            btn_accept.Click += (s, e) => AcceptHRRequest(id, username, email, password);
+            btn_accept.Click += (s, e) => AcceptHRRequest(id, username, email, password, fname, lname, picture);
             btn_reject.Click += (s, e) => RejectHRRequest(id, username);
 
             PositionButtons(card, btn_accept, btn_reject);
@@ -383,7 +388,8 @@ namespace ProjectMonHoc
         // ============================================================
         // XỬ LÝ HR — PHÊ DUYỆT / TỪ CHỐI
         // ============================================================
-        private void AcceptHRRequest(int hrId, string username, string email, string password)
+        private void AcceptHRRequest(int hrId, string username, string email, string password,
+                                     string fname, string lname, byte[]? picture)
         {
             var confirm = MessageBox.Show(
                 $"Phê duyệt tài khoản HR [{username}]?\nTài khoản sẽ được kích hoạt ngay lập tức.",
@@ -397,6 +403,7 @@ namespace ProjectMonHoc
                 my_db.openConnection();
                 tx = my_db.conn.BeginTransaction();
 
+                // 1) Bảng login — phục vụ đăng nhập + phân quyền
                 string insertSQL = "INSERT INTO login (Id, username, password, role, email, LoginAttempts) " +
                                    "VALUES (@id, @user, @pass, 'HR', @email, 0)";
                 SqlCommand cmdIns = new SqlCommand(insertSQL, my_db.conn, tx);
@@ -406,6 +413,20 @@ namespace ProjectMonHoc
                 cmdIns.Parameters.Add("@email", SqlDbType.VarChar).Value = email;
                 cmdIns.ExecuteNonQuery();
 
+                // 2) Bảng HR — lưu hồ sơ nhân sự chính thức (MSGV, họ tên, ảnh đại diện...)
+                string insertHRSQL = "INSERT INTO HR (MSGV, Fname, Lname, Username, Pass, Email, Pic, VALID) " +
+                                     "VALUES (@msgv, @fname, @lname, @user, @pass, @email, @pic, 1)";
+                SqlCommand cmdHR = new SqlCommand(insertHRSQL, my_db.conn, tx);
+                cmdHR.Parameters.Add("@msgv", SqlDbType.NVarChar, 20).Value = hrId.ToString();
+                cmdHR.Parameters.Add("@fname", SqlDbType.NVarChar, 50).Value = fname;
+                cmdHR.Parameters.Add("@lname", SqlDbType.NVarChar, 50).Value = lname;
+                cmdHR.Parameters.Add("@user", SqlDbType.VarChar, 50).Value = username;
+                cmdHR.Parameters.Add("@pass", SqlDbType.VarChar, 100).Value = password;
+                cmdHR.Parameters.Add("@email", SqlDbType.VarChar, 100).Value = email;
+                cmdHR.Parameters.Add("@pic", SqlDbType.VarBinary).Value = (object?)picture ?? DBNull.Value;
+                cmdHR.ExecuteNonQuery();
+
+                // 3) Xóa khỏi hàng chờ duyệt
                 string deleteSQL = "DELETE FROM register_HR WHERE Id = @id";
                 SqlCommand cmdDel = new SqlCommand(deleteSQL, my_db.conn, tx);
                 cmdDel.Parameters.Add("@id", SqlDbType.Int).Value = hrId;

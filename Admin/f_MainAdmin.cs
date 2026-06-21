@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using YourApp;
 
 namespace ProjectMonHoc
 {
@@ -80,9 +81,39 @@ namespace ProjectMonHoc
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btn_ListStudent_Click_1(object sender, EventArgs e)
         {
+            OpenChildForm(new f_ListStudent(), panel_Content);
+        }
 
+        private void btn_ListScore_Click_1(object sender, EventArgs e)
+        {
+            OpenChildForm(new f_ListScore(-1, ""), panel_Content);
+        }
+
+        private void btn_ManageCourse_Click_1(object sender, EventArgs e)
+        {
+            OpenChildForm(new f_ManageCourse(), panel_Content);
+        }
+
+        private void button_Chart_Click_1(object sender, EventArgs e)
+        {
+            OpenChildForm(new FormThongKe(), panel_Content);
+        }
+
+        private void button_Classroom_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new frmClassroom(), panel_Content);
+        }
+
+        private void button_Assign_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new f_Assign(), panel_Content);
+        }
+
+        private void button_Contact_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new f_Contact(Globals.GlobalUserId), panel_Content);
         }
     }
 }

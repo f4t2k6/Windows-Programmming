@@ -16,27 +16,28 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(f_MainStudent));
             pnl_Side_Student = new Panel();
+            label_Info = new Label();
+            pictureBox_Avatar = new PictureBox();
+            label1 = new Label();
             pictureBox_Dangxuat = new PictureBox();
             pictureBox_Ingiayxacnhan = new PictureBox();
             pictureBox_Dangkimonhoc = new PictureBox();
             pictureBox_Xemdiem = new PictureBox();
-            pictureBox_Thoikhoabieu = new PictureBox();
             label_Line = new Label();
             pictureBox_Thongtincanhan = new PictureBox();
             btn_PrintRequest = new Button();
             btn_RegisterCourse = new Button();
             pb_main_student = new PictureBox();
             btn_Logout_Student = new Button();
-            btn_Timetable = new Button();
             btn_ListScore = new Button();
             btn_Student_Info = new Button();
             pnl_Content_Student = new Panel();
             pnl_Side_Student.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox_Avatar).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Dangxuat).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Ingiayxacnhan).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Dangkimonhoc).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Xemdiem).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox_Thoikhoabieu).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Thongtincanhan).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pb_main_student).BeginInit();
             SuspendLayout();
@@ -44,25 +45,60 @@
             // pnl_Side_Student
             // 
             pnl_Side_Student.BackColor = Color.SteelBlue;
+            pnl_Side_Student.Controls.Add(label_Info);
+            pnl_Side_Student.Controls.Add(pictureBox_Avatar);
+            pnl_Side_Student.Controls.Add(label1);
             pnl_Side_Student.Controls.Add(pictureBox_Dangxuat);
             pnl_Side_Student.Controls.Add(pictureBox_Ingiayxacnhan);
             pnl_Side_Student.Controls.Add(pictureBox_Dangkimonhoc);
             pnl_Side_Student.Controls.Add(pictureBox_Xemdiem);
-            pnl_Side_Student.Controls.Add(pictureBox_Thoikhoabieu);
             pnl_Side_Student.Controls.Add(label_Line);
             pnl_Side_Student.Controls.Add(pictureBox_Thongtincanhan);
             pnl_Side_Student.Controls.Add(btn_PrintRequest);
             pnl_Side_Student.Controls.Add(btn_RegisterCourse);
             pnl_Side_Student.Controls.Add(pb_main_student);
             pnl_Side_Student.Controls.Add(btn_Logout_Student);
-            pnl_Side_Student.Controls.Add(btn_Timetable);
             pnl_Side_Student.Controls.Add(btn_ListScore);
             pnl_Side_Student.Controls.Add(btn_Student_Info);
             pnl_Side_Student.Location = new Point(0, 0);
             pnl_Side_Student.Name = "pnl_Side_Student";
-            pnl_Side_Student.Size = new Size(250, 1080);
+            pnl_Side_Student.Size = new Size(300, 1080);
             pnl_Side_Student.TabIndex = 0;
             pnl_Side_Student.Paint += pnl_Side_Student_Paint;
+            // 
+            // label_Info
+            // 
+            label_Info.Font = new Font("Segoe UI", 10.2F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            label_Info.ForeColor = Color.White;
+            label_Info.Location = new Point(80, 180);
+            label_Info.Name = "label_Info";
+            label_Info.Size = new Size(214, 60);
+            label_Info.TabIndex = 30;
+            label_Info.Text = "Nguyễn Huỳnh Minh Tuyết\r\n24110118";
+            label_Info.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // pictureBox_Avatar
+            // 
+            pictureBox_Avatar.Cursor = Cursors.Hand;
+            pictureBox_Avatar.Image = Properties.Resources.icons8_user_100;
+            pictureBox_Avatar.Location = new Point(13, 180);
+            pictureBox_Avatar.Margin = new Padding(4);
+            pictureBox_Avatar.Name = "pictureBox_Avatar";
+            pictureBox_Avatar.Size = new Size(60, 60);
+            pictureBox_Avatar.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox_Avatar.TabIndex = 29;
+            pictureBox_Avatar.TabStop = false;
+            // 
+            // label1
+            // 
+            label1.BackColor = Color.White;
+            label1.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label1.ForeColor = Color.White;
+            label1.Location = new Point(0, 260);
+            label1.Margin = new Padding(4, 0, 4, 0);
+            label1.Name = "label1";
+            label1.Size = new Size(300, 2);
+            label1.TabIndex = 28;
             // 
             // pictureBox_Dangxuat
             // 
@@ -80,7 +116,7 @@
             // 
             pictureBox_Ingiayxacnhan.Cursor = Cursors.Hand;
             pictureBox_Ingiayxacnhan.Image = Properties.Resources.icons8_print_94;
-            pictureBox_Ingiayxacnhan.Location = new Point(13, 408);
+            pictureBox_Ingiayxacnhan.Location = new Point(13, 462);
             pictureBox_Ingiayxacnhan.Margin = new Padding(4);
             pictureBox_Ingiayxacnhan.Name = "pictureBox_Ingiayxacnhan";
             pictureBox_Ingiayxacnhan.Size = new Size(50, 50);
@@ -92,7 +128,7 @@
             // 
             pictureBox_Dangkimonhoc.Cursor = Cursors.Hand;
             pictureBox_Dangkimonhoc.Image = Properties.Resources.icons8_add_94;
-            pictureBox_Dangkimonhoc.Location = new Point(13, 350);
+            pictureBox_Dangkimonhoc.Location = new Point(13, 404);
             pictureBox_Dangkimonhoc.Margin = new Padding(4);
             pictureBox_Dangkimonhoc.Name = "pictureBox_Dangkimonhoc";
             pictureBox_Dangkimonhoc.Size = new Size(50, 50);
@@ -104,25 +140,13 @@
             // 
             pictureBox_Xemdiem.Cursor = Cursors.Hand;
             pictureBox_Xemdiem.Image = Properties.Resources.icons8_score_94;
-            pictureBox_Xemdiem.Location = new Point(13, 292);
+            pictureBox_Xemdiem.Location = new Point(13, 346);
             pictureBox_Xemdiem.Margin = new Padding(4);
             pictureBox_Xemdiem.Name = "pictureBox_Xemdiem";
             pictureBox_Xemdiem.Size = new Size(50, 50);
             pictureBox_Xemdiem.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox_Xemdiem.TabIndex = 24;
             pictureBox_Xemdiem.TabStop = false;
-            // 
-            // pictureBox_Thoikhoabieu
-            // 
-            pictureBox_Thoikhoabieu.Cursor = Cursors.Hand;
-            pictureBox_Thoikhoabieu.Image = Properties.Resources.icons8_calendar_94;
-            pictureBox_Thoikhoabieu.Location = new Point(13, 234);
-            pictureBox_Thoikhoabieu.Margin = new Padding(4);
-            pictureBox_Thoikhoabieu.Name = "pictureBox_Thoikhoabieu";
-            pictureBox_Thoikhoabieu.Size = new Size(50, 50);
-            pictureBox_Thoikhoabieu.SizeMode = PictureBoxSizeMode.Zoom;
-            pictureBox_Thoikhoabieu.TabIndex = 23;
-            pictureBox_Thoikhoabieu.TabStop = false;
             // 
             // label_Line
             // 
@@ -132,14 +156,14 @@
             label_Line.Location = new Point(0, 162);
             label_Line.Margin = new Padding(4, 0, 4, 0);
             label_Line.Name = "label_Line";
-            label_Line.Size = new Size(250, 1);
+            label_Line.Size = new Size(300, 2);
             label_Line.TabIndex = 22;
             // 
             // pictureBox_Thongtincanhan
             // 
             pictureBox_Thongtincanhan.Cursor = Cursors.Hand;
             pictureBox_Thongtincanhan.Image = Properties.Resources.icons8_user_100;
-            pictureBox_Thongtincanhan.Location = new Point(13, 176);
+            pictureBox_Thongtincanhan.Location = new Point(13, 288);
             pictureBox_Thongtincanhan.Margin = new Padding(4);
             pictureBox_Thongtincanhan.Name = "pictureBox_Thongtincanhan";
             pictureBox_Thongtincanhan.Size = new Size(50, 50);
@@ -154,7 +178,7 @@
             btn_PrintRequest.FlatStyle = FlatStyle.Flat;
             btn_PrintRequest.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
             btn_PrintRequest.ForeColor = SystemColors.Window;
-            btn_PrintRequest.Location = new Point(70, 408);
+            btn_PrintRequest.Location = new Point(70, 462);
             btn_PrintRequest.Name = "btn_PrintRequest";
             btn_PrintRequest.Size = new Size(154, 50);
             btn_PrintRequest.TabIndex = 7;
@@ -170,7 +194,7 @@
             btn_RegisterCourse.FlatStyle = FlatStyle.Flat;
             btn_RegisterCourse.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
             btn_RegisterCourse.ForeColor = SystemColors.Window;
-            btn_RegisterCourse.Location = new Point(70, 350);
+            btn_RegisterCourse.Location = new Point(70, 404);
             btn_RegisterCourse.Name = "btn_RegisterCourse";
             btn_RegisterCourse.Size = new Size(162, 50);
             btn_RegisterCourse.TabIndex = 6;
@@ -182,7 +206,7 @@
             // pb_main_student
             // 
             pb_main_student.Image = (Image)resources.GetObject("pb_main_student.Image");
-            pb_main_student.Location = new Point(35, 12);
+            pb_main_student.Location = new Point(59, 12);
             pb_main_student.Name = "pb_main_student";
             pb_main_student.Size = new Size(173, 134);
             pb_main_student.SizeMode = PictureBoxSizeMode.Zoom;
@@ -206,22 +230,6 @@
             btn_Logout_Student.UseVisualStyleBackColor = false;
             btn_Logout_Student.Click += btn_Logout_Student_Click;
             // 
-            // btn_Timetable
-            // 
-            btn_Timetable.BackColor = Color.SteelBlue;
-            btn_Timetable.FlatAppearance.BorderSize = 0;
-            btn_Timetable.FlatStyle = FlatStyle.Flat;
-            btn_Timetable.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
-            btn_Timetable.ForeColor = SystemColors.Menu;
-            btn_Timetable.Location = new Point(70, 234);
-            btn_Timetable.Name = "btn_Timetable";
-            btn_Timetable.Size = new Size(145, 50);
-            btn_Timetable.TabIndex = 2;
-            btn_Timetable.Text = "Thời khóa biểu";
-            btn_Timetable.TextAlign = ContentAlignment.MiddleLeft;
-            btn_Timetable.UseVisualStyleBackColor = false;
-            btn_Timetable.Click += btn_Timetable_Click;
-            // 
             // btn_ListScore
             // 
             btn_ListScore.BackColor = Color.SteelBlue;
@@ -229,7 +237,7 @@
             btn_ListScore.FlatStyle = FlatStyle.Flat;
             btn_ListScore.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
             btn_ListScore.ForeColor = SystemColors.Window;
-            btn_ListScore.Location = new Point(70, 292);
+            btn_ListScore.Location = new Point(70, 346);
             btn_ListScore.Name = "btn_ListScore";
             btn_ListScore.Size = new Size(102, 50);
             btn_ListScore.TabIndex = 2;
@@ -245,7 +253,7 @@
             btn_Student_Info.FlatStyle = FlatStyle.Flat;
             btn_Student_Info.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
             btn_Student_Info.ForeColor = Color.White;
-            btn_Student_Info.Location = new Point(70, 176);
+            btn_Student_Info.Location = new Point(70, 288);
             btn_Student_Info.Name = "btn_Student_Info";
             btn_Student_Info.Size = new Size(165, 50);
             btn_Student_Info.TabIndex = 1;
@@ -256,9 +264,9 @@
             // 
             // pnl_Content_Student
             // 
-            pnl_Content_Student.Location = new Point(250, 0);
+            pnl_Content_Student.Location = new Point(300, 0);
             pnl_Content_Student.Name = "pnl_Content_Student";
-            pnl_Content_Student.Size = new Size(1670, 1033);
+            pnl_Content_Student.Size = new Size(1620, 1033);
             pnl_Content_Student.TabIndex = 1;
             pnl_Content_Student.Paint += pnl_content_Student_Paint;
             // 
@@ -268,19 +276,19 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
             ClientSize = new Size(1902, 1033);
-            Controls.Add(pnl_Content_Student);
             Controls.Add(pnl_Side_Student);
+            Controls.Add(pnl_Content_Student);
             Name = "f_MainStudent";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Sinh viên";
             WindowState = FormWindowState.Maximized;
             Load += f_MainStudent_Load;
             pnl_Side_Student.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pictureBox_Avatar).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Dangxuat).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Ingiayxacnhan).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Dangkimonhoc).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Xemdiem).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox_Thoikhoabieu).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Thongtincanhan).EndInit();
             ((System.ComponentModel.ISupportInitialize)pb_main_student).EndInit();
             ResumeLayout(false);
@@ -289,7 +297,6 @@
         #endregion
 
         private System.Windows.Forms.Panel pnl_Side_Student;
-        private System.Windows.Forms.Button btn_Timetable;
         private System.Windows.Forms.Button btn_ListScore;
         private System.Windows.Forms.Button btn_Student_Info;
         private System.Windows.Forms.Button btn_Logout_Student;
@@ -299,10 +306,12 @@
         private System.Windows.Forms.Button btn_PrintRequest;    // ← MỚI
         private PictureBox pictureBox_Thongtincanhan;
         private Label label_Line;
-        private PictureBox pictureBox_Thoikhoabieu;
         private PictureBox pictureBox_Xemdiem;
         private PictureBox pictureBox_Ingiayxacnhan;
         private PictureBox pictureBox_Dangkimonhoc;
         private PictureBox pictureBox_Dangxuat;
+        private Label label1;
+        private PictureBox pictureBox_Avatar;
+        private Label label_Info;
     }
 }

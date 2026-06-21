@@ -153,11 +153,13 @@ namespace ProjectMonHoc
                         // =========================================================
                         // BƯỚC 4: LOGIC ĐIỀU HƯỚNG THEO ROLE
                         // =========================================================
-                        this.Hide(); // Ẩn form đăng nhập
+                        // Hiện thông báo chào mừng TRƯỚC (f_Login vẫn còn hiển thị)
+                        // Chỉ sau khi người dùng nhấn OK thì mới ẩn f_Login và mở form chính
 
                         if (roleStr == "Student")
                         {
                             MessageBox.Show("Đăng nhập thành công với quyền Sinh viên!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            this.Hide(); // Ẩn form đăng nhập SAU KHI nhấn OK
                             f_MainStudent formStudent = new f_MainStudent();
                             formStudent.ShowDialog();
                         }
@@ -167,6 +169,7 @@ namespace ProjectMonHoc
                             if (username == "Admin" && textBox_Matkhau.Text == "12345")
                             {
                                 MessageBox.Show("Chào mừng Quản trị viên (Admin) hệ thống!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                this.Hide(); // Ẩn form đăng nhập SAU KHI nhấn OK
                                 f_MainAdmin formAdmin = new f_MainAdmin();
                                 formAdmin.ShowDialog();
                             }
@@ -174,6 +177,7 @@ namespace ProjectMonHoc
                             {
                                 // Tài khoản HR thường (Để trống chờ làm Form riêng)
                                 MessageBox.Show("Chào mừng HR!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                this.Hide(); // Ẩn form đăng nhập SAU KHI nhấn OK
                                 f_MainHR formHR = new f_MainHR();
                                 formHR.ShowDialog();
                             }

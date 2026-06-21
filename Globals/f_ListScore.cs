@@ -378,5 +378,10 @@ namespace ProjectMonHoc
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
+
+        private void dgvScores_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }

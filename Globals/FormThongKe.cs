@@ -842,5 +842,10 @@ namespace ProjectMonHoc
         {
 
         }
+
+        private void pnlChartMonHoc_Paint_1(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

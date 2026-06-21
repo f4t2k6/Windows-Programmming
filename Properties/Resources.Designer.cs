@@ -123,6 +123,16 @@ namespace ProjectMonHoc.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_administrator_94 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-administrator-94", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_bar_chart_94 {
             get {
                 object obj = ResourceManager.GetObject("icons8-bar-chart-94", resourceCulture);
@@ -236,36 +246,6 @@ namespace ProjectMonHoc.Properties {
         internal static System.Drawing.Bitmap icons8_what_i_do_94 {
             get {
                 object obj = ResourceManager.GetObject("icons8-what-i-do-94", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap logo_HCMUTE_Login {
-            get {
-                object obj = ResourceManager.GetObject("logo_HCMUTE_Login", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap logo_HCMUTE_MainMenu {
-            get {
-                object obj = ResourceManager.GetObject("logo_HCMUTE_MainMenu", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap pic_background_Login {
-            get {
-                object obj = ResourceManager.GetObject("pic_background_Login", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
