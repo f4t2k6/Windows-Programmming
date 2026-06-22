@@ -1,4 +1,4 @@
-﻿USE [myDB]
+USE [myDB]
 GO
 
 SET ANSI_NULLS ON
@@ -222,3 +222,34 @@ SELECT c.Fname + N' ' + c.Lname AS HoTen, c.Phone, g.Name AS Nhom
 FROM [dbo].[Contact] c
 JOIN [dbo].[Groups] g ON c.Group_ID = g.ID
 WHERE c.UserID = 24110118;
+GO
+
+-- =============================================
+-- 6. STORED PROCEDURE: usp_SeedDefaultGroups
+--    Tự động tạo 3 nhóm mặc định cho bất kỳ
+--    user nào trong bảng login chưa có nhóm nào.
+--    Idempotent – gọi lại nhiều lần không bị lỗi.
+-- =============================================
+CREATE OR ALTER PROCEDURE [dbo].[usp_SeedDefaultGroups]
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO [dbo].[Groups] ([Name], [UserID])
+    SELECT nhom.[Name], l.[Id]
+    FROM [dbo].[login] l
+    CROSS JOIN (
+        VALUES (N'Đồng nghiệp'), (N'Sinh viên'), (N'Cá nhân')
+    ) AS nhom([Name])
+    WHERE NOT EXISTS (
+        SELECT 1 FROM [dbo].[Groups] g
+        WHERE g.[UserID] = l.[Id]
+    );
+
+    PRINT N'Đã seed nhóm mặc định cho các user chưa có nhóm.';
+END
+GO
+
+-- Chạy ngay để seed cho tất cả user hiện tại (ví dụ: Admin, các học viên khác)
+EXEC [dbo].[usp_SeedDefaultGroups];
+GO
