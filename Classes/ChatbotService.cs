@@ -64,8 +64,6 @@ namespace ProjectMonHoc.Classes
             }
 
             // Nếu không tìm thấy, gán giá trị mặc định (phòng hờ)
-            if (string.IsNullOrEmpty(apiKey))
-                apiKey = "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";
             if (string.IsNullOrEmpty(modelName))
                 modelName = "llama-3.3-70b-versatile";
 
