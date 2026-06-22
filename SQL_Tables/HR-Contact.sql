@@ -222,3 +222,186 @@ SELECT c.Fname + N' ' + c.Lname AS HoTen, c.Phone, g.Name AS Nhom
 FROM [dbo].[Contact] c
 JOIN [dbo].[Groups] g ON c.Group_ID = g.ID
 WHERE c.UserID = 24110118;
+
+-- =============================================
+-- Thêm nhóm cho tài khoản lehuyphat_hr (UserID = 123)
+-- =============================================
+INSERT INTO [dbo].[Groups] ([Name], [UserID])
+VALUES
+    (N'Đồng nghiệp', 123),
+    (N'Sinh viên',   123),
+    (N'Cá nhân',     123);
+GO
+
+-- Lấy ID các nhóm vừa tạo
+DECLARE @g1 INT, @g2 INT, @g3 INT;
+
+SELECT @g1 = MIN(ID)
+FROM [dbo].[Groups]
+WHERE UserID = 123 AND Name = N'Đồng nghiệp';
+
+SELECT @g2 = MIN(ID)
+FROM [dbo].[Groups]
+WHERE UserID = 123 AND Name = N'Sinh viên';
+
+SELECT @g3 = MIN(ID)
+FROM [dbo].[Groups]
+WHERE UserID = 123 AND Name = N'Cá nhân';
+
+-- =============================================
+-- Thêm danh bạ mẫu cho lehuyphat_hr
+-- =============================================
+INSERT INTO [dbo].[Contact]
+(
+    [Fname],[Lname],[Dob],[Gender],
+    [Group_ID],[Phone],[Address],[Email],[Pic],[UserID]
+)
+VALUES
+    -- Đồng nghiệp
+    (N'Nguyễn Văn', N'An',
+     '1982-01-10', N'Nam',
+     @g1, '0911223344',
+     N'Quận 1, TP.HCM',
+     'an.nv@school.edu.vn',
+     NULL, 123),
+
+    (N'Trần Thị', N'Bích',
+     '1985-03-22', N'Nữ',
+     @g1, '0912345678',
+     N'Quận 3, TP.HCM',
+     'bich.tt@school.edu.vn',
+     NULL, 123),
+
+    -- Sinh viên
+    (N'Lê Thị', N'Mai',
+     '2003-09-01', N'Nữ',
+     @g2, '0356789012',
+     N'Bình Thạnh, TP.HCM',
+     'mai.lt@student.edu.vn',
+     NULL, 123),
+
+    (N'Phạm Văn', N'Hùng',
+     '2003-11-20', N'Nam',
+     @g2, '0378901234',
+     N'Gò Vấp, TP.HCM',
+     'hung.pv@student.edu.vn',
+     NULL, 123),
+
+    (N'Nguyễn Thị', N'Lan',
+     '2004-05-15', N'Nữ',
+     @g2, '0390123456',
+     N'Thủ Đức, TP.HCM',
+     'lan.nt@student.edu.vn',
+     NULL, 123),
+
+    -- Cá nhân
+    (N'Võ Thanh', N'Tùng',
+     '1992-08-28', N'Nam',
+     @g3, '0988001122',
+     N'Bình Chánh, TP.HCM',
+     'tung.vt@gmail.com',
+     NULL, 123),
+
+    (N'Nguyễn Minh', N'Khang',
+     '1995-12-05', N'Nam',
+     @g3, '0966554433',
+     N'Tân Bình, TP.HCM',
+     'khang.nm@gmail.com',
+     NULL, 123);
+GO
+
+-- Kiểm tra kết quả
+SELECT
+    c.Fname + N' ' + c.Lname AS HoTen,
+    c.Phone,
+    c.Email,
+    g.Name AS TenNhom
+FROM [dbo].[Contact] c
+JOIN [dbo].[Groups] g ON c.Group_ID = g.ID
+WHERE c.UserID = 123
+ORDER BY g.ID;
+
+-- =============================================
+-- Thêm nhóm cho Admin (UserID = 1)
+-- =============================================
+INSERT INTO [dbo].[Groups] ([Name], [UserID])
+VALUES
+    (N'Đồng nghiệp', 1),
+    (N'Sinh viên',   1),
+    (N'Cá nhân',     1);
+GO
+
+DECLARE @a1 INT, @a2 INT, @a3 INT;
+SELECT @a1 = MIN(ID) FROM [dbo].[Groups] WHERE UserID = 1 AND Name = N'Đồng nghiệp';
+SELECT @a2 = MIN(ID) FROM [dbo].[Groups] WHERE UserID = 1 AND Name = N'Sinh viên';
+SELECT @a3 = MIN(ID) FROM [dbo].[Groups] WHERE UserID = 1 AND Name = N'Cá nhân';
+
+INSERT INTO [dbo].[Contact] ([Fname],[Lname],[Dob],[Gender],[Group_ID],[Phone],[Address],[Email],[Pic],[UserID])
+VALUES
+    -- Đồng nghiệp
+    (N'Nguyễn Văn', N'An',     '1982-01-10', N'Nam', @a1, '0911223344', N'Quận 1, TP.HCM',      'an.nv@school.edu.vn',       NULL, 1),
+    (N'Trần Thị',   N'Bích',   '1985-03-22', N'Nữ',  @a1, '0912345678', N'Quận 3, TP.HCM',      'bich.tt@school.edu.vn',     NULL, 1),
+    (N'Phạm Minh',  N'Đức',    '1980-07-15', N'Nam', @a1, '0987654321', N'Quận 3, TP.HCM',      'duc.pm@school.edu.vn',      NULL, 1),
+    (N'Lê Hoàng',   N'Cường',  '1979-12-25', N'Nam', @a1, '0933445566', N'Quận 5, TP.HCM',      'cuong.lh@school.edu.vn',    NULL, 1),
+    (N'Võ Thị',     N'Hồng',   '1988-09-03', N'Nữ',  @a1, '0944556677', N'Quận 12, TP.HCM',     'hong.vt@school.edu.vn',     NULL, 1),
+    -- Sinh viên
+    (N'Nguyễn Thị', N'Mai',    '2003-09-01', N'Nữ',  @a2, '0356789012', N'Bình Thạnh, TP.HCM',  'mai.nt@student.edu.vn',     NULL, 1),
+    (N'Trần Văn',   N'Hùng',   '2003-11-20', N'Nam', @a2, '0378901234', N'Gò Vấp, TP.HCM',      'hung.tv@student.edu.vn',    NULL, 1),
+    (N'Lê Thị',     N'Lan',    '2004-02-14', N'Nữ',  @a2, '0390123456', N'Phú Nhuận, TP.HCM',   'lan.lt@student.edu.vn',     NULL, 1),
+    (N'Phạm Thị',   N'Ngọc',   '2004-04-18', N'Nữ',  @a2, '0344556677', N'Bình Tân, TP.HCM',    'ngoc.pt@student.edu.vn',    NULL, 1),
+    (N'Hoàng Văn',  N'Tú',     '2003-08-30', N'Nam', @a2, '0366778899', N'Tân Phú, TP.HCM',     'tu.hv@student.edu.vn',      NULL, 1),
+    -- Cá nhân
+    (N'Nguyễn Văn', N'Bình',   '1978-06-05', N'Nam', @a3, '0901122334', N'Tân Bình, TP.HCM',    'binh.nv@gmail.com',         NULL, 1),
+    (N'Trần Minh',  N'Châu',   '1990-05-12', N'Nữ',  @a3, '0977889900', N'Bình Chánh, TP.HCM',  'chau.tm@gmail.com',         NULL, 1),
+    (N'Lê Văn',     N'Phúc',   '1983-02-20', N'Nam', @a3, '0955667788', N'Nhà Bè, TP.HCM',      'phuc.lv@gmail.com',         NULL, 1);
+GO
+
+-- Kiểm tra
+SELECT c.Fname + N' ' + c.Lname AS HoTen, c.Phone, c.Email, g.Name AS TenNhom
+FROM [dbo].[Contact] c
+JOIN [dbo].[Groups] g ON c.Group_ID = g.ID
+WHERE c.UserID = 1
+ORDER BY g.ID;
+GO
+
+-- =============================================
+-- Thêm nhóm cho lengochai_student (UserID = 24110089)
+-- =============================================
+INSERT INTO [dbo].[Groups] ([Name], [UserID])
+VALUES
+    (N'Bạn bè',      24110089),
+    (N'Gia đình',    24110089),
+    (N'Giảng viên',  24110089);
+GO
+
+DECLARE @s1 INT, @s2 INT, @s3 INT;
+SELECT @s1 = MIN(ID) FROM [dbo].[Groups] WHERE UserID = 24110089 AND Name = N'Bạn bè';
+SELECT @s2 = MIN(ID) FROM [dbo].[Groups] WHERE UserID = 24110089 AND Name = N'Gia đình';
+SELECT @s3 = MIN(ID) FROM [dbo].[Groups] WHERE UserID = 24110089 AND Name = N'Giảng viên';
+
+INSERT INTO [dbo].[Contact] ([Fname],[Lname],[Dob],[Gender],[Group_ID],[Phone],[Address],[Email],[Pic],[UserID])
+VALUES
+    -- Bạn bè
+    (N'Trần Văn',    N'Hùng',   '2003-11-20', N'Nam', @s1, '0378901234', N'Gò Vấp, TP.HCM',      'hung.tv@student.edu.vn',    NULL, 24110089),
+    (N'Phạm Thị',    N'Ngọc',   '2004-04-18', N'Nữ',  @s1, '0344556677', N'Bình Tân, TP.HCM',    'ngoc.pt@student.edu.vn',    NULL, 24110089),
+    (N'Hoàng Văn',   N'Tú',     '2003-08-30', N'Nam', @s1, '0366778899', N'Tân Phú, TP.HCM',     'tu.hv@student.edu.vn',      NULL, 24110089),
+    (N'Bùi Thị',     N'Thảo',   '2004-01-25', N'Nữ',  @s1, '0355667788', N'Quận 9, TP.HCM',      'thao.bt@student.edu.vn',    NULL, 24110089),
+    (N'Đặng Văn',    N'Long',   '2003-06-11', N'Nam', @s1, '0388990011', N'Thủ Đức, TP.HCM',     'long.dv@student.edu.vn',    NULL, 24110089),
+    -- Gia đình
+    (N'Lê Văn',      N'Hải',    '1972-04-20', N'Nam', @s2, '0909112233', N'Quận 10, TP.HCM',     'hai.lv@gmail.com',          NULL, 24110089),
+    (N'Nguyễn Thị',  N'Phương', '1975-08-15', N'Nữ',  @s2, '0918223344', N'Quận 10, TP.HCM',     'phuong.nt@gmail.com',       NULL, 24110089),
+    (N'Lê Thị',      N'Hoa',    '2000-03-10', N'Nữ',  @s2, '0332445566', N'Quận 10, TP.HCM',     'hoa.lt@gmail.com',          NULL, 24110089),
+    -- Giảng viên
+    (N'Nguyễn Văn',  N'An',     '1982-01-10', N'Nam', @s3, '0911223344', N'Quận 1, TP.HCM',      'an.nv@school.edu.vn',       NULL, 24110089),
+    (N'Trần Thị',    N'Bích',   '1985-03-22', N'Nữ',  @s3, '0912345678', N'Quận 3, TP.HCM',      'bich.tt@school.edu.vn',     NULL, 24110089),
+    (N'Lê Hoàng',    N'Cường',  '1979-12-25', N'Nam', @s3, '0933445566', N'Quận 5, TP.HCM',      'cuong.lh@school.edu.vn',    NULL, 24110089),
+    (N'Võ Thị',      N'Hồng',   '1988-09-03', N'Nữ',  @s3, '0944556677', N'Quận 12, TP.HCM',     'hong.vt@school.edu.vn',     NULL, 24110089);
+GO
+
+-- Kiểm tra
+SELECT c.Fname + N' ' + c.Lname AS HoTen, c.Phone, c.Email, g.Name AS TenNhom
+FROM [dbo].[Contact] c
+JOIN [dbo].[Groups] g ON c.Group_ID = g.ID
+WHERE c.UserID = 24110089
+ORDER BY g.ID;
+GO

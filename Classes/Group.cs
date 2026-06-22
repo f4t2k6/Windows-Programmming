@@ -39,14 +39,16 @@ class Group
             OUTPUT INSERTED.ID
             VALUES (@name, @uid)";
 
-        SqlParameter[] prms =
+        try
         {
-            new SqlParameter("@name", SqlDbType.NVarChar, 100) { Value = name.Trim() },
-            new SqlParameter("@uid",  SqlDbType.Int)           { Value = userId }
-        };
-
-        object? result = db.ExecuteScalar(sql, prms);
-        return result != null ? Convert.ToInt32(result) : -1;
+            db.openConnection();
+            using SqlCommand cmd = new SqlCommand(sql, db.conn);
+            cmd.Parameters.Add("@name", SqlDbType.NVarChar, 100).Value = name.Trim();
+            cmd.Parameters.Add("@uid", SqlDbType.Int).Value = userId;
+            object? result = cmd.ExecuteScalar();
+            return result != null ? Convert.ToInt32(result) : -1;
+        }
+        finally { db.closeConnection(); }
     }
 
     // =============================================
@@ -205,14 +207,15 @@ class Group
               AND  [UserID] = @uid
               AND  [ID]    <> @excludeId";
 
-        SqlParameter[] prms =
+        try
         {
-            new SqlParameter("@name",      SqlDbType.NVarChar, 100) { Value = name.Trim() },
-            new SqlParameter("@uid",       SqlDbType.Int)           { Value = userId },
-            new SqlParameter("@excludeId", SqlDbType.Int)           { Value = excludeId }
-        };
-
-        object? result = db.ExecuteScalar(sql, prms);
-        return Convert.ToInt32(result) > 0;
+            db.openConnection();
+            using SqlCommand cmd = new SqlCommand(sql, db.conn);
+            cmd.Parameters.Add("@name", SqlDbType.NVarChar, 100).Value = name.Trim();
+            cmd.Parameters.Add("@uid", SqlDbType.Int).Value = userId;
+            cmd.Parameters.Add("@excludeId", SqlDbType.Int).Value = excludeId;
+            return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
+        }
+        finally { db.closeConnection(); }
     }
 }

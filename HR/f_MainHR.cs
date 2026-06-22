@@ -110,7 +110,7 @@ namespace ProjectMonHoc
 
         private void button_Assign_Click(object sender, EventArgs e)
         {
-            OpenChildForm(new f_Assign(), pnl_content_MainHR);
+            OpenChildForm(new f_Assign("HR", Globals.GlobalUserId.ToString()), pnl_content_MainHR);
         }
 
         private void button_Contact_Click(object sender, EventArgs e)

@@ -73,6 +73,9 @@ namespace YourApp
         /// </summary>
         private void LoadGroupComboBoxes()
         {
+            // Nếu user chưa có nhóm nào → tạo 3 nhóm mặc định tự động
+            EnsureDefaultGroups();
+
             // Temporarily detach to avoid spurious SelectedIndexChanged during binding
             cboGroup.SelectedIndexChanged -= cboGroup_SelectedIndexChanged;
 
@@ -93,6 +96,31 @@ namespace YourApp
             cboGroupEdit.DisplayMember = "Name";
             cboGroupEdit.ValueMember = "ID";
             cboGroupEdit.DataSource = dtEdit;
+            if (cboGroupEdit.Items.Count > 0)
+                cboGroupEdit.SelectedIndex = 0;
+        }
+
+        /// <summary>
+        /// Nếu user chưa có nhóm nào trong DB thì tự tạo
+        /// 3 nhóm mặc định: Đồng nghiệp / Bạn bè / Cá nhân.
+        /// </summary>
+        private void EnsureDefaultGroups()
+        {
+            try
+            {
+                DataTable existing = Group.GetGroupsByUser(_userId);
+                if (existing.Rows.Count > 0) return; // đã có → bỏ qua
+
+                // Chưa có nhóm → tạo 3 nhóm mặc định
+                var defaultGroups = new[] { "Đồng nghiệp", "Bạn bè", "Cá nhân" };
+                foreach (string name in defaultGroups)
+                    Group.AddGroup(name, _userId);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không thể tạo nhóm mặc định: " + ex.Message, "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         /// <summary>Nạp grid theo nhóm đang chọn.</summary>
@@ -198,8 +226,11 @@ namespace YourApp
         // =============================================
         private void dgvContacts_SelectionChanged(object sender, EventArgs e)
         {
-            if (dgvContacts.CurrentRow == null) return;
             if (_isAdding) return;
+            if (dgvContacts.CurrentRow == null) return;
+            if (!dgvContacts.Columns.Contains("ID")) return;
+            if (dgvContacts.CurrentRow.Cells["ID"].Value == null ||
+                dgvContacts.CurrentRow.Cells["ID"].Value == DBNull.Value) return;
 
             int id = Convert.ToInt32(dgvContacts.CurrentRow.Cells["ID"].Value);
             _selectedId = id;
@@ -291,7 +322,12 @@ namespace YourApp
                 SetDetailReadOnly(false);
                 btnAdd.Text = "✔ Lưu";
                 btnAdd.BackColor = System.Drawing.Color.FromArgb(34, 155, 85);
-                btnEdit.Enabled = false;
+
+                // Biến btnEdit thành nút Hủy
+                btnEdit.Text = "✖ Hủy";
+                btnEdit.BackColor = System.Drawing.Color.FromArgb(180, 60, 60);
+                btnEdit.Enabled = true;
+
                 btnDelete.Enabled = false;
                 txtFname.Focus();
             }
@@ -301,6 +337,11 @@ namespace YourApp
                 SaveNewContact();
             }
         }
+
+        /// <summary>
+        /// Khi đang Add, btnEdit được tái dụng làm nút Hủy.
+        /// Khi không Add, btnEdit hoạt động bình thường.
+        /// </summary>
 
         private void SaveNewContact()
         {
@@ -340,7 +381,14 @@ namespace YourApp
             _isAdding = false;
             btnAdd.Text = "Add";
             btnAdd.BackColor = System.Drawing.Color.FromArgb(30, 100, 200);
+
+            // Khôi phục btnEdit về trạng thái ban đầu
+            btnEdit.Text = "Edit";
+            btnEdit.BackColor = System.Drawing.Color.FromArgb(34, 155, 85);
+            btnEdit.Enabled = false;
+
             SetDetailReadOnly(true);
+            ClearDetail();
         }
 
         // =============================================
@@ -348,6 +396,13 @@ namespace YourApp
         // =============================================
         private void btnEdit_Click(object sender, EventArgs e)
         {
+            // Nếu đang Add → btnEdit đang đóng vai "Hủy"
+            if (_isAdding)
+            {
+                ExitAddMode();
+                return;
+            }
+
             if (_selectedId < 0) return;
 
             if (btnEdit.Text == "Edit")
@@ -463,10 +518,10 @@ namespace YourApp
         // =============================================
         private Contact ReadDetailForm()
         {
-            string fname  = txtFname.Text.Trim();
-            string lname  = txtLname.Text.Trim();
-            string phone  = txtPhone.Text.Trim();
-            string email  = txtEmail.Text.Trim();
+            string fname = txtFname.Text.Trim();
+            string lname = txtLname.Text.Trim();
+            string phone = txtPhone.Text.Trim();
+            string email = txtEmail.Text.Trim();
 
             // Validate email: phải kết thúc bằng @gmail.com
             if (!string.IsNullOrEmpty(email) && !email.EndsWith("@gmail.com", StringComparison.OrdinalIgnoreCase))
@@ -482,16 +537,16 @@ namespace YourApp
 
             return new Contact
             {
-                Fname    = fname,
-                Lname    = lname,
-                Dob      = dtpDob.Checked ? dtpDob.Value : null,
-                Gender   = cboGender.Text,
+                Fname = fname,
+                Lname = lname,
+                Dob = dtpDob.Checked ? dtpDob.Value : null,
+                Gender = cboGender.Text,
                 Group_ID = cboGroupEdit.SelectedValue != null
                            ? Convert.ToInt32(cboGroupEdit.SelectedValue) : 0,
-                Phone    = phone,
-                Email    = email,
-                Address  = txtAddress.Text.Trim(),
-                Pic      = picBytes
+                Phone = phone,
+                Email = email,
+                Address = txtAddress.Text.Trim(),
+                Pic = picBytes
             };
         }
 
