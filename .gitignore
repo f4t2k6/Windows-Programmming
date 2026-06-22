@@ -1,0 +1,37 @@
+# Visual Studio 
+.vs/
+[Bb]in/
+[Oo]bj/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# SQL Server
+*.mdf
+*.ldf
+*.sdf
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+x64/
+x86/
+[Aa]rm/
+[Aa]rm64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Others (Các file rác hệ thống bạn vừa gặp)
+*.tmp
+*.log
+*.dtbcache.v2
+*.futdcache.v2
+*.metadata.v9.bin
+*.projects.v9.bin
+*.strings.v9.bin
+.DS_Store
