@@ -17,6 +17,7 @@ namespace YourApp
         private int _userId;          // UserID từ phiên đăng nhập
         private int _selectedId = -1; // ID contact đang chọn trên grid
         private bool _isAdding = false; // đang ở chế độ Add mới
+        private byte[]? _currentPicBytes = null; // ảnh hiện tại đang hiển thị (từ DB)
 
         // =============================================
         // KHỞI TẠO
@@ -81,17 +82,17 @@ namespace YourApp
             allRow["Name"] = "— Tất cả nhóm —";
             dtGroups.Rows.InsertAt(allRow, 0);
 
-            cboGroup.DataSource = dtGroups;
             cboGroup.DisplayMember = "Name";
             cboGroup.ValueMember = "ID";
+            cboGroup.DataSource = dtGroups;
 
             cboGroup.SelectedIndexChanged += cboGroup_SelectedIndexChanged;  // re-attach after binding
 
             // cboGroupEdit (no event to worry about)
             DataTable dtEdit = Group.GetGroupsByUser(_userId);
-            cboGroupEdit.DataSource = dtEdit;
             cboGroupEdit.DisplayMember = "Name";
             cboGroupEdit.ValueMember = "ID";
+            cboGroupEdit.DataSource = dtEdit;
         }
 
         /// <summary>Nạp grid theo nhóm đang chọn.</summary>
@@ -235,10 +236,12 @@ namespace YourApp
                 }
             }
 
-            // Hiển thị ảnh
-            if (c.Pic != null && c.Pic.Length > 0)
+            // Hiển thị ảnh và lưu lại bytes để dùng khi Edit không chọn ảnh mới
+            _currentPicBytes = (c.Pic != null && c.Pic.Length > 0) ? c.Pic : null;
+            picAvatar.Tag = null; // reset tag (không có file ảnh mới nào được chọn)
+            if (_currentPicBytes != null)
             {
-                using var ms = new MemoryStream(c.Pic);
+                using var ms = new MemoryStream(_currentPicBytes);
                 picAvatar.Image = Image.FromStream(ms);
             }
             else
@@ -255,6 +258,8 @@ namespace YourApp
             cboGender.SelectedIndex = -1;
             cboGroupEdit.SelectedIndex = cboGroupEdit.Items.Count > 0 ? 0 : -1;
             picAvatar.Image = null;
+            picAvatar.Tag = null;      // xóa đường dẫn file ảnh cũ (nếu có)
+            _currentPicBytes = null;   // xóa ảnh cache từ DB
             _selectedId = -1;
             btnEdit.Enabled = false;
             btnDelete.Enabled = false;
@@ -467,9 +472,13 @@ namespace YourApp
             if (!string.IsNullOrEmpty(email) && !email.EndsWith("@gmail.com", StringComparison.OrdinalIgnoreCase))
                 throw new ArgumentException("Email phải có đuôi @gmail.com (ví dụ: ten@gmail.com).");
 
-            byte[]? picBytes = null;
+            byte[]? picBytes;
             if (picAvatar.Tag is string imgPath && File.Exists(imgPath))
+                // Người dùng vừa chọn ảnh mới từ file
                 picBytes = File.ReadAllBytes(imgPath);
+            else
+                // Không chọn ảnh mới → giữ ảnh cũ từ DB (hoặc null nếu Add mới)
+                picBytes = _currentPicBytes;
 
             return new Contact
             {
@@ -491,10 +500,10 @@ namespace YourApp
         // =============================================
         private int GetSelectedGroupId()
         {
-            object? val = cboGroup.SelectedValue;
-            if (val == null || val is DataRowView)
-                return -1;
-            return Convert.ToInt32(val);
+            if (cboGroup.SelectedItem is DataRowView drv)
+                return Convert.ToInt32(drv["ID"]);
+
+            return -1;
         }
     }
 
