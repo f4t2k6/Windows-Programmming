@@ -1,4 +1,4 @@
-namespace ProjectMonHoc
+﻿namespace ProjectMonHoc
 {
     partial class f_MainAdmin
     {
@@ -53,7 +53,6 @@ namespace ProjectMonHoc
             button_Classroom = new Button();
             btn_ManageCourse = new Button();
             button_Chart = new Button();
-            button_createTB = new Button();
             panel_Content = new Panel();
             pnl_Sidebar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox_Avatar).BeginInit();
@@ -95,7 +94,6 @@ namespace ProjectMonHoc
             pnl_Sidebar.Controls.Add(button_Classroom);
             pnl_Sidebar.Controls.Add(btn_ManageCourse);
             pnl_Sidebar.Controls.Add(button_Chart);
-            pnl_Sidebar.Controls.Add(button_createTB);
             pnl_Sidebar.Dock = DockStyle.Left;
             pnl_Sidebar.Location = new Point(0, 0);
             pnl_Sidebar.Name = "pnl_Sidebar";
@@ -410,22 +408,6 @@ namespace ProjectMonHoc
             button_Chart.UseVisualStyleBackColor = false;
             button_Chart.Click += button_Chart_Click_1;
             // 
-            // button_createTB
-            // 
-            button_createTB.BackColor = Color.SteelBlue;
-            button_createTB.FlatAppearance.BorderSize = 0;
-            button_createTB.FlatStyle = FlatStyle.Flat;
-            button_createTB.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button_createTB.ForeColor = Color.White;
-            button_createTB.Location = new Point(13, 752);
-            button_createTB.Name = "button_createTB";
-            button_createTB.Size = new Size(265, 50);
-            button_createTB.TabIndex = 42;
-            button_createTB.Text = "🗄️  Tạo bảng Database";
-            button_createTB.TextAlign = ContentAlignment.MiddleLeft;
-            button_createTB.UseVisualStyleBackColor = false;
-            button_createTB.Click += button_createTB_Click;
-            // 
             // panel_Content
             // 
             panel_Content.Location = new Point(300, 0);
@@ -483,7 +465,6 @@ namespace ProjectMonHoc
         private Button button_Classroom;
         private Button btn_ManageCourse;
         private Button button_Chart;
-        private Button button_createTB;
         private PictureBox pictureBox_Avatar;
         private Label label_Info;
         private Label label1;

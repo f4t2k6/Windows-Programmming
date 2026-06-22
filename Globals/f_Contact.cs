@@ -505,6 +505,16 @@ namespace YourApp
 
             return -1;
         }
+
+        private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void f_Contact_Load_1(object sender, EventArgs e)
+        {
+
+        }
     }
 
     // =============================================

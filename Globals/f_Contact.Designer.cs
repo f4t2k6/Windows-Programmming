@@ -1,4 +1,4 @@
-namespace YourApp
+﻿namespace YourApp
 {
     partial class f_Contact
     {
@@ -15,16 +15,16 @@ namespace YourApp
 
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             pnlHeader = new Panel();
             lblTitle = new Label();
             pnlLeft = new Panel();
-            btnFilter = new Button();
             lblGroupHint = new Label();
             lblSearchHint = new Label();
             cboGroup = new ComboBox();
             txtSearch = new TextBox();
             dgvContacts = new DataGridView();
+            btnFilter = new Button();
             pnlRight = new Panel();
             picAvatar = new PictureBox();
             lblAvatarHint = new Label();
@@ -94,21 +94,6 @@ namespace YourApp
             pnlLeft.Size = new Size(625, 558);
             pnlLeft.TabIndex = 1;
             // 
-            // btnFilter
-            // 
-            btnFilter.BackColor = Color.FromArgb(30, 100, 200);
-            btnFilter.Cursor = Cursors.Hand;
-            btnFilter.FlatAppearance.BorderSize = 0;
-            btnFilter.FlatStyle = FlatStyle.Flat;
-            btnFilter.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            btnFilter.ForeColor = Color.White;
-            btnFilter.Location = new Point(9, 14);
-            btnFilter.Name = "btnFilter";
-            btnFilter.Size = new Size(100, 36);
-            btnFilter.TabIndex = 4;
-            btnFilter.Text = "Lọc";
-            btnFilter.UseVisualStyleBackColor = false;
-            // 
             // lblGroupHint
             // 
             lblGroupHint.AutoSize = true;
@@ -148,6 +133,7 @@ namespace YourApp
             txtSearch.Name = "txtSearch";
             txtSearch.Size = new Size(302, 30);
             txtSearch.TabIndex = 3;
+            txtSearch.TextChanged += txtSearch_TextChanged;
             // 
             // dgvContacts
             // 
@@ -155,14 +141,14 @@ namespace YourApp
             dgvContacts.AllowUserToDeleteRows = false;
             dgvContacts.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvContacts.BackgroundColor = Color.White;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = Color.FromArgb(235, 242, 255);
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            dataGridViewCellStyle1.ForeColor = SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dgvContacts.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = Color.FromArgb(235, 242, 255);
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            dataGridViewCellStyle2.ForeColor = SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            dgvContacts.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dgvContacts.ColumnHeadersHeight = 36;
             dgvContacts.Font = new Font("Segoe UI", 10F);
             dgvContacts.GridColor = Color.FromArgb(220, 228, 240);
@@ -176,6 +162,21 @@ namespace YourApp
             dgvContacts.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvContacts.Size = new Size(622, 488);
             dgvContacts.TabIndex = 5;
+            // 
+            // btnFilter
+            // 
+            btnFilter.BackColor = Color.FromArgb(30, 100, 200);
+            btnFilter.Cursor = Cursors.Hand;
+            btnFilter.FlatAppearance.BorderSize = 0;
+            btnFilter.FlatStyle = FlatStyle.Flat;
+            btnFilter.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnFilter.ForeColor = Color.White;
+            btnFilter.Location = new Point(9, 14);
+            btnFilter.Name = "btnFilter";
+            btnFilter.Size = new Size(100, 36);
+            btnFilter.TabIndex = 4;
+            btnFilter.Text = "Lọc";
+            btnFilter.UseVisualStyleBackColor = false;
             // 
             // pnlRight
             // 
@@ -275,7 +276,6 @@ namespace YourApp
             // 
             txtFname.Font = new Font("Segoe UI", 9.5F);
             txtFname.Location = new Point(110, 2);
-            txtFname.MaxLength = 20;
             txtFname.Name = "txtFname";
             txtFname.Size = new Size(255, 29);
             txtFname.TabIndex = 1;
@@ -295,7 +295,6 @@ namespace YourApp
             // 
             txtLname.Font = new Font("Segoe UI", 9.5F);
             txtLname.Location = new Point(110, 36);
-            txtLname.MaxLength = 20;
             txtLname.Name = "txtLname";
             txtLname.Size = new Size(255, 29);
             txtLname.TabIndex = 3;
@@ -315,7 +314,6 @@ namespace YourApp
             // 
             txtPhone.Font = new Font("Segoe UI", 9.5F);
             txtPhone.Location = new Point(110, 70);
-            txtPhone.MaxLength = 10;
             txtPhone.Name = "txtPhone";
             txtPhone.Size = new Size(255, 29);
             txtPhone.TabIndex = 5;
@@ -335,7 +333,6 @@ namespace YourApp
             // 
             txtEmail.Font = new Font("Segoe UI", 9.5F);
             txtEmail.Location = new Point(110, 104);
-            txtEmail.MaxLength = 40;
             txtEmail.Name = "txtEmail";
             txtEmail.Size = new Size(255, 29);
             txtEmail.TabIndex = 7;
@@ -492,6 +489,7 @@ namespace YourApp
             Name = "f_Contact";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "f_Contact – Quản lý danh bạ";
+            Load += f_Contact_Load_1;
             pnlHeader.ResumeLayout(false);
             pnlHeader.PerformLayout();
             pnlLeft.ResumeLayout(false);
