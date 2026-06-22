@@ -1,4 +1,4 @@
-﻿namespace YourApp
+namespace YourApp
 {
     partial class f_Contact
     {
@@ -275,6 +275,7 @@
             // 
             txtFname.Font = new Font("Segoe UI", 9.5F);
             txtFname.Location = new Point(110, 2);
+            txtFname.MaxLength = 20;
             txtFname.Name = "txtFname";
             txtFname.Size = new Size(255, 29);
             txtFname.TabIndex = 1;
@@ -294,6 +295,7 @@
             // 
             txtLname.Font = new Font("Segoe UI", 9.5F);
             txtLname.Location = new Point(110, 36);
+            txtLname.MaxLength = 20;
             txtLname.Name = "txtLname";
             txtLname.Size = new Size(255, 29);
             txtLname.TabIndex = 3;
@@ -313,6 +315,7 @@
             // 
             txtPhone.Font = new Font("Segoe UI", 9.5F);
             txtPhone.Location = new Point(110, 70);
+            txtPhone.MaxLength = 10;
             txtPhone.Name = "txtPhone";
             txtPhone.Size = new Size(255, 29);
             txtPhone.TabIndex = 5;
@@ -332,6 +335,7 @@
             // 
             txtEmail.Font = new Font("Segoe UI", 9.5F);
             txtEmail.Location = new Point(110, 104);
+            txtEmail.MaxLength = 40;
             txtEmail.Name = "txtEmail";
             txtEmail.Size = new Size(255, 29);
             txtEmail.TabIndex = 7;

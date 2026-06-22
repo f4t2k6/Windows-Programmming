@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Windows.Forms;
 using YourApp;
+using ProjectMonHoc.Child_Forms;
 
 namespace ProjectMonHoc
 {
@@ -114,6 +115,11 @@ namespace ProjectMonHoc
         private void button_Contact_Click(object sender, EventArgs e)
         {
             OpenChildForm(new f_Contact(Globals.GlobalUserId), panel_Content);
+        }
+
+        private void button_createTB_Click(object sender, EventArgs e)
+        {
+            OpenChildForm(new f_createTB_DB(), panel_Content);
         }
     }
 }

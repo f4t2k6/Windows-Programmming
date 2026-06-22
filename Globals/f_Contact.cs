@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Data;
 using System.Drawing;
@@ -46,6 +46,11 @@ namespace YourApp
             btnEdit.Click += btnEdit_Click;
             btnDelete.Click += btnDelete_Click;
             btnPickImage.Click += btnPickImage_Click;
+
+            // Giới hạn kiểu ký tự nhập vào
+            txtFname.KeyPress += TxtName_KeyPress;
+            txtLname.KeyPress += TxtName_KeyPress;
+            txtPhone.KeyPress += TxtPhone_KeyPress;
         }
 
         // =============================================
@@ -161,6 +166,30 @@ namespace YourApp
         {
             if (e.KeyCode == Keys.Enter)
                 LoadGrid(txtSearch.Text.Trim());
+        }
+
+        // =============================================
+        // KIỂM SOÁT KÝ TỰ NHẬP
+        // =============================================
+
+        /// <summary>Chỉ cho phép nhập chữ cái (bao gồm có dấu) và khoảng trắng.</summary>
+        private void TxtName_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Cho phép control characters (Backspace, v.v.)
+            if (char.IsControl(e.KeyChar)) return;
+
+            // Cho phép chữ cái (Unicode letter) và khoảng trắng
+            if (!char.IsLetter(e.KeyChar) && e.KeyChar != ' ')
+                e.Handled = true;
+        }
+
+        /// <summary>Chỉ cho phép nhập chữ số.</summary>
+        private void TxtPhone_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (char.IsControl(e.KeyChar)) return;
+
+            if (!char.IsDigit(e.KeyChar))
+                e.Handled = true;
         }
 
         // =============================================
@@ -429,22 +458,31 @@ namespace YourApp
         // =============================================
         private Contact ReadDetailForm()
         {
+            string fname  = txtFname.Text.Trim();
+            string lname  = txtLname.Text.Trim();
+            string phone  = txtPhone.Text.Trim();
+            string email  = txtEmail.Text.Trim();
+
+            // Validate email: phải kết thúc bằng @gmail.com
+            if (!string.IsNullOrEmpty(email) && !email.EndsWith("@gmail.com", StringComparison.OrdinalIgnoreCase))
+                throw new ArgumentException("Email phải có đuôi @gmail.com (ví dụ: ten@gmail.com).");
+
             byte[]? picBytes = null;
             if (picAvatar.Tag is string imgPath && File.Exists(imgPath))
                 picBytes = File.ReadAllBytes(imgPath);
 
             return new Contact
             {
-                Fname = txtFname.Text.Trim(),
-                Lname = txtLname.Text.Trim(),
-                Dob = dtpDob.Checked ? dtpDob.Value : null,
-                Gender = cboGender.Text,
+                Fname    = fname,
+                Lname    = lname,
+                Dob      = dtpDob.Checked ? dtpDob.Value : null,
+                Gender   = cboGender.Text,
                 Group_ID = cboGroupEdit.SelectedValue != null
                            ? Convert.ToInt32(cboGroupEdit.SelectedValue) : 0,
-                Phone = txtPhone.Text.Trim(),
-                Email = txtEmail.Text.Trim(),
-                Address = txtAddress.Text.Trim(),
-                Pic = picBytes
+                Phone    = phone,
+                Email    = email,
+                Address  = txtAddress.Text.Trim(),
+                Pic      = picBytes
             };
         }
 
