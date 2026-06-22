@@ -1,4 +1,4 @@
-﻿namespace ProjectMonHoc
+namespace ProjectMonHoc
 {
     partial class f_ForgetPass
     {
@@ -29,6 +29,7 @@
             btn_Cancel_ForgetPass = new Button();
             lbl_Title = new Label();
             llbl_Register = new LinkLabel();
+            btn_AskAI = new Button();
             SuspendLayout();
             // 
             // lbl_Email_FPass
@@ -110,12 +111,29 @@
             llbl_Register.TextAlign = ContentAlignment.MiddleCenter;
             llbl_Register.LinkClicked += llbl_Register_LinkClicked;
             // 
+            // btn_AskAI
+            // 
+            btn_AskAI.BackColor = Color.FromArgb(41, 128, 185);
+            btn_AskAI.Cursor = Cursors.Hand;
+            btn_AskAI.FlatAppearance.BorderSize = 0;
+            btn_AskAI.FlatStyle = FlatStyle.Flat;
+            btn_AskAI.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
+            btn_AskAI.ForeColor = Color.White;
+            btn_AskAI.Location = new Point(44, 410);
+            btn_AskAI.Name = "btn_AskAI";
+            btn_AskAI.Size = new Size(409, 50);
+            btn_AskAI.TabIndex = 9;
+            btn_AskAI.Text = "💬 Hỏi Trợ Lý AI";
+            btn_AskAI.UseVisualStyleBackColor = false;
+            btn_AskAI.Click += btn_AskAI_Click;
+            // 
             // f_ForgetPass
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(500, 643);
+            Controls.Add(btn_AskAI);
             Controls.Add(llbl_Register);
             Controls.Add(lbl_Title);
             Controls.Add(btn_Cancel_ForgetPass);
@@ -138,5 +156,6 @@
         private Button btn_Cancel_ForgetPass;
         private Label lbl_Title;
         private LinkLabel llbl_Register;
+        private Button btn_AskAI;
     }
 }

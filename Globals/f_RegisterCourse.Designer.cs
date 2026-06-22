@@ -1,4 +1,4 @@
-﻿namespace ProjectMonHoc
+namespace ProjectMonHoc
 {
     partial class f_RegisterCourse
     {
@@ -26,6 +26,8 @@
             this.cboCourse = new System.Windows.Forms.ComboBox();
             this.btnRegister = new System.Windows.Forms.Button();
             this.btnNewDK = new System.Windows.Forms.Button();
+            this.lblCourseInfo = new System.Windows.Forms.Label();
+            this.btnAISuggest = new System.Windows.Forms.Button();
 
             this.lblRegistered = new System.Windows.Forms.Label();
             this.dgvRegistered = new System.Windows.Forms.DataGridView();
@@ -80,6 +82,8 @@
             this.grpFilter.Controls.Add(this.cboCourse);
             this.grpFilter.Controls.Add(this.btnRegister);
             this.grpFilter.Controls.Add(this.btnNewDK);
+            this.grpFilter.Controls.Add(this.lblCourseInfo);
+            this.grpFilter.Controls.Add(this.btnAISuggest);
             this.grpFilter.Location = new System.Drawing.Point(10, 10);
             this.grpFilter.Name = "grpFilter";
             this.grpFilter.Size = new System.Drawing.Size(730, 100);
@@ -135,6 +139,26 @@
             this.btnNewDK.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnNewDK.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.btnNewDK.Cursor = System.Windows.Forms.Cursors.Hand;
+
+            // lblCourseInfo
+            this.lblCourseInfo.AutoSize = true;
+            this.lblCourseInfo.Location = new System.Drawing.Point(325, 65);
+            this.lblCourseInfo.Name = "lblCourseInfo";
+            this.lblCourseInfo.Text = "Chọn môn học để xem thông tin";
+            this.lblCourseInfo.Font = new System.Drawing.Font("Segoe UI", 8.5f, System.Drawing.FontStyle.Italic);
+            this.lblCourseInfo.ForeColor = System.Drawing.Color.DimGray;
+
+            // btnAISuggest (màu tím)
+            this.btnAISuggest.Location = new System.Drawing.Point(585, 58);
+            this.btnAISuggest.Name = "btnAISuggest";
+            this.btnAISuggest.Size = new System.Drawing.Size(120, 32);
+            this.btnAISuggest.Text = "💡 Gợi ý AI";
+            this.btnAISuggest.Font = new System.Drawing.Font("Segoe UI", 9f, System.Drawing.FontStyle.Bold);
+            this.btnAISuggest.BackColor = System.Drawing.Color.FromArgb(142, 68, 173); // Tím Amethyst
+            this.btnAISuggest.ForeColor = System.Drawing.Color.White;
+            this.btnAISuggest.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAISuggest.FlatAppearance.BorderSize = 0;
+            this.btnAISuggest.Cursor = System.Windows.Forms.Cursors.Hand;
 
             // lblRegistered
             this.lblRegistered.AutoSize = true;
@@ -293,6 +317,8 @@
         private System.Windows.Forms.ComboBox cboCourse;
         private System.Windows.Forms.Button btnRegister;
         private System.Windows.Forms.Button btnNewDK;
+        private System.Windows.Forms.Label lblCourseInfo;
+        private System.Windows.Forms.Button btnAISuggest;
         private System.Windows.Forms.Label lblRegistered;
         private System.Windows.Forms.DataGridView dgvRegistered;
 

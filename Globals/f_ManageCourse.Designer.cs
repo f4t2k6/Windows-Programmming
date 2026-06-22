@@ -38,6 +38,10 @@ namespace ProjectMonHoc
             cboAddHk = new ComboBox();
             lblAddMota = new Label();
             txtAddMota = new TextBox();
+            lblAddLichHoc = new Label();
+            txtAddLichHoc = new TextBox();
+            btnAIGenDesc = new Button();
+            btnAISuggestCDIO = new Button();
             btnAdd = new Button();
             btnAddClear = new Button();
 
@@ -61,6 +65,8 @@ namespace ProjectMonHoc
             cboEditHk = new ComboBox();
             lblEditMota = new Label();
             txtEditMota = new TextBox();
+            lblEditLichHoc = new Label();
+            txtEditLichHoc = new TextBox();
             btnEdit = new Button();
             btnEditClear = new Button();
 
@@ -100,7 +106,7 @@ namespace ProjectMonHoc
             tabControl.Location = new Point(10, 10);
             tabControl.Name = "tabControl";
             tabControl.SelectedIndex = 0;
-            tabControl.Size = new Size(960, 660);
+            tabControl.Size = new Size(960, 680);
             tabControl.TabIndex = 0;
 
             // ════════════════════════════════════════════════════════
@@ -124,12 +130,16 @@ namespace ProjectMonHoc
             tabAdd.Controls.Add(cboAddHk);
             tabAdd.Controls.Add(lblAddMota);
             tabAdd.Controls.Add(txtAddMota);
+            tabAdd.Controls.Add(lblAddLichHoc);
+            tabAdd.Controls.Add(txtAddLichHoc);
+            tabAdd.Controls.Add(btnAIGenDesc);
+            tabAdd.Controls.Add(btnAISuggestCDIO);
             tabAdd.Controls.Add(btnAdd);
             tabAdd.Controls.Add(btnAddClear);
             tabAdd.Location = new Point(4, 30);
             tabAdd.Name = "tabAdd";
             tabAdd.Padding = new Padding(10);
-            tabAdd.Size = new Size(952, 626);
+            tabAdd.Size = new Size(952, 646);
             tabAdd.TabIndex = 0;
             tabAdd.Text = "  ➕  Thêm môn học  ";
 
@@ -264,12 +274,48 @@ namespace ProjectMonHoc
             txtAddMota.Size = new Size(455, 60);
             txtAddMota.TabIndex = 17;
 
+            lblAddLichHoc.Location = new Point(30, 538);
+            lblAddLichHoc.Name = "lblAddLichHoc";
+            lblAddLichHoc.Size = new Size(145, 22);
+            lblAddLichHoc.TabIndex = 20;
+            lblAddLichHoc.Text = "Lịch học";
+            lblAddLichHoc.TextAlign = ContentAlignment.MiddleRight;
+
+            txtAddLichHoc.Location = new Point(180, 535);
+            txtAddLichHoc.Name = "txtAddLichHoc";
+            txtAddLichHoc.Size = new Size(455, 29);
+            txtAddLichHoc.TabIndex = 21;
+
+            btnAIGenDesc.BackColor = Color.FromArgb(138, 43, 226);
+            btnAIGenDesc.FlatAppearance.BorderSize = 0;
+            btnAIGenDesc.FlatStyle = FlatStyle.Flat;
+            btnAIGenDesc.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
+            btnAIGenDesc.ForeColor = Color.White;
+            btnAIGenDesc.Location = new Point(645, 465);
+            btnAIGenDesc.Name = "btnAIGenDesc";
+            btnAIGenDesc.Size = new Size(130, 29);
+            btnAIGenDesc.TabIndex = 22;
+            btnAIGenDesc.Text = "✨ Sinh Mô Tả";
+            btnAIGenDesc.UseVisualStyleBackColor = false;
+
+            btnAISuggestCDIO.BackColor = Color.FromArgb(138, 43, 226);
+            btnAISuggestCDIO.FlatAppearance.BorderSize = 0;
+            btnAISuggestCDIO.FlatStyle = FlatStyle.Flat;
+            btnAISuggestCDIO.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
+            btnAISuggestCDIO.ForeColor = Color.White;
+            btnAISuggestCDIO.Location = new Point(645, 425);
+            btnAISuggestCDIO.Name = "btnAISuggestCDIO";
+            btnAISuggestCDIO.Size = new Size(130, 29);
+            btnAISuggestCDIO.TabIndex = 23;
+            btnAISuggestCDIO.Text = "💡 Chuẩn CDIO";
+            btnAISuggestCDIO.UseVisualStyleBackColor = false;
+
             btnAdd.BackColor = Color.FromArgb(0, 120, 215);
             btnAdd.FlatAppearance.BorderSize = 0;
             btnAdd.FlatStyle = FlatStyle.Flat;
             btnAdd.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
             btnAdd.ForeColor = Color.White;
-            btnAdd.Location = new Point(180, 540);
+            btnAdd.Location = new Point(180, 580);
             btnAdd.Name = "btnAdd";
             btnAdd.Size = new Size(130, 32);
             btnAdd.TabIndex = 18;
@@ -279,7 +325,7 @@ namespace ProjectMonHoc
             btnAddClear.BackColor = Color.FromArgb(220, 220, 220);
             btnAddClear.FlatAppearance.BorderSize = 0;
             btnAddClear.FlatStyle = FlatStyle.Flat;
-            btnAddClear.Location = new Point(322, 540);
+            btnAddClear.Location = new Point(322, 580);
             btnAddClear.Name = "btnAddClear";
             btnAddClear.Size = new Size(110, 32);
             btnAddClear.TabIndex = 19;
@@ -307,11 +353,13 @@ namespace ProjectMonHoc
             tabEdit.Controls.Add(cboEditHk);
             tabEdit.Controls.Add(lblEditMota);
             tabEdit.Controls.Add(txtEditMota);
+            tabEdit.Controls.Add(lblEditLichHoc);
+            tabEdit.Controls.Add(txtEditLichHoc);
             tabEdit.Controls.Add(btnEdit);
             tabEdit.Controls.Add(btnEditClear);
             tabEdit.Location = new Point(4, 30);
             tabEdit.Name = "tabEdit";
-            tabEdit.Size = new Size(952, 626);
+            tabEdit.Size = new Size(952, 646);
             tabEdit.TabIndex = 1;
             tabEdit.Text = "  ✏️  Sửa môn học  ";
 
@@ -446,12 +494,24 @@ namespace ProjectMonHoc
             txtEditMota.Size = new Size(455, 60);
             txtEditMota.TabIndex = 17;
 
+            lblEditLichHoc.Location = new Point(30, 538);
+            lblEditLichHoc.Name = "lblEditLichHoc";
+            lblEditLichHoc.Size = new Size(145, 22);
+            lblEditLichHoc.TabIndex = 20;
+            lblEditLichHoc.Text = "Lịch học";
+            lblEditLichHoc.TextAlign = ContentAlignment.MiddleRight;
+
+            txtEditLichHoc.Location = new Point(180, 535);
+            txtEditLichHoc.Name = "txtEditLichHoc";
+            txtEditLichHoc.Size = new Size(455, 29);
+            txtEditLichHoc.TabIndex = 21;
+
             btnEdit.BackColor = Color.FromArgb(0, 120, 215);
             btnEdit.FlatAppearance.BorderSize = 0;
             btnEdit.FlatStyle = FlatStyle.Flat;
             btnEdit.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
             btnEdit.ForeColor = Color.White;
-            btnEdit.Location = new Point(180, 540);
+            btnEdit.Location = new Point(180, 580);
             btnEdit.Name = "btnEdit";
             btnEdit.Size = new Size(130, 32);
             btnEdit.TabIndex = 18;
@@ -461,7 +521,7 @@ namespace ProjectMonHoc
             btnEditClear.BackColor = Color.FromArgb(220, 220, 220);
             btnEditClear.FlatAppearance.BorderSize = 0;
             btnEditClear.FlatStyle = FlatStyle.Flat;
-            btnEditClear.Location = new Point(322, 540);
+            btnEditClear.Location = new Point(322, 580);
             btnEditClear.Name = "btnEditClear";
             btnEditClear.Size = new Size(110, 32);
             btnEditClear.TabIndex = 19;
@@ -482,7 +542,7 @@ namespace ProjectMonHoc
             tabDel.Controls.Add(btnDel);
             tabDel.Location = new Point(4, 30);
             tabDel.Name = "tabDel";
-            tabDel.Size = new Size(952, 626);
+            tabDel.Size = new Size(952, 646);
             tabDel.TabIndex = 2;
             tabDel.Text = "  🗑️  Xóa môn học  ";
 
@@ -566,7 +626,7 @@ namespace ProjectMonHoc
             // ════════════════════════════════════════════════════════
             AutoScaleDimensions = new SizeF(9F, 21F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(980, 680);
+            ClientSize = new Size(980, 700);
             Controls.Add(tabControl);
             Font = new Font("Segoe UI", 9.5F);
             Name = "f_ManageCourse";
@@ -615,6 +675,10 @@ namespace ProjectMonHoc
         private ComboBox cboAddHk;
         private Label lblAddMota;
         private TextBox txtAddMota;
+        private Label lblAddLichHoc;
+        private TextBox txtAddLichHoc;
+        private Button btnAIGenDesc;
+        private Button btnAISuggestCDIO;
         private Button btnAdd;
         private Button btnAddClear;
 
@@ -637,6 +701,8 @@ namespace ProjectMonHoc
         private ComboBox cboEditHk;
         private Label lblEditMota;
         private TextBox txtEditMota;
+        private Label lblEditLichHoc;
+        private TextBox txtEditLichHoc;
         private Button btnEdit;
         private Button btnEditClear;
 

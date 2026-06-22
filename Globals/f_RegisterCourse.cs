@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Windows.Forms;
 
@@ -14,11 +14,12 @@ namespace ProjectMonHoc
             StyleDataGridView(dgvRegistered);
             StyleDataGridView(dgvHuy);
 
-            // Wire events ở constructor — đảm bảo chạy trước khi form hiện
             this.Load += f_RegisterCourse_Load;
             cboStudent.SelectedIndexChanged += cboStudent_SelectedIndexChanged;
+            cboCourse.SelectedIndexChanged += cboCourse_SelectedIndexChanged;
             btnRegister.Click += btnRegister_Click;
             btnNewDK.Click += btnNewDK_Click;
+            btnAISuggest.Click += btnAISuggest_Click;
             btnLoadHuy.Click += btnLoadHuy_Click;
             btnUnregister.Click += btnUnregister_Click;
         }
@@ -79,6 +80,40 @@ namespace ProjectMonHoc
             LoadRegisteredCourses();
         }
 
+        private void cboCourse_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cboCourse.SelectedValue == null) return;
+            string mamh = cboCourse.SelectedValue.ToString();
+            
+            // Lấy thông tin từ DB (có thể query trực tiếp hoặc lấy từ DataSource hiện tại)
+            // Lấy trực tiếp từ DB để đảm bảo độ chính xác theo yêu cầu
+            try
+            {
+                MY_DB db = new MY_DB();
+                db.openConnection();
+                Microsoft.Data.SqlClient.SqlCommand cmd = new Microsoft.Data.SqlClient.SqlCommand("SELECT SoTC, Tuan FROM Course WHERE MaMH = @ma", db.conn);
+                cmd.Parameters.AddWithValue("@ma", mamh);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        int tc = reader.GetInt32(0);
+                        int tuan = reader.GetInt32(1);
+                        lblCourseInfo.Text = $"Thông tin: {tc} Tín chỉ | {tuan} Tuần";
+                    }
+                    else
+                    {
+                        lblCourseInfo.Text = "Không tìm thấy thông tin";
+                    }
+                }
+                db.closeConnection();
+            }
+            catch
+            {
+                lblCourseInfo.Text = "Lỗi tải thông tin";
+            }
+        }
+
         private void LoadRegisteredCourses()
         {
             if (cboStudent.SelectedValue == null) return;
@@ -89,7 +124,7 @@ namespace ProjectMonHoc
             SetStatus($"Sinh viên đã đăng ký {count} môn học.");
         }
 
-        private void btnRegister_Click(object sender, EventArgs e)
+        private async void btnRegister_Click(object sender, EventArgs e)
         {
             if (cboStudent.SelectedValue == null || cboCourse.SelectedValue == null)
             {
@@ -109,6 +144,7 @@ namespace ProjectMonHoc
 
             int soTC = Convert.ToInt32(rows[0]["SoTC"]);
             int hocky = Convert.ToInt32(rows[0]["Hky"]);
+            string lichHocMoi = rows[0]["LichHoc"]?.ToString();
 
             // ── Kiểm tra giới hạn 24 TC / học kỳ ──
             const int MAX_TC = 24;
@@ -124,6 +160,53 @@ namespace ProjectMonHoc
                     "Vượt giới hạn tín chỉ",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
+            }
+
+            // ── [AI] Kiểm tra trùng lịch ──
+            if (!string.IsNullOrWhiteSpace(lichHocMoi))
+            {
+                btnRegister.Text = "⏳ Đang kiểm tra...";
+                btnRegister.Enabled = false;
+
+                try
+                {
+                    var registeredDt = Registration.GetRegisteredCourses(mssv);
+                    var currentSchedules = new List<string>();
+                    
+                    // Cần lấy LichHoc của các môn đã đăng ký
+                    // Vì GetRegisteredCourses hiện tại chưa lấy LichHoc, ta có thể lấy từ dtCourse
+                    foreach (DataRow r in registeredDt.Rows)
+                    {
+                        string maDaDk = r["MaMH"].ToString();
+                        DataRow[] cr = dtCourse.Select($"MaMH = '{maDaDk}'");
+                        if (cr.Length > 0 && cr[0]["LichHoc"] != DBNull.Value && !string.IsNullOrWhiteSpace(cr[0]["LichHoc"].ToString()))
+                        {
+                            currentSchedules.Add(cr[0]["LichHoc"].ToString());
+                        }
+                    }
+
+                    var chatbot = new ProjectMonHoc.Classes.ChatbotService();
+                    string conflictWarn = await chatbot.CheckScheduleConflictAsync(lichHocMoi, currentSchedules);
+
+                    if (!string.IsNullOrEmpty(conflictWarn))
+                    {
+                        var confirm = MessageBox.Show(
+                            $"⚠️ AI Cảnh Báo Trùng Lịch!\n\n{conflictWarn}\n\nBạn có vẫn muốn tiếp tục đăng ký không?",
+                            "Cảnh báo trùng lịch", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                        
+                        if (confirm == DialogResult.No)
+                        {
+                            btnRegister.Text = "✚  Đăng ký";
+                            btnRegister.Enabled = true;
+                            return;
+                        }
+                    }
+                }
+                finally
+                {
+                    btnRegister.Text = "✚  Đăng ký";
+                    btnRegister.Enabled = true;
+                }
             }
 
             // ── Tiến hành đăng ký ──
@@ -149,8 +232,40 @@ namespace ProjectMonHoc
         {
             cboStudent.SelectedIndex = -1;
             cboCourse.SelectedIndex = -1;
+            lblCourseInfo.Text = "Chọn môn học để xem thông tin";
             dgvRegistered.DataSource = null;
             SetStatus("Đã làm mới.");
+        }
+
+        private async void btnAISuggest_Click(object sender, EventArgs e)
+        {
+            if (cboStudent.SelectedValue == null)
+            {
+                MessageBox.Show("Vui lòng chọn sinh viên để nhận gợi ý!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            int mssv = Convert.ToInt32(cboStudent.SelectedValue);
+            string tenSV = cboStudent.Text;
+            
+            btnAISuggest.Text = "⏳ Đang phân tích...";
+            btnAISuggest.Enabled = false;
+
+            try
+            {
+                var chatbot = new ProjectMonHoc.Classes.ChatbotService();
+                string suggestion = await chatbot.SuggestCourseAsync(mssv, tenSV);
+                MessageBox.Show(suggestion, "💡 AI Gợi Ý Môn Học", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không thể kết nối AI: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                btnAISuggest.Text = "💡 Gợi ý AI";
+                btnAISuggest.Enabled = true;
+            }
         }
 
         // ════════════════════════════════════════════════════════════════

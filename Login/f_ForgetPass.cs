@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -144,6 +144,12 @@ namespace ProjectMonHoc
         private void txb_Email_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void btn_AskAI_Click(object sender, EventArgs e)
+        {
+            f_Chatbot chatbotForm = new f_Chatbot();
+            chatbotForm.Show(this); // Hiển thị dưới dạng Tool Window đè lên form hiện tại nhưng không khóa nó
         }
     }
 }

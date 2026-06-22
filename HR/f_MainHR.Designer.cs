@@ -99,21 +99,22 @@
             // 
             pictureBox_Avatar.Cursor = Cursors.Hand;
             pictureBox_Avatar.Image = Properties.Resources.icons8_user_100;
-            pictureBox_Avatar.Location = new Point(13, 180);
+            pictureBox_Avatar.Location = new Point(4, 194);
             pictureBox_Avatar.Margin = new Padding(4);
             pictureBox_Avatar.Name = "pictureBox_Avatar";
             pictureBox_Avatar.Size = new Size(60, 60);
             pictureBox_Avatar.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox_Avatar.TabIndex = 34;
             pictureBox_Avatar.TabStop = false;
+            pictureBox_Avatar.Click += pictureBox_Avatar_Click;
             // 
             // label_Info
             // 
             label_Info.Font = new Font("Segoe UI", 10.2F, FontStyle.Italic, GraphicsUnit.Point, 0);
             label_Info.ForeColor = Color.White;
-            label_Info.Location = new Point(80, 180);
+            label_Info.Location = new Point(66, 168);
             label_Info.Name = "label_Info";
-            label_Info.Size = new Size(214, 60);
+            label_Info.Size = new Size(228, 138);
             label_Info.TabIndex = 33;
             label_Info.Text = "Nguyễn Huỳnh Minh Tuyết\r\n24110118";
             label_Info.TextAlign = ContentAlignment.MiddleLeft;
@@ -124,7 +125,7 @@
             label1.BackColor = Color.White;
             label1.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label1.ForeColor = Color.White;
-            label1.Location = new Point(0, 260);
+            label1.Location = new Point(0, 339);
             label1.Margin = new Padding(4, 0, 4, 0);
             label1.Name = "label1";
             label1.Size = new Size(300, 2);
@@ -161,7 +162,7 @@
             // 
             pictureBox_Quanlydanhba.Cursor = Cursors.Hand;
             pictureBox_Quanlydanhba.Image = Properties.Resources.icons8_call_94;
-            pictureBox_Quanlydanhba.Location = new Point(13, 626);
+            pictureBox_Quanlydanhba.Location = new Point(13, 727);
             pictureBox_Quanlydanhba.Margin = new Padding(4);
             pictureBox_Quanlydanhba.Name = "pictureBox_Quanlydanhba";
             pictureBox_Quanlydanhba.Size = new Size(50, 50);
@@ -185,7 +186,7 @@
             // 
             pictureBox_Danhsachsinhvien.Cursor = Cursors.Hand;
             pictureBox_Danhsachsinhvien.Image = Properties.Resources.icons8_what_i_do_94;
-            pictureBox_Danhsachsinhvien.Location = new Point(13, 278);
+            pictureBox_Danhsachsinhvien.Location = new Point(13, 379);
             pictureBox_Danhsachsinhvien.Margin = new Padding(4);
             pictureBox_Danhsachsinhvien.Name = "pictureBox_Danhsachsinhvien";
             pictureBox_Danhsachsinhvien.Size = new Size(50, 50);
@@ -200,7 +201,7 @@
             button_Contact.FlatStyle = FlatStyle.Flat;
             button_Contact.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button_Contact.ForeColor = SystemColors.Menu;
-            button_Contact.Location = new Point(70, 626);
+            button_Contact.Location = new Point(70, 727);
             button_Contact.Name = "button_Contact";
             button_Contact.Size = new Size(153, 50);
             button_Contact.TabIndex = 11;
@@ -213,7 +214,7 @@
             // 
             pictureBox_Phanconggiangday.Cursor = Cursors.Hand;
             pictureBox_Phanconggiangday.Image = Properties.Resources.icons8_contacts_94;
-            pictureBox_Phanconggiangday.Location = new Point(13, 568);
+            pictureBox_Phanconggiangday.Location = new Point(13, 669);
             pictureBox_Phanconggiangday.Margin = new Padding(4);
             pictureBox_Phanconggiangday.Name = "pictureBox_Phanconggiangday";
             pictureBox_Phanconggiangday.Size = new Size(50, 50);
@@ -225,7 +226,7 @@
             // 
             pictureBox_Diemsinhvien.Cursor = Cursors.Hand;
             pictureBox_Diemsinhvien.Image = Properties.Resources.icons8_score_94;
-            pictureBox_Diemsinhvien.Location = new Point(13, 336);
+            pictureBox_Diemsinhvien.Location = new Point(13, 437);
             pictureBox_Diemsinhvien.Margin = new Padding(4);
             pictureBox_Diemsinhvien.Name = "pictureBox_Diemsinhvien";
             pictureBox_Diemsinhvien.Size = new Size(50, 50);
@@ -240,7 +241,7 @@
             button_Assign.FlatStyle = FlatStyle.Flat;
             button_Assign.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button_Assign.ForeColor = SystemColors.Menu;
-            button_Assign.Location = new Point(70, 568);
+            button_Assign.Location = new Point(70, 669);
             button_Assign.Name = "button_Assign";
             button_Assign.Size = new Size(191, 50);
             button_Assign.TabIndex = 10;
@@ -253,7 +254,7 @@
             // 
             pictureBox_Quanlylophoc.Cursor = Cursors.Hand;
             pictureBox_Quanlylophoc.Image = Properties.Resources.icons8_edit_property_94;
-            pictureBox_Quanlylophoc.Location = new Point(13, 510);
+            pictureBox_Quanlylophoc.Location = new Point(13, 611);
             pictureBox_Quanlylophoc.Margin = new Padding(4);
             pictureBox_Quanlylophoc.Name = "pictureBox_Quanlylophoc";
             pictureBox_Quanlylophoc.Size = new Size(50, 50);
@@ -269,7 +270,7 @@
             btn_ListScore.FlatStyle = FlatStyle.Flat;
             btn_ListScore.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btn_ListScore.ForeColor = SystemColors.Window;
-            btn_ListScore.Location = new Point(70, 336);
+            btn_ListScore.Location = new Point(70, 437);
             btn_ListScore.Name = "btn_ListScore";
             btn_ListScore.Size = new Size(142, 50);
             btn_ListScore.TabIndex = 2;
@@ -285,7 +286,7 @@
             button_Classroom.FlatStyle = FlatStyle.Flat;
             button_Classroom.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button_Classroom.ForeColor = SystemColors.Menu;
-            button_Classroom.Location = new Point(70, 510);
+            button_Classroom.Location = new Point(70, 611);
             button_Classroom.Name = "button_Classroom";
             button_Classroom.Size = new Size(153, 50);
             button_Classroom.TabIndex = 9;
@@ -312,7 +313,7 @@
             btn_ListStudent.FlatStyle = FlatStyle.Flat;
             btn_ListStudent.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btn_ListStudent.ForeColor = SystemColors.Menu;
-            btn_ListStudent.Location = new Point(70, 278);
+            btn_ListStudent.Location = new Point(70, 379);
             btn_ListStudent.Name = "btn_ListStudent";
             btn_ListStudent.Size = new Size(175, 50);
             btn_ListStudent.TabIndex = 4;
@@ -328,7 +329,7 @@
             button_Chart.FlatStyle = FlatStyle.Flat;
             button_Chart.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button_Chart.ForeColor = SystemColors.Menu;
-            button_Chart.Location = new Point(70, 450);
+            button_Chart.Location = new Point(70, 551);
             button_Chart.Name = "button_Chart";
             button_Chart.Size = new Size(169, 50);
             button_Chart.TabIndex = 8;
@@ -341,7 +342,7 @@
             // 
             pictureBox_Thongkesinhvien.Cursor = Cursors.Hand;
             pictureBox_Thongkesinhvien.Image = Properties.Resources.icons8_bar_chart_94;
-            pictureBox_Thongkesinhvien.Location = new Point(13, 452);
+            pictureBox_Thongkesinhvien.Location = new Point(13, 553);
             pictureBox_Thongkesinhvien.Margin = new Padding(4);
             pictureBox_Thongkesinhvien.Name = "pictureBox_Thongkesinhvien";
             pictureBox_Thongkesinhvien.Size = new Size(50, 50);
@@ -356,7 +357,7 @@
             btn_ManageCourse.FlatStyle = FlatStyle.Flat;
             btn_ManageCourse.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btn_ManageCourse.ForeColor = SystemColors.Menu;
-            btn_ManageCourse.Location = new Point(70, 394);
+            btn_ManageCourse.Location = new Point(70, 495);
             btn_ManageCourse.Name = "btn_ManageCourse";
             btn_ManageCourse.Size = new Size(153, 50);
             btn_ManageCourse.TabIndex = 5;
@@ -369,7 +370,7 @@
             // 
             pictureBox_Quanlymonhoc.Cursor = Cursors.Hand;
             pictureBox_Quanlymonhoc.Image = Properties.Resources.icons8_folder_69;
-            pictureBox_Quanlymonhoc.Location = new Point(13, 394);
+            pictureBox_Quanlymonhoc.Location = new Point(13, 495);
             pictureBox_Quanlymonhoc.Margin = new Padding(4);
             pictureBox_Quanlymonhoc.Name = "pictureBox_Quanlymonhoc";
             pictureBox_Quanlymonhoc.Size = new Size(50, 50);

@@ -1,4 +1,4 @@
-﻿namespace ProjectMonHoc
+namespace ProjectMonHoc
 {
     partial class f_Register
     {
@@ -40,6 +40,7 @@
             ptb_ShowConfirmPass = new PictureBox();
             btn_Cancel_Register = new Button();
             btn_Register = new Button();
+            btn_ScanOCR = new Button();
             ((System.ComponentModel.ISupportInitialize)ptb_ShowPass).BeginInit();
             ((System.ComponentModel.ISupportInitialize)ptb_Picture).BeginInit();
             ((System.ComponentModel.ISupportInitialize)ptb_ShowConfirmPass).BeginInit();
@@ -209,6 +210,7 @@
             txb_Email.Name = "txb_Email";
             txb_Email.Size = new Size(452, 34);
             txb_Email.TabIndex = 16;
+            txb_Email.TextChanged += txb_Email_TextChanged;
             // 
             // lbl_Picture
             // 
@@ -336,6 +338,23 @@
             btn_Register.UseVisualStyleBackColor = false;
             btn_Register.Click += btn_Register_Click;
             // 
+            // btn_ScanOCR
+            // 
+            btn_ScanOCR.BackColor = Color.White;
+            btn_ScanOCR.Cursor = Cursors.Hand;
+            btn_ScanOCR.FlatAppearance.BorderColor = Color.SteelBlue;
+            btn_ScanOCR.FlatStyle = FlatStyle.Flat;
+            btn_ScanOCR.Font = new Font("Segoe UI", 8.5F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btn_ScanOCR.ForeColor = Color.SteelBlue;
+            btn_ScanOCR.Location = new Point(140, 82);
+            btn_ScanOCR.Margin = new Padding(2);
+            btn_ScanOCR.Name = "btn_ScanOCR";
+            btn_ScanOCR.Size = new Size(181, 28);
+            btn_ScanOCR.TabIndex = 22;
+            btn_ScanOCR.Text = "📷 Quét thẻ (Auto-fill)";
+            btn_ScanOCR.UseVisualStyleBackColor = false;
+            btn_ScanOCR.Click += btn_ScanOCR_Click;
+            // 
             // f_Register
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -363,6 +382,7 @@
             Controls.Add(lbl_Picture);
             Controls.Add(ptb_Picture);
             Controls.Add(btn_UploadPic);
+            Controls.Add(btn_ScanOCR);
             Controls.Add(btn_Register);
             Controls.Add(btn_Cancel_Register);
             FormBorderStyle = FormBorderStyle.None;
@@ -403,5 +423,6 @@
         private PictureBox ptb_ShowConfirmPass;
         private Button btn_Cancel_Register;
         private Button btn_Register;
+        private Button btn_ScanOCR;
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace ProjectMonHoc
+namespace ProjectMonHoc
 {
     partial class FormThongKe
     {
@@ -59,6 +59,8 @@
             panel_Total = new Panel();
             lb_Total = new Label();
             lblChartTitle = new Label();
+            pnlAIAlert = new Panel();
+            lblAIAlert = new Label();
             pnlHeader.SuspendLayout();
             pnlCards.SuspendLayout();
             cardSV.SuspendLayout();
@@ -76,6 +78,7 @@
             panel_Female.SuspendLayout();
             panel_Male.SuspendLayout();
             panel_Total.SuspendLayout();
+            pnlAIAlert.SuspendLayout();
             SuspendLayout();
             // 
             // pnlHeader
@@ -608,11 +611,36 @@
             lblChartTitle.Text = "PHÂN BỐ XẾP LOẠI";
             lblChartTitle.Click += lblChartTitle_Click;
             // 
+            // pnlAIAlert
+            // 
+            pnlAIAlert.BackColor = Color.FromArgb(255, 244, 229); // Nền cam nhạt (vàng nhạt)
+            pnlAIAlert.Controls.Add(lblAIAlert);
+            pnlAIAlert.Dock = DockStyle.Top;
+            pnlAIAlert.Location = new Point(0, 180);
+            pnlAIAlert.Name = "pnlAIAlert";
+            pnlAIAlert.Padding = new Padding(16, 5, 16, 5);
+            pnlAIAlert.Size = new Size(1027, 40);
+            pnlAIAlert.TabIndex = 2;
+            pnlAIAlert.Visible = false; // Mặc định ẩn, chờ AI load xong
+            // 
+            // lblAIAlert
+            // 
+            lblAIAlert.Dock = DockStyle.Fill;
+            lblAIAlert.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            lblAIAlert.ForeColor = Color.FromArgb(217, 119, 6); // Chữ màu cam đậm
+            lblAIAlert.Location = new Point(16, 5);
+            lblAIAlert.Name = "lblAIAlert";
+            lblAIAlert.Size = new Size(995, 30);
+            lblAIAlert.TabIndex = 0;
+            lblAIAlert.Text = "⏳ Đang phân tích dữ liệu...";
+            lblAIAlert.TextAlign = ContentAlignment.MiddleLeft;
+            // 
             // FormThongKe
             // 
             BackColor = Color.FromArgb(245, 247, 250);
             ClientSize = new Size(1027, 628);
             Controls.Add(pnlChartArea);
+            Controls.Add(pnlAIAlert);
             Controls.Add(pnlCards);
             Controls.Add(pnlHeader);
             Font = new Font("Segoe UI", 9.5F);
@@ -642,6 +670,7 @@
             panel_Female.ResumeLayout(false);
             panel_Male.ResumeLayout(false);
             panel_Total.ResumeLayout(false);
+            pnlAIAlert.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -703,5 +732,8 @@
         private System.Windows.Forms.Label lb_Other;
         private System.Windows.Forms.Panel pnlPieGioiTinh;
         private System.Windows.Forms.Panel pnlNamNhapHoc;
+        
+        private System.Windows.Forms.Panel pnlAIAlert;
+        private System.Windows.Forms.Label lblAIAlert;
     }
 }

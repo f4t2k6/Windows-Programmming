@@ -1,4 +1,4 @@
-﻿namespace ProjectMonHoc
+namespace ProjectMonHoc
 {
     partial class f_MainStudent
     {
@@ -27,6 +27,7 @@
             pictureBox_Thongtincanhan = new PictureBox();
             btn_PrintRequest = new Button();
             btn_RegisterCourse = new Button();
+            btn_AskAINavi = new Button();
             pb_main_student = new PictureBox();
             btn_Logout_Student = new Button();
             btn_ListScore = new Button();
@@ -56,6 +57,7 @@
             pnl_Side_Student.Controls.Add(pictureBox_Thongtincanhan);
             pnl_Side_Student.Controls.Add(btn_PrintRequest);
             pnl_Side_Student.Controls.Add(btn_RegisterCourse);
+            pnl_Side_Student.Controls.Add(btn_AskAINavi);
             pnl_Side_Student.Controls.Add(pb_main_student);
             pnl_Side_Student.Controls.Add(btn_Logout_Student);
             pnl_Side_Student.Controls.Add(btn_ListScore);
@@ -72,7 +74,7 @@
             label_Info.ForeColor = Color.White;
             label_Info.Location = new Point(80, 180);
             label_Info.Name = "label_Info";
-            label_Info.Size = new Size(214, 60);
+            label_Info.Size = new Size(214, 125);
             label_Info.TabIndex = 30;
             label_Info.Text = "Nguyễn Huỳnh Minh Tuyết\r\n24110118";
             label_Info.TextAlign = ContentAlignment.MiddleLeft;
@@ -94,11 +96,12 @@
             label1.BackColor = Color.White;
             label1.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label1.ForeColor = Color.White;
-            label1.Location = new Point(0, 260);
+            label1.Location = new Point(0, 327);
             label1.Margin = new Padding(4, 0, 4, 0);
             label1.Name = "label1";
             label1.Size = new Size(300, 2);
             label1.TabIndex = 28;
+            label1.Click += label1_Click;
             // 
             // pictureBox_Dangxuat
             // 
@@ -116,7 +119,7 @@
             // 
             pictureBox_Ingiayxacnhan.Cursor = Cursors.Hand;
             pictureBox_Ingiayxacnhan.Image = Properties.Resources.icons8_print_94;
-            pictureBox_Ingiayxacnhan.Location = new Point(13, 462);
+            pictureBox_Ingiayxacnhan.Location = new Point(13, 536);
             pictureBox_Ingiayxacnhan.Margin = new Padding(4);
             pictureBox_Ingiayxacnhan.Name = "pictureBox_Ingiayxacnhan";
             pictureBox_Ingiayxacnhan.Size = new Size(50, 50);
@@ -128,7 +131,7 @@
             // 
             pictureBox_Dangkimonhoc.Cursor = Cursors.Hand;
             pictureBox_Dangkimonhoc.Image = Properties.Resources.icons8_add_94;
-            pictureBox_Dangkimonhoc.Location = new Point(13, 404);
+            pictureBox_Dangkimonhoc.Location = new Point(13, 478);
             pictureBox_Dangkimonhoc.Margin = new Padding(4);
             pictureBox_Dangkimonhoc.Name = "pictureBox_Dangkimonhoc";
             pictureBox_Dangkimonhoc.Size = new Size(50, 50);
@@ -140,7 +143,7 @@
             // 
             pictureBox_Xemdiem.Cursor = Cursors.Hand;
             pictureBox_Xemdiem.Image = Properties.Resources.icons8_score_94;
-            pictureBox_Xemdiem.Location = new Point(13, 346);
+            pictureBox_Xemdiem.Location = new Point(13, 420);
             pictureBox_Xemdiem.Margin = new Padding(4);
             pictureBox_Xemdiem.Name = "pictureBox_Xemdiem";
             pictureBox_Xemdiem.Size = new Size(50, 50);
@@ -163,7 +166,7 @@
             // 
             pictureBox_Thongtincanhan.Cursor = Cursors.Hand;
             pictureBox_Thongtincanhan.Image = Properties.Resources.icons8_user_100;
-            pictureBox_Thongtincanhan.Location = new Point(13, 288);
+            pictureBox_Thongtincanhan.Location = new Point(13, 362);
             pictureBox_Thongtincanhan.Margin = new Padding(4);
             pictureBox_Thongtincanhan.Name = "pictureBox_Thongtincanhan";
             pictureBox_Thongtincanhan.Size = new Size(50, 50);
@@ -178,7 +181,7 @@
             btn_PrintRequest.FlatStyle = FlatStyle.Flat;
             btn_PrintRequest.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
             btn_PrintRequest.ForeColor = SystemColors.Window;
-            btn_PrintRequest.Location = new Point(70, 462);
+            btn_PrintRequest.Location = new Point(70, 536);
             btn_PrintRequest.Name = "btn_PrintRequest";
             btn_PrintRequest.Size = new Size(154, 50);
             btn_PrintRequest.TabIndex = 7;
@@ -194,7 +197,7 @@
             btn_RegisterCourse.FlatStyle = FlatStyle.Flat;
             btn_RegisterCourse.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
             btn_RegisterCourse.ForeColor = SystemColors.Window;
-            btn_RegisterCourse.Location = new Point(70, 404);
+            btn_RegisterCourse.Location = new Point(70, 478);
             btn_RegisterCourse.Name = "btn_RegisterCourse";
             btn_RegisterCourse.Size = new Size(162, 50);
             btn_RegisterCourse.TabIndex = 6;
@@ -202,6 +205,21 @@
             btn_RegisterCourse.TextAlign = ContentAlignment.MiddleLeft;
             btn_RegisterCourse.UseVisualStyleBackColor = false;
             btn_RegisterCourse.Click += btn_RegisterCourse_Click;
+            // 
+            // btn_AskAINavi
+            // 
+            btn_AskAINavi.BackColor = SystemColors.AppWorkspace;
+            btn_AskAINavi.FlatAppearance.BorderSize = 0;
+            btn_AskAINavi.FlatStyle = FlatStyle.Flat;
+            btn_AskAINavi.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
+            btn_AskAINavi.ForeColor = SystemColors.Window;
+            btn_AskAINavi.Location = new Point(0, 893);
+            btn_AskAINavi.Name = "btn_AskAINavi";
+            btn_AskAINavi.Size = new Size(300, 50);
+            btn_AskAINavi.TabIndex = 8;
+            btn_AskAINavi.Text = "💬 Trợ lý AI Điều hướng";
+            btn_AskAINavi.UseVisualStyleBackColor = false;
+            btn_AskAINavi.Click += btn_AskAINavi_Click;
             // 
             // pb_main_student
             // 
@@ -237,7 +255,7 @@
             btn_ListScore.FlatStyle = FlatStyle.Flat;
             btn_ListScore.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
             btn_ListScore.ForeColor = SystemColors.Window;
-            btn_ListScore.Location = new Point(70, 346);
+            btn_ListScore.Location = new Point(70, 420);
             btn_ListScore.Name = "btn_ListScore";
             btn_ListScore.Size = new Size(102, 50);
             btn_ListScore.TabIndex = 2;
@@ -253,7 +271,7 @@
             btn_Student_Info.FlatStyle = FlatStyle.Flat;
             btn_Student_Info.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
             btn_Student_Info.ForeColor = Color.White;
-            btn_Student_Info.Location = new Point(70, 288);
+            btn_Student_Info.Location = new Point(70, 362);
             btn_Student_Info.Name = "btn_Student_Info";
             btn_Student_Info.Size = new Size(165, 50);
             btn_Student_Info.TabIndex = 1;
@@ -313,5 +331,6 @@
         private Label label1;
         private PictureBox pictureBox_Avatar;
         private Label label_Info;
+        private Button btn_AskAINavi;
     }
 }

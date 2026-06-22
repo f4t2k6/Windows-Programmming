@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using System.IO;
 using System.Security.Cryptography;
@@ -90,7 +90,7 @@ namespace ProjectMonHoc
         // =========================================================
         // SỰ KIỆN NHẤN NÚT ĐĂNG KÝ
         // =========================================================
-        private void btn_Register_Click(object sender, EventArgs e)
+        private async void btn_Register_Click(object sender, EventArgs e)
         {
             if (!verif()) return;
 
@@ -109,6 +109,22 @@ namespace ProjectMonHoc
             if (existUser() == false) { MessageBox.Show("Tên tài khoản này đã tồn tại!"); return; }
             if (existEmail() == false) { MessageBox.Show("Email này đã được sử dụng!"); return; }
 
+            // Lấy email đã nhập
+            string emailToRegister = txb_Email.Text.Trim();
+
+            // Gọi AI kiểm tra email rác (Disposable Email)
+            Cursor.Current = Cursors.WaitCursor;
+            var aiValidator = new ProjectMonHoc.Classes.AIEmailValidator();
+            var aiResult = await aiValidator.CheckEmailAsync(emailToRegister);
+            Cursor.Current = Cursors.Default;
+
+            if (aiResult.IsDisposable)
+            {
+                MessageBox.Show($"Hệ thống từ chối Email này: {aiResult.Reason}\nVui lòng sử dụng địa chỉ email chính chủ và uy tín (Ví dụ: Gmail, Outlook).", 
+                                "Email Không Hợp Lệ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             // ✅ Lưu toàn bộ dữ liệu vào biến TRƯỚC khi mở OTP
             // (vì sau khi panel chuyển sang f_OTP, các TextBox không còn đọc được nữa)
             savedMSSV = txb_MSGV.Text.Trim();
@@ -119,17 +135,19 @@ namespace ProjectMonHoc
             savedEmail = txb_Email.Text.Trim();
             savedImage = ptb_Picture.Image;
 
-            f_OTP otp = new f_OTP();
-            otp.to = savedEmail;
+            // Khởi tạo form TOTPVerify ở chế độ Setup (truyền chuỗi rỗng vào secret)
+            f_TOTPVerify totp = new f_TOTPVerify(savedUsername, "");
 
-            // Trong btn_Register_Click, sửa lại FormClosed handler:
-            otp.FormClosed += (s, args) =>
+            totp.FormClosed += (s, args) =>
             {
                 if (_registrationDone) return;
 
-                if (otp.DialogResult == DialogResult.OK)
+                if (totp.DialogResult == DialogResult.OK)
                 {
-                    if (RegisterAccount())
+                    // Lấy secret đã verify thành công từ form
+                    string generatedSecret = totp.Base32Secret;
+
+                    if (RegisterAccount(generatedSecret))
                     {
                         _registrationDone = true;
 
@@ -165,13 +183,13 @@ namespace ProjectMonHoc
                 }
             };
 
-            loginForm.OpenChildForm(otp, loginForm.LoginPanel);
+            loginForm.OpenChildForm(totp, loginForm.LoginPanel);
         }
 
         // =========================================================
         // LỆNH LƯU TÀI KHOẢN VÀO CƠ SỞ DỮ LIỆU
         // =========================================================
-        private bool RegisterAccount()
+        private bool RegisterAccount(string secretKey)
         {
             MY_DB my_db = new MY_DB();
             try
@@ -180,8 +198,8 @@ namespace ProjectMonHoc
 
                 if (position == 2)
                 {
-                    string queryHR = "INSERT INTO register_HR (Id, Username, Password, Fname, Lname, Email, Picture, Status) " +
-                                     "VALUES (@id, @user, @pass, @fname, @lname, @email, @pic, 0)";
+                    string queryHR = "INSERT INTO register_HR (Id, Username, Password, Fname, Lname, Email, Picture, Status, TwoFactorSecret) " +
+                                     "VALUES (@id, @user, @pass, @fname, @lname, @email, @pic, 0, @secret)";
                     SqlCommand cmdHR = new SqlCommand(queryHR, my_db.conn);
                     cmdHR.Parameters.Add("@id", SqlDbType.Int).Value = Convert.ToInt32(savedMSSV);
                     cmdHR.Parameters.Add("@user", SqlDbType.VarChar).Value = savedUsername;
@@ -189,6 +207,7 @@ namespace ProjectMonHoc
                     cmdHR.Parameters.Add("@fname", SqlDbType.NVarChar).Value = savedFname;
                     cmdHR.Parameters.Add("@lname", SqlDbType.NVarChar).Value = savedLname;
                     cmdHR.Parameters.Add("@email", SqlDbType.VarChar).Value = savedEmail;
+                    cmdHR.Parameters.Add("@secret", SqlDbType.VarChar).Value = secretKey;
 
                     MemoryStream ms = new MemoryStream();
                     savedImage!.Save(ms, savedImage.RawFormat);
@@ -198,14 +217,15 @@ namespace ProjectMonHoc
                 }
                 else
                 {
-                    string queryLogin = "INSERT INTO login (Id, username, password, role, email) " +
-                                        "VALUES (@id, @user, @pass, @pos, @email)";
+                    string queryLogin = "INSERT INTO login (Id, username, password, role, email, TwoFactorSecret) " +
+                                        "VALUES (@id, @user, @pass, @pos, @email, @secret)";
                     SqlCommand cmdLogin = new SqlCommand(queryLogin, my_db.conn);
                     cmdLogin.Parameters.Add("@id", SqlDbType.Int).Value = Convert.ToInt32(savedMSSV);
                     cmdLogin.Parameters.Add("@user", SqlDbType.VarChar).Value = savedUsername;
                     cmdLogin.Parameters.Add("@pass", SqlDbType.VarChar).Value = ComputeSHA256(savedPassword);
                     cmdLogin.Parameters.Add("@pos", SqlDbType.VarChar).Value = "Student";
                     cmdLogin.Parameters.Add("@email", SqlDbType.VarChar).Value = savedEmail;
+                    cmdLogin.Parameters.Add("@secret", SqlDbType.VarChar).Value = secretKey;
 
                     string queryUpdatePic = "UPDATE Student SET Pture = @pic WHERE MSSV = @id";
                     SqlCommand cmdUpdatePic = new SqlCommand(queryUpdatePic, my_db.conn);
@@ -304,11 +324,11 @@ namespace ProjectMonHoc
                 return false;
             }
 
-            // 3. Kiểm tra định dạng Email chuẩn bằng Regex
-            string emailPattern = @"^[^@\s]+@gmail\.com$";
+            // 3. Kiểm tra định dạng Email chuẩn bằng Regex (Mở rộng cho AI check)
+            string emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
             if (!Regex.IsMatch(txb_Email.Text.Trim(), emailPattern))
             {
-                MessageBox.Show("Định dạng Email không đúng quy định! Vui lòng kiểm tra lại.", "Dữ liệu sai", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Định dạng Email không hợp lệ (Ví dụ đúng: abc@domain.com)! Vui lòng kiểm tra lại.", "Dữ liệu sai", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
 
@@ -385,6 +405,7 @@ namespace ProjectMonHoc
             UpdatePassMatchStatus();
         }
         private void textBox1_TextChanged(object sender, EventArgs e) { }
+        private void txb_Email_TextChanged(object sender, EventArgs e) { }
 
         // Cập nhật dấu tích xanh (khớp) hoặc dấu X đỏ (chưa khớp) kế bên ô Nhập lại mật khẩu
         private void UpdatePassMatchStatus()
@@ -482,6 +503,40 @@ namespace ProjectMonHoc
         private void btn_Cancel_Register_Click(object sender, EventArgs e)
         {
             onDone?.Invoke();
+        }
+
+        private async void btn_ScanOCR_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Image Files|*.jpg;*.jpeg;*.png";
+            ofd.Title = "Chọn ảnh Thẻ Sinh Viên / Nhân Viên";
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                btn_ScanOCR.Text = "Đang phân tích...";
+                btn_ScanOCR.Enabled = false;
+
+                var scanner = new ProjectMonHoc.Classes.AIOCRScanner();
+                var result = await scanner.ScanCardAsync(ofd.FileName);
+
+                if (result.Success)
+                {
+                    txb_MSGV.Text = result.MSSV;
+                    txb_Fname.Text = result.Fname;
+                    txb_Lname.Text = result.Lname;
+
+                    MessageBox.Show("Trích xuất thông tin bằng AI thành công!\nVui lòng kiểm tra lại để đảm bảo chính xác.", "Quét Thẻ (OCR)", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Quét ảnh thất bại hoặc không nhận diện được chữ. Vui lòng nhập thông tin thủ công.", "Lỗi OCR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+                btn_ScanOCR.Text = "📷 Quét thẻ (Auto-fill)";
+                btn_ScanOCR.Enabled = true;
+                Cursor.Current = Cursors.Default;
+            }
         }
     }
 }

@@ -14,6 +14,7 @@ namespace ProjectMonHoc
         {
             InitializeComponent();
             InitComboBoxes();
+            SetupAutoComplete();
             WireEvents();
             LoadAddGrid();
             LoadEditGrid();
@@ -23,6 +24,31 @@ namespace ProjectMonHoc
         // ════════════════════════════════════════════════════════════
         //  KHỞI TẠO
         // ════════════════════════════════════════════════════════════
+        private void SetupAutoComplete()
+        {
+            try
+            {
+                var dt = Course.GetCourse();
+                AutoCompleteStringCollection collection = new AutoCompleteStringCollection();
+                foreach (DataRow row in dt.Rows)
+                {
+                    if (row["TenMH"] != DBNull.Value)
+                    {
+                        collection.Add(row["TenMH"].ToString());
+                    }
+                }
+
+                txtAddTen.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                txtAddTen.AutoCompleteSource = AutoCompleteSource.CustomSource;
+                txtAddTen.AutoCompleteCustomSource = collection;
+
+                txtEditTen.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                txtEditTen.AutoCompleteSource = AutoCompleteSource.CustomSource;
+                txtEditTen.AutoCompleteCustomSource = collection;
+            }
+            catch { }
+        }
+
         private void InitComboBoxes()
         {
             string[] hkAll = { "Tất cả", "1", "2", "3" };
@@ -55,6 +81,8 @@ namespace ProjectMonHoc
             btnAddLoad.Click += (s, e) => LoadAddGrid();
             btnAdd.Click += btnAdd_Click;
             btnAddClear.Click += (s, e) => ClearAddForm();
+            btnAIGenDesc.Click += btnAIGenDesc_Click;
+            btnAISuggestCDIO.Click += btnAISuggestCDIO_Click;
 
             // Tab Sửa
             txtEditSearch.TextChanged += (s, e) => LoadEditGrid();
@@ -94,7 +122,8 @@ namespace ProjectMonHoc
                 sotc: (int)nudAddTc.Value,
                 tuan: (int)nudAddTuan.Value,
                 hocky: int.Parse(cboAddHk.SelectedItem.ToString()),
-                decription: txtAddMota.Text.Trim()
+                decription: txtAddMota.Text.Trim(),
+                lichHoc: txtAddLichHoc.Text.Trim()
             );
 
             if (c.AddCourse())
@@ -121,7 +150,68 @@ namespace ProjectMonHoc
             nudAddTuan.Value = 15;
             cboAddHk.SelectedIndex = 0;
             txtAddMota.Clear();
+            txtAddLichHoc.Clear();
             txtAddMa.Focus();
+        }
+
+        private async void btnAIGenDesc_Click(object sender, EventArgs e)
+        {
+            string tenMh = txtAddTen.Text.Trim();
+            if (string.IsNullOrEmpty(tenMh))
+            {
+                MessageBox.Show("Vui lòng nhập tên môn học trước khi sinh mô tả!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            btnAIGenDesc.Text = "⏳ Đang sinh...";
+            btnAIGenDesc.Enabled = false;
+            try
+            {
+                var chatbot = new ProjectMonHoc.Classes.ChatbotService();
+                int tc = (int)nudAddTc.Value;
+                string desc = await chatbot.GenerateCourseDescriptionAsync(tenMh, tc);
+                txtAddMota.Text = desc;
+            }
+            finally
+            {
+                btnAIGenDesc.Text = "✨ Sinh Mô Tả";
+                btnAIGenDesc.Enabled = true;
+            }
+        }
+
+        private async void btnAISuggestCDIO_Click(object sender, EventArgs e)
+        {
+            string tenMh = txtAddTen.Text.Trim();
+            if (string.IsNullOrEmpty(tenMh))
+            {
+                MessageBox.Show("Vui lòng nhập tên môn học trước khi đề xuất!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            btnAISuggestCDIO.Text = "⏳ Đang phân tích...";
+            btnAISuggestCDIO.Enabled = false;
+            try
+            {
+                var chatbot = new ProjectMonHoc.Classes.ChatbotService();
+                string jsonResult = await chatbot.SuggestCourseCreditsAndWeeksAsync(tenMh);
+                
+                using var doc = System.Text.Json.JsonDocument.Parse(jsonResult);
+                if (doc.RootElement.TryGetProperty("credits", out var creditsElem) && doc.RootElement.TryGetProperty("weeks", out var weeksElem))
+                {
+                    nudAddTc.Value = creditsElem.GetInt32();
+                    nudAddTuan.Value = weeksElem.GetInt32();
+                    MessageBox.Show($"AI đã đề xuất: {nudAddTc.Value} TC và {nudAddTuan.Value} Tuần.", "Đề xuất CDIO", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không thể phân tích dữ liệu từ AI: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                btnAISuggestCDIO.Text = "💡 Chuẩn CDIO";
+                btnAISuggestCDIO.Enabled = true;
+            }
         }
 
         // ════════════════════════════════════════════════════════════
@@ -158,6 +248,7 @@ namespace ProjectMonHoc
                                      ? Convert.ToInt32(row.Cells["Tuan"].Value) : 15;
                 cboEditHk.Text = row.Cells["Hky"].Value?.ToString();
                 txtEditMota.Text = row.Cells["Mota"].Value?.ToString();
+                txtEditLichHoc.Text = row.Cells["LichHoc"].Value?.ToString();
             }
             catch { }
         }
@@ -179,7 +270,8 @@ namespace ProjectMonHoc
                 sotc: (int)nudEditTc.Value,
                 tuan: (int)nudEditTuan.Value,
                 hocky: int.Parse(cboEditHk.SelectedItem.ToString()),
-                decription: txtEditMota.Text.Trim()
+                decription: txtEditMota.Text.Trim(),
+                lichHoc: txtEditLichHoc.Text.Trim()
             );
 
             if (c.EditCourse())
@@ -205,6 +297,7 @@ namespace ProjectMonHoc
             nudEditTuan.Value = 15;
             if (cboEditHk.Items.Count > 0) cboEditHk.SelectedIndex = 0;
             txtEditMota.Clear();
+            txtEditLichHoc.Clear();
 
             dgvEdit.SelectionChanged -= dgvEdit_SelectionChanged;
             dgvEdit.ClearSelection();
@@ -324,6 +417,7 @@ namespace ProjectMonHoc
             if (dgv.Columns.Contains("Tuan")) dgv.Columns["Tuan"].HeaderText = "Số tuần";
             if (dgv.Columns.Contains("Hky")) dgv.Columns["Hky"].HeaderText = "Học kỳ";
             if (dgv.Columns.Contains("Mota")) dgv.Columns["Mota"].HeaderText = "Mô tả";
+            if (dgv.Columns.Contains("LichHoc")) dgv.Columns["LichHoc"].HeaderText = "Lịch học";
         }
 
         private void dgvEdit_CellContentClick(object sender, DataGridViewCellEventArgs e) { }

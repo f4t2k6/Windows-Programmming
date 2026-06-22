@@ -1,4 +1,4 @@
-﻿namespace ProjectMonHoc
+namespace ProjectMonHoc
 {
     partial class f_AddStudent
     {
@@ -28,6 +28,8 @@
             btnChooseImage = new Button();
             btnAdd = new Button();
             btnClear = new Button();
+            btnVoiceInput = new Button();
+            lblVoiceStatus = new Label();
 
             pnl_header = new Panel();
             pnl_headerAccent = new Panel();
@@ -384,8 +386,33 @@
             btnClear.UseVisualStyleBackColor = false;
             btnClear.Click += btnClear_Click;
 
+            btnVoiceInput.BackColor = Color.FromArgb(46, 204, 113);
+            btnVoiceInput.Cursor = Cursors.Hand;
+            btnVoiceInput.FlatAppearance.BorderSize = 0;
+            btnVoiceInput.FlatStyle = FlatStyle.Flat;
+            btnVoiceInput.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
+            btnVoiceInput.ForeColor = Color.White;
+            btnVoiceInput.Location = new Point(20, 10);
+            btnVoiceInput.Name = "btnVoiceInput";
+            btnVoiceInput.Size = new Size(200, 40);
+            btnVoiceInput.TabIndex = 26;
+            btnVoiceInput.Text = "🎤 Nhập bằng giọng nói";
+            btnVoiceInput.UseVisualStyleBackColor = false;
+            btnVoiceInput.Click += btnVoiceInput_Click;
+
+            lblVoiceStatus.AutoSize = true;
+            lblVoiceStatus.Font = new Font("Segoe UI", 9.5F, FontStyle.Italic);
+            lblVoiceStatus.ForeColor = Color.FromArgb(127, 140, 141);
+            lblVoiceStatus.Location = new Point(230, 20);
+            lblVoiceStatus.Name = "lblVoiceStatus";
+            lblVoiceStatus.Size = new Size(130, 21);
+            lblVoiceStatus.TabIndex = 27;
+            lblVoiceStatus.Text = "Sẵn sàng nhận lệnh";
+
             pnl_footer.BackColor = Color.FromArgb(242, 246, 252);
             pnl_footer.Controls.Add(pnl_footerTop);
+            pnl_footer.Controls.Add(btnVoiceInput);
+            pnl_footer.Controls.Add(lblVoiceStatus);
             pnl_footer.Controls.Add(btnAdd);
             pnl_footer.Controls.Add(btnClear);
             pnl_footer.Dock = DockStyle.Bottom;
@@ -437,6 +464,8 @@
         private Button btnChooseImage;
         private Button btnAdd;
         private Button btnClear;
+        private Button btnVoiceInput;
+        private Label lblVoiceStatus;
 
         // Layout panels
         private Panel pnl_header;

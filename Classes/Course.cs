@@ -11,9 +11,10 @@ public class Course
     public int Tuan { get; set; }
     public int Hocky { get; set; }
     public string Decription { get; set; }
+    public string LichHoc { get; set; }
 
     // Constructor đầy đủ tham số
-    public Course(string mamh, string tenmh, int sotc, int tuan, int hocky, string decription)
+    public Course(string mamh, string tenmh, int sotc, int tuan, int hocky, string decription, string lichHoc = "")
     {
         Mamh = mamh;
         Tenmh = tenmh;
@@ -21,6 +22,7 @@ public class Course
         Tuan = tuan;
         Hocky = hocky;
         Decription = decription;
+        LichHoc = lichHoc;
     }
 
     // Constructor mặc định (dùng khi tạo đối tượng rỗng để gọi static method, v.v.)
@@ -34,7 +36,7 @@ public class Course
         try
         {
             db.openConnection();
-            string query = "INSERT INTO Course VALUES (@ma, @ten, @tc, @tuan, @hk, @mota)";
+            string query = "INSERT INTO Course (MaMH, TenMH, SoTC, Tuan, Hky, Mota, LichHoc) VALUES (@ma, @ten, @tc, @tuan, @hk, @mota, @lichhoc)";
             SqlCommand cmd = new SqlCommand(query, db.conn);
             cmd.Parameters.AddWithValue("@ma",   Mamh);
             cmd.Parameters.AddWithValue("@ten",  Tenmh);
@@ -42,6 +44,7 @@ public class Course
             cmd.Parameters.AddWithValue("@tuan", Tuan);
             cmd.Parameters.AddWithValue("@hk",   Hocky);
             cmd.Parameters.AddWithValue("@mota", (object)Decription ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@lichhoc", (object)LichHoc ?? DBNull.Value);
 
             return cmd.ExecuteNonQuery() > 0;
         }
@@ -58,7 +61,7 @@ public class Course
         {
             db.openConnection();
             string query = "UPDATE Course SET TenMH = @ten, SoTC = @tc, Tuan = @tuan, " +
-                           "Hky = @hk, Mota = @mota WHERE MaMH = @ma";
+                           "Hky = @hk, Mota = @mota, LichHoc = @lichhoc WHERE MaMH = @ma";
             SqlCommand cmd = new SqlCommand(query, db.conn);
             cmd.Parameters.AddWithValue("@ma",   Mamh);
             cmd.Parameters.AddWithValue("@ten",  Tenmh);
@@ -66,6 +69,7 @@ public class Course
             cmd.Parameters.AddWithValue("@tuan", Tuan);
             cmd.Parameters.AddWithValue("@hk",   Hocky);
             cmd.Parameters.AddWithValue("@mota", (object)Decription ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@lichhoc", (object)LichHoc ?? DBNull.Value);
 
             int rows = cmd.ExecuteNonQuery();
             return rows > 0;
@@ -115,7 +119,7 @@ public class Course
         try
         {
             db.openConnection();
-            string query = "SELECT MaMH, TenMH, SoTC, Tuan, Hky, Mota FROM Course WHERE 1=1";
+            string query = "SELECT MaMH, TenMH, SoTC, Tuan, Hky, Mota, LichHoc FROM Course WHERE 1=1";
 
             // Tìm kiếm theo mã hoặc tên môn học
             if (!string.IsNullOrEmpty(search))

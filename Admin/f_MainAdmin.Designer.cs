@@ -417,11 +417,11 @@ namespace ProjectMonHoc
             button_createTB.FlatStyle = FlatStyle.Flat;
             button_createTB.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             button_createTB.ForeColor = Color.White;
-            button_createTB.Location = new Point(13, 752);
+            button_createTB.Location = new Point(13, 750);
             button_createTB.Name = "button_createTB";
             button_createTB.Size = new Size(265, 50);
             button_createTB.TabIndex = 42;
-            button_createTB.Text = "🗄️  Tạo bảng Database";
+            button_createTB.Text = "🗄️      Tạo bảng Database";
             button_createTB.TextAlign = ContentAlignment.MiddleLeft;
             button_createTB.UseVisualStyleBackColor = false;
             button_createTB.Click += button_createTB_Click;

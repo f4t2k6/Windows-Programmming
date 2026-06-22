@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using ProjectMonHoc;
 using System;
 using System.Collections.Generic;
@@ -46,6 +46,99 @@ namespace ProjectMonHoc
             {
                 checkBox_Ghinhodangnhap.Checked = false;
             }
+
+            SetupFaceLoginButton();
+        }
+
+        private void SetupFaceLoginButton()
+        {
+            Button btnFaceLogin = new Button();
+            btnFaceLogin.BackColor = Color.SeaGreen;
+            btnFaceLogin.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            btnFaceLogin.ForeColor = Color.White;
+            btnFaceLogin.Text = "Face Login";
+            btnFaceLogin.FlatStyle = FlatStyle.Flat;
+            btnFaceLogin.FlatAppearance.BorderSize = 0;
+            
+            // Adjust original button and place this one next to it
+            button_Dangnhap.Size = new Size(220, 68);
+            btnFaceLogin.Location = new Point(253, 366);
+            btnFaceLogin.Size = new Size(220, 68);
+            
+            btnFaceLogin.Click += BtnFaceLogin_Click;
+            panel_Login.Controls.Add(btnFaceLogin);
+        }
+
+        private void BtnFaceLogin_Click(object? sender, EventArgs e)
+        {
+            var faceLoginForm = new ProjectMonHoc.Login.f_FaceLogin();
+            if (faceLoginForm.ShowDialog() == DialogResult.OK)
+            {
+                string username = faceLoginForm.LoggedInUsername;
+                // Query database to get role and auto login
+                PerformFaceLoginAction(username);
+            }
+        }
+
+        private void PerformFaceLoginAction(string username)
+        {
+            MY_DB my_db = new MY_DB();
+            try
+            {
+                my_db.openConnection();
+                string sql = "SELECT Id, role, email FROM login WHERE username = @user";
+                SqlCommand command = new SqlCommand(sql, my_db.conn);
+                command.Parameters.Add("@user", System.Data.SqlDbType.VarChar).Value = username;
+                
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        int userId = Convert.ToInt32(reader["Id"]);
+                        string roleStr = reader["role"].ToString() ?? "";
+                        string email = reader["email"].ToString() ?? "";
+                        
+                        reader.Close(); // Close before executing another query in FetchFullName
+                        string fullName = FetchFullName(my_db, userId, roleStr);
+                        
+                        Globals.SetSession(userId, username, roleStr, email, fullName);
+                        
+                        if (roleStr == "Student")
+                        {
+                            this.Hide();
+                            f_MainStudent formStudent = new f_MainStudent();
+                            formStudent.ShowDialog();
+                            this.Close();
+                        }
+                        else if (roleStr == "HR")
+                        {
+                            this.Hide();
+                            f_MainHR formHR = new f_MainHR();
+                            formHR.ShowDialog();
+                            this.Close();
+                        }
+                        else if (roleStr == "Admin")
+                        {
+                            this.Hide();
+                            f_MainAdmin formAdmin = new f_MainAdmin();
+                            formAdmin.ShowDialog();
+                            this.Close();
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Không tìm thấy thông tin tài khoản!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi CSDL khi Face Login: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                my_db.closeConnection();
+            }
         }
 
         private void picturebox_Background_Click(object sender, EventArgs e)
@@ -90,7 +183,7 @@ namespace ProjectMonHoc
                 my_db.openConnection();
 
                 // Bước 1: Lấy thông tin tài khoản và kiểm tra xem có bị khóa không
-                string selectQuery = "SELECT Id, username, password, role, email, ISNULL(LoginAttempts, 0) AS LoginAttempts " +
+                string selectQuery = "SELECT Id, username, password, role, email, ISNULL(LoginAttempts, 0) AS LoginAttempts, TwoFactorSecret " +
                                      "FROM login WHERE username COLLATE SQL_Latin1_General_CP1_CS_AS = @User AND role = @Role";
 
                 SqlCommand command = new SqlCommand(selectQuery, my_db.conn);
@@ -107,6 +200,7 @@ namespace ProjectMonHoc
                     int currentAttempts = Convert.ToInt32(row["LoginAttempts"]);
                     int userId = Convert.ToInt32(row["Id"]);
                     string dbPasswordHash = row["password"].ToString()?.Trim() ?? "";
+                    string email = row["email"].ToString() ?? "";
 
                     // Kiểm tra trạng thái khóa tài khoản
                     if (currentAttempts >= 3)
@@ -125,13 +219,31 @@ namespace ProjectMonHoc
                         resetCmd.Parameters.AddWithValue("@Id", userId);
                         resetCmd.ExecuteNonQuery();
 
-                        // Thiết lập Session toàn cục
+                        // Kiểm tra 2FA
+                        string twoFactorSecret = row["TwoFactorSecret"].ToString()?.Trim() ?? "";
+                        if (!string.IsNullOrEmpty(twoFactorSecret))
+                        {
+                            f_TOTPVerify verifyForm = new f_TOTPVerify(username, twoFactorSecret);
+                            if (verifyForm.ShowDialog() != DialogResult.OK)
+                            {
+                                MessageBox.Show("Xác thực 2 yếu tố thất bại hoặc bị hủy. Không thể đăng nhập.", "Xác Thực Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+                            }
+                        }
+
+                        // Thiết lập Session toàn cục (username, role, email từ bảng login)
+                        // Query thêm Họ Tên đầy đủ từ bảng HR hoặc Student — chỉ 1 lần duy nhất
+                        string fullName = FetchFullName(my_db, userId, roleStr);
                         Globals.SetSession(
-                            id: userId,
+                            id:       userId,
                             username: row["username"].ToString() ?? "",
-                            role: row["role"].ToString() ?? "",
-                            email: row["email"].ToString() ?? ""
+                            role:     row["role"].ToString() ?? "",
+                            email:    row["email"].ToString() ?? "",
+                            fullName: fullName
                         );
+
+                        // Xử lý AI Login Behavior Logging
+                        _ = LogAndAnalyzeLoginAsync(username, "Success", email);
 
                         // Bước 3: Xử lý chức năng Remember Me
                         if (checkBox_Ghinhodangnhap.Checked)
@@ -189,6 +301,9 @@ namespace ProjectMonHoc
                     }
                     else
                     {
+                        // Log failed login
+                        _ = LogAndAnalyzeLoginAsync(username, "Failed", row["email"].ToString() ?? "");
+
                         string updateQuery = "UPDATE login SET LoginAttempts = LoginAttempts + 1 WHERE Id = @Id";
                         SqlCommand updateCmd = new SqlCommand(updateQuery, my_db.conn);
                         updateCmd.Parameters.AddWithValue("@Id", userId);
@@ -242,6 +357,84 @@ namespace ProjectMonHoc
             finally
             {
                 my_db.closeConnection();
+            }
+        }
+
+        private async System.Threading.Tasks.Task LogAndAnalyzeLoginAsync(string username, string status, string userEmail)
+        {
+            try
+            {
+                // 1. Lưu log vào Database
+                using (var db = new MY_DB())
+                {
+                    db.openConnection();
+                    string insertSql = "INSERT INTO LoginLogs (Username, Status, AttemptTime) VALUES (@user, @status, GETDATE())";
+                    using (var cmd = new SqlCommand(insertSql, db.conn))
+                    {
+                        cmd.Parameters.AddWithValue("@user", username);
+                        cmd.Parameters.AddWithValue("@status", status);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    // 2. Kiểm tra điều kiện Trigger AI
+                    int failedAttemptsLast15Mins = 0;
+                    string countSql = "SELECT COUNT(*) FROM LoginLogs WHERE Username = @user AND Status LIKE 'Failed%' AND AttemptTime >= DATEADD(MINUTE, -15, GETDATE())";
+                    using (var cmdCount = new SqlCommand(countSql, db.conn))
+                    {
+                        cmdCount.Parameters.AddWithValue("@user", username);
+                        failedAttemptsLast15Mins = Convert.ToInt32(cmdCount.ExecuteScalar());
+                    }
+
+                    int currentHour = DateTime.Now.Hour;
+                    bool isAbnormalHour = (currentHour >= 1 && currentHour <= 5);
+
+                    if (failedAttemptsLast15Mins >= 3 || isAbnormalHour)
+                    {
+                        // Gom 10 log gần nhất
+                        System.Collections.Generic.List<string> recentLogs = new System.Collections.Generic.List<string>();
+                        string logQuery = "SELECT TOP 10 Status, AttemptTime FROM LoginLogs WHERE Username = @user ORDER BY AttemptTime DESC";
+                        using (var cmdLog = new SqlCommand(logQuery, db.conn))
+                        {
+                            cmdLog.Parameters.AddWithValue("@user", username);
+                            using (var dr = cmdLog.ExecuteReader())
+                            {
+                                while (dr.Read())
+                                {
+                                    recentLogs.Add($"{dr["AttemptTime"]}: {dr["Status"]}");
+                                }
+                            }
+                        }
+
+                        // Gọi AI
+                        var analyzer = new ProjectMonHoc.Classes.AILoginAnalyzer();
+                        var aiResult = await analyzer.AnalyzeLoginBehaviorAsync(username, recentLogs);
+
+                        if (aiResult.IsAbnormal && !string.IsNullOrEmpty(userEmail))
+                        {
+                            // Update Reason
+                            string updateSql = "UPDATE LoginLogs SET Reason = @reason WHERE Id = (SELECT TOP 1 Id FROM LoginLogs WHERE Username = @user ORDER BY AttemptTime DESC)";
+                            using (var cmdUpdate = new SqlCommand(updateSql, db.conn))
+                            {
+                                cmdUpdate.Parameters.AddWithValue("@reason", aiResult.Reason);
+                                cmdUpdate.Parameters.AddWithValue("@user", username);
+                                cmdUpdate.ExecuteNonQuery();
+                            }
+
+                            // Gửi Email
+                            var emailService = new ProjectMonHoc.Classes.EmailService();
+                            string subject = "Cảnh báo Đăng nhập Bất thường UTEID";
+                            string body = $@"<h3>Hệ thống phát hiện hành vi đáng ngờ</h3>
+                                            <p>Tài khoản: <b>{username}</b></p>
+                                            <p>Phân tích từ AI: <b>{aiResult.Reason}</b></p>
+                                            <p>Nếu bạn không thực hiện đăng nhập này, vui lòng đổi mật khẩu ngay lập tức.</p>";
+                            await emailService.SendWarningEmailAsync(userEmail, subject, body);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Lỗi khi Log & Analyze: " + ex.Message);
             }
         }
 
@@ -408,6 +601,42 @@ namespace ProjectMonHoc
 
             foreach (Control ctrl in panel_Login.Controls)
                 ctrl.Visible = true;
+        }
+
+        /// <summary>
+        /// Lấy Họ và Tên đầy đủ từ bảng HR (cột Fname + Lname theo MSGV)
+        /// hoặc bảng Student (cột Fname + Lname theo MSSV) tùy theo role.
+        /// Dùng lại connection đã mở sẵn — không tốn thêm kết nối mới.
+        /// Trả về chuỗi rỗng nếu không tìm thấy hoặc xảy ra lỗi.
+        /// </summary>
+        private static string FetchFullName(MY_DB db, int userId, string role)
+        {
+            try
+            {
+                string sql;
+                if (role == "HR")
+                    // Bảng HR dùng cột MSGV (kiểu nvarchar) để định danh
+                    sql = "SELECT ISNULL(Fname,'') + ' ' + ISNULL(Lname,'') FROM HR WHERE MSGV = @id";
+                else
+                    // Bảng Student dùng cột MSSV (kiểu int)
+                    sql = "SELECT ISNULL(Fname,'') + ' ' + ISNULL(Lname,'') FROM Student WHERE MSSV = @id";
+
+                SqlCommand cmd = new SqlCommand(sql, db.conn);
+                cmd.Parameters.AddWithValue("@id", userId);
+                object result = cmd.ExecuteScalar();
+
+                string name = (result != null && result != DBNull.Value)
+                    ? result.ToString()!.Trim()
+                    : "";
+
+                // Nếu query không trả về gì (Admin, hoặc chưa có hồ sơ) thì dùng username
+                return string.IsNullOrEmpty(name) ? Globals.GlobalUsername : name;
+            }
+            catch
+            {
+                // Không làm gián đoạn quá trình đăng nhập nếu query phụ bị lỗi
+                return "";
+            }
         }
 
 

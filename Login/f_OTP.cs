@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
@@ -73,9 +73,58 @@ namespace ProjectMonHoc
                 mail.From = new MailAddress(fromEmail, "HỆ THỐNG QUẢN LÝ SINH VIÊN");
                 mail.To.Add(to);
                 mail.Subject = "[Xác thực OTP] - Đăng ký tài khoản mới";
-                mail.Body = $"Chào bạn,\n\nMã OTP xác thực của bạn là: {generatedOTP}\n" +
-                            "Mã này có hiệu lực trong vòng 5 phút. Vui lòng không chia sẻ mã này cho bất kỳ ai.\n\n" +
-                            "Trân trọng,\nBan Quản Trị Hệ Thống.";
+                mail.IsBodyHtml = true;
+                mail.Body = $@"
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='UTF-8'>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {{ font-family: 'Inter', sans-serif; background-color: #f3f4f6; margin: 0; padding: 0; }}
+        .wrapper {{ width: 100%; background-color: #f3f4f6; padding: 50px 0; }}
+        .container {{ max-width: 500px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }}
+        .header {{ background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); padding: 35px 20px; text-align: center; }}
+        .header h1 {{ color: #ffffff; margin: 0; font-size: 22px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; }}
+        .content {{ padding: 40px 35px; text-align: center; }}
+        .content p {{ color: #374151; font-size: 15px; line-height: 1.6; margin: 0 0 20px; text-align: left; }}
+        .otp-container {{ margin: 35px 0; }}
+        .otp-code {{ font-size: 40px; font-weight: 700; color: #1f2937; letter-spacing: 12px; padding: 20px 30px; background: #f9fafb; border-radius: 12px; display: inline-block; border: 1px solid #e5e7eb; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); }}
+        .security-tip {{ background-color: #fffbeb; border-left: 4px solid #f59e0b; padding: 15px 20px; text-align: left; border-radius: 4px; margin-top: 30px; }}
+        .security-tip p {{ margin: 0; color: #92400e; font-size: 13px; line-height: 1.5; }}
+        .footer {{ background-color: #f9fafb; padding: 25px 20px; text-align: center; border-top: 1px solid #e5e7eb; }}
+        .footer p {{ margin: 0; font-size: 12px; color: #6b7280; line-height: 1.6; }}
+    </style>
+</head>
+<body>
+    <div class='wrapper'>
+        <div class='container'>
+            <div class='header'>
+                <h1>Hệ Thống Quản Lý</h1>
+            </div>
+            <div class='content'>
+                <p>Xin chào,</p>
+                <p>Chúng tôi nhận được yêu cầu xác thực email cho tài khoản của bạn. Vui lòng sử dụng mã bảo mật dưới đây để hoàn tất quá trình này:</p>
+                
+                <div class='otp-container'>
+                    <div class='otp-code'>{generatedOTP}</div>
+                </div>
+                
+                <p>Mã xác thực này có hiệu lực trong vòng <strong>5 phút</strong>.</p>
+                
+                <div class='security-tip'>
+                    <strong>⚠️ Cảnh báo bảo mật:</strong>
+                    <p>Tuyệt đối không chia sẻ mã này với bất kỳ ai. Nhân viên hỗ trợ sẽ không bao giờ yêu cầu bạn cung cấp mã OTP.</p>
+                </div>
+            </div>
+            <div class='footer'>
+                <p>Email này được gửi tự động, vui lòng không trả lời.</p>
+                <p>&copy; {DateTime.Now.Year} Bản quyền thuộc về Hệ Thống Quản Lý. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>";
 
                 using SmtpClient smtp = new SmtpClient("smtp.gmail.com");
                 smtp.Port = 587;

@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Data;
 using System.Drawing;
@@ -56,7 +56,7 @@ namespace ProjectMonHoc
         // ════════════════════════════════════════════════════════════════════════
         //  LOAD
         // ════════════════════════════════════════════════════════════════════════
-        private void FormThongKe_Load(object sender, EventArgs e)
+        private async void FormThongKe_Load(object sender, EventArgs e)
         {
             // Bật DoubleBuffered cho các panel biểu đồ (chống flickering)
             SetDoubleBuffered(pnlChartXepLoai);
@@ -92,6 +92,41 @@ namespace ProjectMonHoc
             LoadGioiTinhData();
             pnlPieGioiTinh.Invalidate();
             pnlNamNhapHoc.Invalidate();
+
+            // Gọi AI phân tích
+            await LoadSmartAlertAsync();
+        }
+
+        private async System.Threading.Tasks.Task LoadSmartAlertAsync()
+        {
+            pnlAIAlert.Visible = true;
+            lblAIAlert.Text = "⏳ Đang phân tích dữ liệu...";
+
+            try
+            {
+                // Tổng hợp dữ liệu
+                string stats = $"Tổng SV: {_totalStudents}, Tổng MH: {_totalCourses}, GPA trung bình toàn trường: {_avgGPA}. ";
+                
+                if (_dtXepLoai != null)
+                {
+                    stats += "Chi tiết xếp loại: ";
+                    foreach (System.Data.DataRow row in _dtXepLoai.Rows)
+                    {
+                        stats += $"{row["XepLoai"]}: {row["SoLuong"]} SV, ";
+                    }
+                }
+
+                // Gọi AI
+                var chatbot = new ProjectMonHoc.Classes.ChatbotService();
+                string alertMsg = await chatbot.GetSmartAlertAsync(stats);
+
+                // Hiển thị
+                lblAIAlert.Text = alertMsg;
+            }
+            catch (Exception ex)
+            {
+                lblAIAlert.Text = "💡 AI Phân tích: Đã xảy ra lỗi khi kết nối AI (" + ex.Message + ")";
+            }
         }
 
         private static void SetDoubleBuffered(System.Windows.Forms.Control c)
@@ -794,17 +829,21 @@ namespace ProjectMonHoc
         // ════════════════════════════════════════════════════════════════════════
         //  BUTTON EVENTS
         // ════════════════════════════════════════════════════════════════════════
-        private void btnRefresh_Click(object sender, EventArgs e)
+        private async void btnRefresh_Click(object sender, EventArgs e)
         {
             LoadAllData();
             UpdateSummaryCards();
+
             pnlChartXepLoai.Invalidate();
             pnlChartTopGPA.Invalidate();
             pnlChartMonHoc.Invalidate();
             pnlChartDangKy.Invalidate();
+
             LoadGioiTinhData();
             pnlPieGioiTinh.Invalidate();
             pnlNamNhapHoc.Invalidate();
+
+            await LoadSmartAlertAsync();
         }
 
         private void btnExportExcel_Click(object sender, EventArgs e)

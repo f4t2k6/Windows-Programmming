@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -17,12 +17,33 @@ namespace ProjectMonHoc
     //Bỏ lỗi CA1416
     [System.Runtime.Versioning.SupportedOSPlatform("windows")]
 
-    public partial class f_MainHR : Form
+    public partial class f_MainHR : Form, IMessageFilter
     {
         private Form? activeForm = null;
         public f_MainHR()
         {
             InitializeComponent();
+            SetupFaceRegistrationMenu();
+        }
+
+        private void SetupFaceRegistrationMenu()
+        {
+            ContextMenuStrip menu = new ContextMenuStrip();
+            ToolStripMenuItem item = new ToolStripMenuItem("Đăng ký khuôn mặt");
+            item.Click += (s, e) => {
+                var form = new ProjectMonHoc.Login.f_FaceRegistration();
+                form.ShowDialog();
+            };
+            menu.Items.Add(item);
+            pictureBox_Avatar.ContextMenuStrip = menu;
+            
+            // Show menu on left click as well
+            pictureBox_Avatar.MouseClick += (s, e) => {
+                if (e.Button == MouseButtons.Left)
+                {
+                    menu.Show(pictureBox_Avatar, e.Location);
+                }
+            };
         }
         private void OpenChildForm(Form childForm, Panel targetPanel)
         {
@@ -53,9 +74,8 @@ namespace ProjectMonHoc
 
         private void btn_Logout_MainHR_Click(object sender, EventArgs e)
         {
-            // 1. Xóa trạng thái đăng nhập toàn cục để đảm bảo bảo mật
-            Globals.GlobalUsername = string.Empty;
-            // Nếu trong Globals.cs của bạn có lưu thêm biến Role, hãy xóa nó ở đây (VD: Globals.GlobalRole = string.Empty;)
+            // 1. Xóa toàn bộ dữ liệu phiên đăng nhập khỏi RAM
+            Globals.ClearSession();
 
             // 2. Ẩn form hiện tại đi
             this.Hide();
@@ -129,25 +149,37 @@ namespace ProjectMonHoc
         private void f_MainHR_Load(object sender, EventArgs e)
         {
             LoadUserProfile();
+
+            // ── Session timeout: tự đăng xuất sau 2 phút không hoạt động ──
+            Application.AddMessageFilter(this);  // bắt mọi event chuột/phím toàn app
+            SessionManager.Instance.Start(this, DoLogout);
         }
 
         private void LoadUserProfile()
         {
-            // ── Admin: chỉ hiện chữ "Admin", dùng ảnh mặc định ──────
+            // Lấy thông tin từ RAM (Globals) — không query DB nữa
+            // GlobalFullName đã được FetchFullName() lấy sẵn lúc đăng nhập
+            string displayName = !string.IsNullOrEmpty(Globals.GlobalFullName)
+                ? Globals.GlobalFullName
+                : Globals.GlobalUsername;
+
             if (Globals.GlobalRole == "Admin")
             {
-                label_Info.Text = "Admin";
+                // Admin: hiển thị tên + vai trò
+                label_Info.Text = $"{displayName}\n💼 Quản trị viên\n📧 {Globals.GlobalEmail}";
                 LoadAvatarImage(null);
                 return;
             }
 
-            // ── HR: lấy họ tên + ảnh đại diện từ bảng HR theo MSGV đang đăng nhập ──
+            // HR: hiển thị tên thật + ID + email
+            label_Info.Text = $"{displayName}\n🆔 ID: {Globals.GlobalUserId}\n💼 {Globals.GlobalRole}\n📧 {Globals.GlobalEmail}";
+
+            // Ảnh đại diện vẫn cần query vì ảnh (byte[]) chưa lưu vào Globals
             MY_DB my_db = new MY_DB();
             try
             {
                 my_db.openConnection();
-
-                string sql = "SELECT Fname, Lname, Pic FROM HR WHERE MSGV = @msgv";
+                string sql = "SELECT Pic FROM HR WHERE MSGV = @msgv";
                 SqlCommand cmd = new SqlCommand(sql, my_db.conn);
                 cmd.Parameters.Add("@msgv", SqlDbType.NVarChar, 20).Value = Globals.GlobalUserId.ToString();
 
@@ -155,26 +187,20 @@ namespace ProjectMonHoc
                 {
                     if (reader.Read())
                     {
-                        string fullName = $"{reader["Fname"]} {reader["Lname"]}".Trim();
-                        label_Info.Text = $"{fullName}\nID: {Globals.GlobalUserId}";
-
                         byte[]? picBytes = reader["Pic"] != DBNull.Value
                             ? (byte[])reader["Pic"]
                             : null;
-
                         LoadAvatarImage(picBytes);
                     }
                     else
                     {
-                        // Không tìm thấy hồ sơ HR -> hiển thị tạm username + ID
-                        label_Info.Text = $"{Globals.GlobalUsername}\nID: {Globals.GlobalUserId}";
                         LoadAvatarImage(null);
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi tải thông tin người dùng: " + ex.Message, "Lỗi",
+                MessageBox.Show("Lỗi tải ảnh đại diện: " + ex.Message, "Lỗi",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                 LoadAvatarImage(null);
             }
@@ -232,6 +258,59 @@ namespace ProjectMonHoc
         private void label_Info_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void pictureBox_Avatar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        // ============================================================
+        // SESSION TIMEOUT — IMessageFilter + Auto-Logout
+        // ============================================================
+
+        /// <summary>
+        /// Interceptor toàn ứng dụng: reset bộ đếm idle khi phát hiện
+        /// chuột di chuyển, click, cuộn trang hoặc nhấn phím.
+        /// </summary>
+        public bool PreFilterMessage(ref Message m)
+        {
+            const int WM_KEYDOWN     = 0x0100;
+            const int WM_MOUSEMOVE   = 0x0200;
+            const int WM_LBUTTONDOWN = 0x0201;
+            const int WM_RBUTTONDOWN = 0x0204;
+            const int WM_MOUSEWHEEL  = 0x020A;
+
+            if (m.Msg == WM_KEYDOWN     ||
+                m.Msg == WM_MOUSEMOVE   ||
+                m.Msg == WM_LBUTTONDOWN ||
+                m.Msg == WM_RBUTTONDOWN ||
+                m.Msg == WM_MOUSEWHEEL)
+            {
+                SessionManager.Instance.ResetActivity();
+            }
+            return false; // không tiêu thụ message, cho app xử lý bình thường
+        }
+
+        /// <summary>
+        /// Callback đăng xuất do SessionManager gọi trên UI thread khi hết timeout.
+        /// </summary>
+        private void DoLogout()
+        {
+            if (this.IsDisposed) return;
+            Globals.ClearSession();
+            this.Hide();
+            f_Login formLogin = new f_Login();
+            formLogin.ShowDialog();
+            this.Close();
+        }
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            base.OnFormClosed(e);
+            // Dọn dẹp: hủy đăng ký filter và dừng session manager
+            Application.RemoveMessageFilter(this);
+            SessionManager.Instance.Stop();
         }
     }
 }

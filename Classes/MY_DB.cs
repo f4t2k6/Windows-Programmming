@@ -1,7 +1,13 @@
-﻿using Microsoft.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Data;
+using System.Runtime.CompilerServices;
 
-class MY_DB
+/// <summary>
+/// Lớp quản lý kết nối SQL Server.
+/// Tự động ghi log mỗi lần mở/đóng và phát hiện connection leak qua finalizer.
+/// Hỗ trợ IDisposable để dùng với using statement.
+/// </summary>
+class MY_DB : IDisposable
 {
     // =============================================
     // KẾT NỐI DATABASE
@@ -13,17 +19,54 @@ class MY_DB
     /// <summary>Trả về SqlConnection để dùng trực tiếp nếu cần.</summary>
     public SqlConnection conn => con;
 
+    // =============================================
+    // TRACKING INSTANCE (dùng cho logging & leak detection)
+    // =============================================
+
+    /// <summary>Định danh duy nhất của instance này để theo dõi trong log.</summary>
+    private readonly Guid _instanceId = Guid.NewGuid();
+
+    /// <summary>Thời điểm connection được mở (null nếu chưa mở).</summary>
+    private DateTime? _openedAt;
+
+    /// <summary>Thông tin caller của lần openConnection() gần nhất.</summary>
+    private string _callerInfo = "?";
+
+    private bool _disposed;
+
     // ─── Mở / Đóng ───────────────────────────────
-    public void openConnection()
+
+    /// <summary>
+    /// Mở kết nối nếu chưa mở. Tự động ghi log với thông tin caller.
+    /// </summary>
+    public void openConnection(
+        [CallerMemberName] string callerMember = "",
+        [CallerFilePath]   string callerFile   = "",
+        [CallerLineNumber] int    callerLine    = 0)
     {
         if (con.State == ConnectionState.Closed)
+        {
+            // Lưu caller info để dùng khi đóng / phát hiện leak
+            string fileName = System.IO.Path.GetFileName(callerFile);
+            _callerInfo = $"{callerMember} ({fileName}:{callerLine})";
+            _openedAt   = DateTime.Now;
+
             con.Open();
+            DbConnectionLogger.LogOpen(_instanceId, _callerInfo);
+        }
     }
 
+    /// <summary>
+    /// Đóng kết nối nếu đang mở. Tự động ghi log với thời gian sống.
+    /// </summary>
     public void closeConnection()
     {
         if (con.State == ConnectionState.Open)
+        {
             con.Close();
+            DbConnectionLogger.LogClose(_instanceId);
+            _openedAt = null;
+        }
     }
 
     // =============================================
@@ -94,5 +137,47 @@ class MY_DB
             throw new Exception("GetDataTable lỗi: " + ex.Message, ex);
         }
         finally { closeConnection(); }
+    }
+
+    // =============================================
+    // IDISPOSABLE + FINALIZER (Phát hiện connection leak)
+    // =============================================
+
+    /// <summary>
+    /// Giải phóng tài nguyên đúng cách — dùng với using statement.
+    /// </summary>
+    public void Dispose()
+    {
+        Dispose(disposing: true);
+        GC.SuppressFinalize(this);
+    }
+
+    /// <summary>
+    /// Finalizer — chạy khi GC thu hồi object.
+    /// Nếu connection vẫn còn mở → báo cáo leak.
+    /// </summary>
+    ~MY_DB()
+    {
+        Dispose(disposing: false);
+    }
+
+    private void Dispose(bool disposing)
+    {
+        if (_disposed) return;
+        _disposed = true;
+
+        if (con.State == ConnectionState.Open)
+        {
+            // Connection bị "quên" chưa đóng → leak!
+            DbConnectionLogger.ReportLeak(
+                _instanceId,
+                _callerInfo,
+                _openedAt ?? DateTime.Now);
+
+            try { con.Close(); } catch { /* ignore */ }
+        }
+
+        if (disposing)
+            con.Dispose();
     }
 }

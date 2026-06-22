@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -8,13 +8,34 @@ using System.Windows.Forms;
 namespace ProjectMonHoc
 {
     [System.Runtime.Versioning.SupportedOSPlatform("windows")]
-    public partial class f_MainStudent : Form
+    public partial class f_MainStudent : Form, IMessageFilter
     {
         private Form? activeForm = null;
 
         public f_MainStudent()
         {
             InitializeComponent();
+            SetupFaceRegistrationMenu();
+        }
+
+        private void SetupFaceRegistrationMenu()
+        {
+            ContextMenuStrip menu = new ContextMenuStrip();
+            ToolStripMenuItem item = new ToolStripMenuItem("Đăng ký khuôn mặt");
+            item.Click += (s, e) => {
+                var form = new ProjectMonHoc.Login.f_FaceRegistration();
+                form.ShowDialog();
+            };
+            menu.Items.Add(item);
+            pictureBox_Avatar.ContextMenuStrip = menu;
+            
+            // Show menu on left click as well
+            pictureBox_Avatar.MouseClick += (s, e) => {
+                if (e.Button == MouseButtons.Left)
+                {
+                    menu.Show(pictureBox_Avatar, e.Location);
+                }
+            };
         }
 
         private void OpenChildForm(Form childForm, Panel targetPanel)
@@ -37,7 +58,8 @@ namespace ProjectMonHoc
 
         private void btn_Logout_Student_Click(object sender, EventArgs e)
         {
-            Globals.GlobalUsername = string.Empty;
+            // Xóa toàn bộ dữ liệu phiên đăng nhập khỏi RAM
+            Globals.ClearSession();
             this.Hide();
             f_Login formLogin = new f_Login();
             formLogin.ShowDialog();
@@ -46,17 +68,11 @@ namespace ProjectMonHoc
 
         private void btn_Student_Score_Click(object sender, EventArgs e)
         {
-            DataTable dt = Student.GetStudents(Globals.GlobalMSSV.ToString(), "Tất cả", "Theo MSSV");
-            if (dt.Rows.Count == 0)
-            {
-                MessageBox.Show("Không tìm thấy thông tin sinh viên!", "Lỗi",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-            DataRow row = dt.Rows[0];
-            int mssv = Convert.ToInt32(row["MSSV"]);
-            string fullName = $"{row["Fname"]} {row["Lname"]}".Trim();
-            OpenChildForm(new f_ListScore(mssv, fullName), pnl_Content_Student);
+            // Lấy fullName từ RAM — không cần query DB
+            string fullName = !string.IsNullOrEmpty(Globals.GlobalFullName)
+                ? Globals.GlobalFullName
+                : Globals.GlobalUsername;
+            OpenChildForm(new f_ListScore(Globals.GlobalMSSV, fullName), pnl_Content_Student);
         }
 
         private void btn_Student_Info_Click(object sender, EventArgs e)
@@ -80,22 +96,56 @@ namespace ProjectMonHoc
         // ============================================================
         private void btn_PrintRequest_Click(object sender, EventArgs e)
         {
-            // Lấy thông tin sinh viên từ MSSV đang đăng nhập
-            DataTable dt = Student.GetStudents(Globals.GlobalMSSV.ToString(), "Tất cả", "Theo MSSV");
-
-            if (dt.Rows.Count == 0)
-            {
-                MessageBox.Show("Không tìm thấy thông tin sinh viên!",
-                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            DataRow row = dt.Rows[0];
-            int mssv = Convert.ToInt32(row["MSSV"]);
-            string fullName = $"{row["Fname"]} {row["Lname"]}".Trim();
+            // Lấy fullName từ RAM — không cần query DB
+            string fullName = !string.IsNullOrEmpty(Globals.GlobalFullName)
+                ? Globals.GlobalFullName
+                : Globals.GlobalUsername;
 
             // Mở form f_PrintRequest trong panel nội dung
-            OpenChildForm(new f_PrintRequest(mssv, fullName), pnl_Content_Student);
+            OpenChildForm(new f_PrintRequest(Globals.GlobalMSSV, fullName), pnl_Content_Student);
+        }
+
+        // ============================================================
+        // MỚI: Mở Chatbot AI Điều hướng
+        // ============================================================
+        private void btn_AskAINavi_Click(object sender, EventArgs e)
+        {
+            string fullName = !string.IsNullOrEmpty(Globals.GlobalFullName)
+                ? Globals.GlobalFullName
+                : Globals.GlobalUsername;
+
+            f_NavigationChatbot chatbot = new f_NavigationChatbot(fullName);
+            
+            // Xử lý callback khi AI trả về Intent
+            chatbot.onNavigate = (intent) =>
+            {
+                // Thực thi điều hướng trên luồng giao diện chính (UI Thread)
+                this.Invoke((MethodInvoker)delegate
+                {
+                    switch (intent.ToUpper())
+                    {
+                        case "SCORE":
+                            btn_Student_Score_Click(null, EventArgs.Empty);
+                            break;
+                        case "INFO":
+                            btn_Student_Info_Click(null, EventArgs.Empty);
+                            break;
+                        case "TIMETABLE":
+                            btn_Timetable_Click(null, EventArgs.Empty);
+                            break;
+                        case "COURSE_REGISTER":
+                            btn_RegisterCourse_Click(null, EventArgs.Empty);
+                            break;
+                        case "PRINT_REQUEST":
+                            btn_PrintRequest_Click(null, EventArgs.Empty);
+                            break;
+                        default:
+                            break;
+                    }
+                });
+            };
+
+            chatbot.Show(this); // Hiển thị dưới dạng Tool Window không khóa Form chính
         }
 
         // ── sự kiện giao diện không cần logic ──────────────────────
@@ -104,6 +154,10 @@ namespace ProjectMonHoc
         private void f_MainStudent_Load(object sender, EventArgs e)
         {
             LoadUserProfile();
+
+            // ── Session timeout: tự đăng xuất sau 2 phút không hoạt động ──
+            Application.AddMessageFilter(this);
+            SessionManager.Instance.Start(this, DoLogout);
         }
 
         // ============================================================
@@ -111,36 +165,26 @@ namespace ProjectMonHoc
         // ============================================================
         private void LoadUserProfile()
         {
-            // ── Admin: chỉ hiện chữ "Admin", dùng ảnh mặc định ──────
-            if (Globals.GlobalRole == "Admin")
-            {
-                label_Info.Text = "Admin";
-                LoadAvatarImage(null);
-                return;
-            }
+            // Lấy thông tin từ RAM (Globals) — không query DB nữa
+            string displayName = !string.IsNullOrEmpty(Globals.GlobalFullName)
+                ? Globals.GlobalFullName
+                : Globals.GlobalUsername;
 
-            // ── Student / HR: lấy họ tên + ảnh đại diện theo MSSV đang đăng nhập ──
+            // Hiển thị thông tin đầy đủ: Tên | MSSV | Chức vụ | Email
+            label_Info.Text = $"{displayName}\n🆔 MSSV: {Globals.GlobalMSSV}\n💼 {Globals.GlobalRole}\n📧 {Globals.GlobalEmail}";
+
+            // Ảnh đại diện vẫn cần query vì ảnh (byte[]) chưa lưu vào Globals
             DataTable dt = Student.GetStudents(Globals.GlobalMSSV.ToString(), "Tất cả", "Theo MSSV");
-
             if (dt.Rows.Count > 0)
             {
                 DataRow row = dt.Rows[0];
-                string fullName = $"{row["Fname"]} {row["Lname"]}".Trim();
-                label_Info.Text = $"{fullName}\nID: {Globals.GlobalMSSV}";
-
-                // Bảng Student lưu ảnh đại diện ở cột "Pture" (kiểu IMAGE)
                 byte[]? picBytes = null;
                 if (dt.Columns.Contains("Pture") && row["Pture"] != DBNull.Value)
-                {
                     picBytes = (byte[])row["Pture"];
-                }
-
                 LoadAvatarImage(picBytes);
             }
             else
             {
-                // Không lấy được thông tin chi tiết -> hiển thị tạm username + ID
-                label_Info.Text = $"{Globals.GlobalUsername}\nID: {Globals.GlobalMSSV}";
                 LoadAvatarImage(null);
             }
         }
@@ -192,5 +236,57 @@ namespace ProjectMonHoc
             return rounded;
         }
         private void pnl_content_Student_Paint(object sender, PaintEventArgs e) { }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        // ============================================================
+        // SESSION TIMEOUT — IMessageFilter + Auto-Logout
+        // ============================================================
+
+        /// <summary>
+        /// Interceptor toàn ứng dụng: reset bộ đếm idle khi phát hiện
+        /// chuột di chuyển, click, cuộn trang hoặc nhấn phím.
+        /// </summary>
+        public bool PreFilterMessage(ref Message m)
+        {
+            const int WM_KEYDOWN     = 0x0100;
+            const int WM_MOUSEMOVE   = 0x0200;
+            const int WM_LBUTTONDOWN = 0x0201;
+            const int WM_RBUTTONDOWN = 0x0204;
+            const int WM_MOUSEWHEEL  = 0x020A;
+
+            if (m.Msg == WM_KEYDOWN     ||
+                m.Msg == WM_MOUSEMOVE   ||
+                m.Msg == WM_LBUTTONDOWN ||
+                m.Msg == WM_RBUTTONDOWN ||
+                m.Msg == WM_MOUSEWHEEL)
+            {
+                SessionManager.Instance.ResetActivity();
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Callback đăng xuất do SessionManager gọi trên UI thread khi hết timeout.
+        /// </summary>
+        private void DoLogout()
+        {
+            if (this.IsDisposed) return;
+            Globals.ClearSession();
+            this.Hide();
+            f_Login formLogin = new f_Login();
+            formLogin.ShowDialog();
+            this.Close();
+        }
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            base.OnFormClosed(e);
+            Application.RemoveMessageFilter(this);
+            SessionManager.Instance.Stop();
+        }
     }
 }
