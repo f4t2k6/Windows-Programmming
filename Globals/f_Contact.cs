@@ -53,9 +53,19 @@ namespace YourApp
         // =============================================
         private void f_Contact_Load(object sender, EventArgs e)
         {
-            LoadGroupComboBoxes();
-            LoadGrid();
-            SetDetailReadOnly(true);
+            try
+            {
+                LoadGroupComboBoxes();
+                LoadGrid();
+                SetDetailReadOnly(true);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Không thể tải dữ liệu Groups/Contact.\n\n" + ex.Message,
+                    "Lỗi tải dữ liệu",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         // =============================================
@@ -148,19 +158,45 @@ namespace YourApp
         private void cboGroup_SelectedIndexChanged(object sender, EventArgs e)
         {
             // Chỉ reload nếu không đang trong chế độ Add
-            if (!_isAdding)
+            if (_isAdding) return;
+
+            try
+            {
                 LoadGrid(txtSearch.Text.Trim());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không thể tải danh bạ.\n\n" + ex.Message, "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void btnFilter_Click(object sender, EventArgs e)
         {
-            LoadGrid(txtSearch.Text.Trim());
+            try
+            {
+                LoadGrid(txtSearch.Text.Trim());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không thể tải danh bạ.\n\n" + ex.Message, "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void txtSearch_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
+            if (e.KeyCode != Keys.Enter) return;
+
+            try
+            {
                 LoadGrid(txtSearch.Text.Trim());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không thể tải danh bạ.\n\n" + ex.Message, "Lỗi",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         // =============================================
@@ -168,18 +204,27 @@ namespace YourApp
         // =============================================
         private void dgvContacts_SelectionChanged(object sender, EventArgs e)
         {
-            if (dgvContacts.CurrentRow == null) return;
             if (_isAdding) return;
+            if (dgvContacts.CurrentRow == null) return;
+            if (!dgvContacts.Columns.Contains("ID")) return;
 
-            int id = Convert.ToInt32(dgvContacts.CurrentRow.Cells["ID"].Value);
-            _selectedId = id;
+            try
+            {
+                int id = Convert.ToInt32(dgvContacts.CurrentRow.Cells["ID"].Value);
+                _selectedId = id;
 
-            Contact? c = Contact.GetById(id, _userId);
-            if (c == null) return;
+                Contact? c = Contact.GetById(id, _userId);
+                if (c == null) return;
 
-            FillDetail(c);
-            btnEdit.Enabled = true;
-            btnDelete.Enabled = true;
+                FillDetail(c);
+                btnEdit.Enabled = true;
+                btnDelete.Enabled = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không thể hiển thị chi tiết liên hệ.\n\n" + ex.Message,
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         // =============================================
@@ -459,15 +504,6 @@ namespace YourApp
             return Convert.ToInt32(val);
         }
 
-        private void txtSearch_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void f_Contact_Load_1(object sender, EventArgs e)
-        {
-
-        }
     }
 
     // =============================================

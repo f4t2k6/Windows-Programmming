@@ -133,7 +133,6 @@
             txtSearch.Name = "txtSearch";
             txtSearch.Size = new Size(302, 30);
             txtSearch.TabIndex = 3;
-            txtSearch.TextChanged += txtSearch_TextChanged;
             // 
             // dgvContacts
             // 
@@ -489,7 +488,6 @@
             Name = "f_Contact";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "f_Contact – Quản lý danh bạ";
-            Load += f_Contact_Load_1;
             pnlHeader.ResumeLayout(false);
             pnlHeader.PerformLayout();
             pnlLeft.ResumeLayout(false);
