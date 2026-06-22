@@ -63,9 +63,6 @@ namespace ProjectMonHoc.Classes
                 }
             }
 
-            // Nếu không tìm thấy, gán giá trị mặc định (phòng hờ)
-            if (string.IsNullOrEmpty(modelName))
-                modelName = "llama-3.3-70b-versatile";
 
             httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", apiKey);
