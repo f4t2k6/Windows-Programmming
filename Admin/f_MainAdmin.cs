@@ -1,4 +1,3 @@
-
 using System;
 using System.Windows.Forms;
 using YourApp;
@@ -111,7 +110,7 @@ namespace ProjectMonHoc
 
         private void button_Assign_Click(object sender, EventArgs e)
         {
-            OpenChildForm(new f_Assign(), panel_Content);
+            OpenChildForm(new f_Assign("Admin", null), panel_Content);
         }
 
         private void button_Contact_Click(object sender, EventArgs e)

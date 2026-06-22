@@ -12,17 +12,52 @@ namespace ProjectMonHoc
     {
         private readonly MY_DB db = new MY_DB();
 
-        public f_Assign()
+        // ─── PHÂN QUYỀN ─────────────────────────────────────────
+        // Truyền vào khi mở form:
+        //   new f_Assign("Admin", null)       → Admin: xem/sửa tất cả
+        //   new f_Assign("HR", "GV001")       → HR: chỉ xem/sửa của mình
+        private readonly string _role;          // "Admin" hoặc "HR"
+        private readonly string _currentMSGV;   // MSGV của người đang đăng nhập (dùng khi role = HR)
+
+        private bool IsAdmin => string.Equals(_role, "Admin", StringComparison.OrdinalIgnoreCase);
+
+        public f_Assign(string role, string currentMSGV)
         {
             InitializeComponent();
+            _role = role ?? "HR";
+            _currentMSGV = currentMSGV?.Trim();
         }
+
+        // Constructor mặc định – giữ lại để tránh lỗi build nếu nơi khác dùng
+        public f_Assign() : this("Admin", null) { }
 
         // ─── LOAD ───────────────────────────────────────────────
         private void f_Assign_Load(object sender, EventArgs e)
         {
+            ApplyRoleUI();          // Ẩn/hiện / khoá control theo quyền
             LoadHRComboBox();
             LoadCourseComboBox();
             LoadAssignGrid();
+        }
+
+        // ─── ÁP DỤNG QUYỀN LÊN GIAO DIỆN ───────────────────────
+        private void ApplyRoleUI()
+        {
+            if (IsAdmin)
+            {
+                // Admin: cboHR mở để chọn bất kỳ ai, btnAssign/btnRemove bật
+                cboHR.Enabled = true;
+                btnAssign.Enabled = true;
+                btnRemove.Enabled = true;
+            }
+            else
+            {
+                // HR: khoá cboHR (không cho chọn người khác), vẫn được tự phân công / hủy
+                // cboHR sẽ tự động chỉ chứa đúng mình sau LoadHRComboBox()
+                cboHR.Enabled = false;   // Hiện thị tên mình, không cho đổi
+                btnAssign.Enabled = true;   // Vẫn tự đăng ký môn
+                btnRemove.Enabled = true;   // Vẫn tự hủy môn của mình
+            }
         }
 
         // ─── LOAD DỮ LIỆU ───────────────────────────────────────
@@ -31,15 +66,36 @@ namespace ProjectMonHoc
             try
             {
                 db.openConnection();
-                string sql = "SELECT MSGV, Fname + N' ' + Lname AS HoTen FROM [dbo].[HR] WHERE VALID = 1 ORDER BY Fname";
-                SqlDataAdapter da = new SqlDataAdapter(sql, db.conn);
+
+                string sql;
+                SqlDataAdapter da;
                 DataTable dt = new DataTable();
+
+                if (IsAdmin)
+                {
+                    // Admin: load toàn bộ danh sách HR active
+                    sql = "SELECT MSGV, Fname + N' ' + Lname AS HoTen FROM [dbo].[HR] WHERE VALID = 1 ORDER BY Fname";
+                    da = new SqlDataAdapter(sql, db.conn);
+                }
+                else
+                {
+                    // HR: chỉ load đúng bản thân
+                    sql = "SELECT MSGV, Fname + N' ' + Lname AS HoTen FROM [dbo].[HR] WHERE VALID = 1 AND RTRIM(MSGV) = @msgv";
+                    SqlCommand cmd = new SqlCommand(sql, db.conn);
+                    cmd.Parameters.AddWithValue("@msgv", _currentMSGV ?? string.Empty);
+                    da = new SqlDataAdapter(cmd);
+                }
+
                 da.Fill(dt);
 
                 cboHR.DataSource = dt;
                 cboHR.DisplayMember = "HoTen";
                 cboHR.ValueMember = "MSGV";
-                cboHR.SelectedIndex = -1;
+
+                if (IsAdmin)
+                    cboHR.SelectedIndex = -1;   // Admin bắt buộc tự chọn
+                else
+                    cboHR.SelectedIndex = dt.Rows.Count > 0 ? 0 : -1;  // HR: chọn sẵn chính mình
             }
             catch (Exception ex)
             {
@@ -77,20 +133,47 @@ namespace ProjectMonHoc
             try
             {
                 db.openConnection();
-                string sql = @"
-                    SELECT
-                        h.MSGV,
-                        h.Fname + N' ' + h.Lname AS [Họ tên HR],
-                        RTRIM(c.MaMH)             AS [Mã MH],
-                        c.TenMH                   AS [Tên môn],
-                        c.SoTC                    AS [Số TC]
-                    FROM [dbo].[Assign] a
-                    JOIN [dbo].[HR]     h ON a.MSGV  = h.MSGV
-                    JOIN [dbo].[Course] c ON a.MaMH  = c.MaMH
-                    ORDER BY h.MSGV, c.MaMH";
 
-                SqlDataAdapter da = new SqlDataAdapter(sql, db.conn);
+                string sql;
+                SqlDataAdapter da;
                 DataTable dt = new DataTable();
+
+                if (IsAdmin)
+                {
+                    // Admin: xem tất cả phân công
+                    sql = @"
+                        SELECT
+                            h.MSGV,
+                            h.Fname + N' ' + h.Lname AS [Họ tên HR],
+                            RTRIM(c.MaMH)             AS [Mã MH],
+                            c.TenMH                   AS [Tên môn],
+                            c.SoTC                    AS [Số TC]
+                        FROM [dbo].[Assign] a
+                        JOIN [dbo].[HR]     h ON a.MSGV = h.MSGV
+                        JOIN [dbo].[Course] c ON a.MaMH = c.MaMH
+                        ORDER BY h.MSGV, c.MaMH";
+                    da = new SqlDataAdapter(sql, db.conn);
+                }
+                else
+                {
+                    // HR: chỉ xem môn của chính mình
+                    sql = @"
+                        SELECT
+                            h.MSGV,
+                            h.Fname + N' ' + h.Lname AS [Họ tên HR],
+                            RTRIM(c.MaMH)             AS [Mã MH],
+                            c.TenMH                   AS [Tên môn],
+                            c.SoTC                    AS [Số TC]
+                        FROM [dbo].[Assign] a
+                        JOIN [dbo].[HR]     h ON a.MSGV = h.MSGV
+                        JOIN [dbo].[Course] c ON a.MaMH = c.MaMH
+                        WHERE RTRIM(h.MSGV) = @msgv
+                        ORDER BY c.MaMH";
+                    SqlCommand cmd = new SqlCommand(sql, db.conn);
+                    cmd.Parameters.AddWithValue("@msgv", _currentMSGV ?? string.Empty);
+                    da = new SqlDataAdapter(cmd);
+                }
+
                 da.Fill(dt);
                 dgvAssign.DataSource = dt;
 
@@ -157,6 +240,14 @@ namespace ProjectMonHoc
                 return;
             }
 
+            // Bảo vệ thêm: HR không thể phân công cho người khác dù bypass UI
+            if (!IsAdmin && !string.Equals(msgv, _currentMSGV, StringComparison.OrdinalIgnoreCase))
+            {
+                MessageBox.Show("Bạn không có quyền phân công cho giảng viên khác.", "Từ chối",
+                    MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                return;
+            }
+
             if (CountAssignedCourses(msgv) >= 5)
             {
                 MessageBox.Show("Giảng viên này đã phụ trách tối đa 5 môn học.", "Giới hạn",
@@ -167,7 +258,6 @@ namespace ProjectMonHoc
             try
             {
                 db.openConnection();
-                // Lấy MaMH đúng format CHAR(10) từ DB để tránh lỗi trùng khoảng trắng
                 string sqlInsert = "INSERT INTO [dbo].[Assign] (MSGV, MaMH) VALUES (@msgv, @mamh)";
                 SqlCommand cmd = new SqlCommand(sqlInsert, db.conn);
                 cmd.Parameters.AddWithValue("@msgv", msgv);
@@ -177,7 +267,7 @@ namespace ProjectMonHoc
                 MessageBox.Show("Phân công thành công!", "Thành công",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                cboHR.SelectedIndex = -1;
+                if (IsAdmin) cboHR.SelectedIndex = -1;
                 cboCourse.SelectedIndex = -1;
             }
             catch (SqlException ex) when (ex.Number == 2627 || ex.Number == 2601)
@@ -211,6 +301,14 @@ namespace ProjectMonHoc
             string maMH = dgvAssign.CurrentRow.Cells["Mã MH"].Value?.ToString()?.Trim();
             string tenMH = dgvAssign.CurrentRow.Cells["Tên môn"].Value?.ToString();
 
+            // Bảo vệ thêm: HR không thể hủy phân công của người khác dù bypass UI
+            if (!IsAdmin && !string.Equals(msgv, _currentMSGV, StringComparison.OrdinalIgnoreCase))
+            {
+                MessageBox.Show("Bạn không có quyền hủy phân công của giảng viên khác.", "Từ chối",
+                    MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                return;
+            }
+
             var confirm = MessageBox.Show(
                 $"Hủy phân công môn \"{tenMH}\" khỏi giảng viên {msgv}?",
                 "Xác nhận hủy", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -220,7 +318,6 @@ namespace ProjectMonHoc
             try
             {
                 db.openConnection();
-                // Dùng RTRIM để khớp với CHAR(10) trong DB
                 string sql = "DELETE FROM [dbo].[Assign] WHERE RTRIM(MSGV)=@msgv AND RTRIM(MaMH)=@mamh";
                 SqlCommand cmd = new SqlCommand(sql, db.conn);
                 cmd.Parameters.AddWithValue("@msgv", msgv);
@@ -267,14 +364,7 @@ namespace ProjectMonHoc
             finally { db.closeConnection(); }
         }
 
-        private void lblHR_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void lblTitle_Click(object sender, EventArgs e)
-        {
-
-        }
+        private void lblHR_Click(object sender, EventArgs e) { }
+        private void lblTitle_Click(object sender, EventArgs e) { }
     }
 }
