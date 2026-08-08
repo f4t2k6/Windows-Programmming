@@ -61,11 +61,17 @@ namespace ProjectMonHoc.Login
             btnCancel.Text = "Hủy bỏ";
             btnCancel.Location = new Point(220, 440);
             btnCancel.Size = new Size(120, 40);
-            btnCancel.Click += (s, e) => { this.DialogResult = DialogResult.Cancel; this.Close(); };
+            btnCancel.Click += new EventHandler(btnCancel_Click);
 
             this.Controls.Add(pbWebcam);
             this.Controls.Add(lblStatus);
             this.Controls.Add(btnCancel);
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.Cancel;
+            this.Close();
         }
 
         private void F_FaceLogin_Load(object sender, EventArgs e)
@@ -111,53 +117,56 @@ namespace ProjectMonHoc.Login
                         var faces = _faceCascade.DetectMultiScale(grayFrame, 1.2, 5, Size.Empty);
                         
                         bool faceDetectedInThisFrame = false;
+                        bool anyFaceRecognizedThisFrame = false;
 
                         foreach (var face in faces)
                         {
                             faceDetectedInThisFrame = true;
                             imageFrame.Draw(face, new Bgr(Color.Orange), 2);
                             
-                            var faceCrop = grayFrame.Copy(face).Resize(100, 100, Emgu.CV.CvEnum.Inter.Cubic);
-                            var (username, distance) = _faceHelper.Predict(faceCrop);
-                            
-                            // Distance < 80 is a good threshold for LBPH, > 100 is likely unknown
-                            if (!string.IsNullOrEmpty(username) && distance < 80)
+                            using (var faceCrop = grayFrame.Copy(face).Resize(100, 100, Emgu.CV.CvEnum.Inter.Cubic))
                             {
-                                // Draw recognized info
-                                CvInvoke.PutText(imageFrame, username, new Point(face.X, face.Y - 10), 
-                                                 Emgu.CV.CvEnum.FontFace.HersheySimplex, 1.0, new MCvScalar(0, 255, 0), 2);
+                                var (username, distance) = _faceHelper.Predict(faceCrop);
                                 
-                                if (username == _lastRecognizedUser)
+                                // Distance < 80 is a good threshold for LBPH, > 100 is likely unknown
+                                if (!string.IsNullOrEmpty(username) && distance < 80)
                                 {
-                                    _consecutiveRecognitions++;
+                                    anyFaceRecognizedThisFrame = true;
+                                    // Draw recognized info
+                                    CvInvoke.PutText(imageFrame, username, new Point(face.X, face.Y - 10), 
+                                                     Emgu.CV.CvEnum.FontFace.HersheySimplex, 1.0, new MCvScalar(0, 255, 0), 2);
+                                    
+                                    if (username == _lastRecognizedUser)
+                                    {
+                                        _consecutiveRecognitions++;
+                                    }
+                                    else
+                                    {
+                                        _lastRecognizedUser = username;
+                                        _consecutiveRecognitions = 1;
+                                    }
+
+                                    if (_consecutiveRecognitions >= REQUIRED_RECOGNITIONS)
+                                    {
+                                        // Successful Login
+                                        _timer.Stop();
+                                        LoggedInUsername = username;
+                                        lblStatus.Text = $"Chào mừng {username}!";
+                                        this.DialogResult = DialogResult.OK;
+                                        this.Close();
+                                        return; // break out
+                                    }
                                 }
                                 else
                                 {
-                                    _lastRecognizedUser = username;
-                                    _consecutiveRecognitions = 1;
+                                    // Unknown or too far
+                                    CvInvoke.PutText(imageFrame, "Unknown", new Point(face.X, face.Y - 10), 
+                                                     Emgu.CV.CvEnum.FontFace.HersheySimplex, 1.0, new MCvScalar(0, 0, 255), 2);
                                 }
-
-                                if (_consecutiveRecognitions >= REQUIRED_RECOGNITIONS)
-                                {
-                                    // Successful Login
-                                    _timer.Stop();
-                                    LoggedInUsername = username;
-                                    lblStatus.Text = $"Chào mừng {username}!";
-                                    this.DialogResult = DialogResult.OK;
-                                    this.Close();
-                                    return; // break out
-                                }
-                            }
-                            else
-                            {
-                                // Unknown or too far
-                                CvInvoke.PutText(imageFrame, "Unknown", new Point(face.X, face.Y - 10), 
-                                                 Emgu.CV.CvEnum.FontFace.HersheySimplex, 1.0, new MCvScalar(0, 0, 255), 2);
-                                _consecutiveRecognitions = 0;
                             }
                         }
 
-                        if (!faceDetectedInThisFrame)
+                        if (!faceDetectedInThisFrame || !anyFaceRecognizedThisFrame)
                         {
                             _consecutiveRecognitions = 0;
                         }
@@ -175,6 +184,7 @@ namespace ProjectMonHoc.Login
             if (_capture != null)
             {
                 _capture.Dispose();
+                _capture = null;
             }
         }
     }

@@ -109,6 +109,25 @@ namespace ProjectMonHoc.Login
                             if (_isCapturing && _captureCount < MAX_CAPTURES)
                             {
                                 var faceCrop = grayFrame.Copy(face).Resize(100, 100, Emgu.CV.CvEnum.Inter.Cubic);
+                                
+                                // Kiểm tra xem khuôn mặt có trùng với người khác không
+                                if (_faceHelper.LabelMap.Count > 0)
+                                {
+                                    var (username, distance) = _faceHelper.Predict(faceCrop);
+                                    if (!string.IsNullOrEmpty(username) && distance < 80 && username != Globals.GlobalUsername)
+                                    {
+                                        _isCapturing = false;
+                                        _capturedFaces.Clear();
+                                        _captureCount = 0;
+                                        this.Invoke((MethodInvoker)delegate {
+                                            MessageBox.Show($"Khuôn mặt này đã được đăng ký cho tài khoản '{username}'. Mỗi người chỉ được dùng một khuôn mặt cho một tài khoản.", "Lỗi trùng lặp", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                            btnStartCapture.Enabled = true;
+                                            lblStatus.Text = "Chuẩn bị lấy mẫu...";
+                                        });
+                                        return;
+                                    }
+                                }
+
                                 _capturedFaces.Add(faceCrop);
                                 _captureCount++;
                                 
